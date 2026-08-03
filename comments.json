@@ -1,0 +1,34 @@
+[
+  {
+    "id": "seed_1",
+    "name": "Rina S.",
+    "layanan": "Pembuatan Website",
+    "rating": 5,
+    "message": "Website toko saya jadi jauh lebih rapi dan gampang diakses dari HP. Sekarang pelanggan lebih percaya buat belanja.",
+    "date": "2026-03-10"
+  },
+  {
+    "id": "seed_2",
+    "name": "Budi Hartono",
+    "layanan": "Foto & Video",
+    "rating": 5,
+    "message": "Hasil foto produknya bagus banget, langsung jadi konten Instagram kami. Prosesnya cepat dan komunikatif.",
+    "date": "2026-04-02"
+  },
+  {
+    "id": "seed_3",
+    "name": "Dewi Anggraini",
+    "layanan": "Foto & Video",
+    "rating": 5,
+    "message": "Videonya dipakai untuk campaign, hasilnya rapi dan sesuai brief. Pasti pakai lagi untuk proyek berikutnya.",
+    "date": "2026-05-14"
+  },
+  {
+    "id": "seed_4",
+    "name": "Andra Wijaya",
+    "layanan": "Pembuatan Website",
+    "rating": 4,
+    "message": "Company profile website kami sekarang terlihat profesional. Proses revisi juga direspons cepat.",
+    "date": "2026-06-01"
+  }
+]
