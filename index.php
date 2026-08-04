@@ -464,24 +464,28 @@ function h($str) {
                     </div>
                 </div>
 
-                <!-- Right Content Visual -->
-                <div class="lg:col-span-5 flex justify-center mt-10 lg:mt-0">
-                    <div class="feature-card">
-                        <div class="text-xs font-bold tracking-widest text-teal-500 mb-3 uppercase">Layanan Unggulan</div>
-                        <h3 class="text-2xl font-extrabold mb-3 tracking-tight leading-snug">Web &amp; System Development</h3>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-6">Solusi digital menyeluruh mulai dari Landing Page, Toko Online, hingga Sistem POS &amp; HR Custom.</p>
-                        <div class="grid gap-3">
-                            <div class="flex items-center gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                                <i class="ph ph-check-circle text-teal-500 text-xl"></i>
-                                <span class="text-sm font-semibold">Desain Modern &amp; Fast Loading</span>
+                <!-- Right Content Visual (Person Portrait Photo) -->
+                <div class="lg:col-span-5 flex justify-center items-end relative mt-10 lg:mt-0">
+                    <div class="relative w-full max-w-[420px] aspect-[4/5] flex items-end justify-center">
+                        <!-- Soft Gradient Backdrop Podium -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-slate-100 to-teal-500/10 rounded-t-full border border-slate-200/60 -z-10 shadow-sm"></div>
+                        
+                        <!-- Person Portrait Image -->
+                        <img 
+                            src="assets/images/orang.png" 
+                            alt="Aff Digital Lead Specialist" 
+                            class="w-full h-auto object-contain max-h-[500px] drop-shadow-xl relative z-10"
+                            loading="eager"
+                        />
+
+                        <!-- Floating Accent Badge -->
+                        <div class="absolute -bottom-3 -left-2 bg-white/95 backdrop-blur-md border border-slate-200 px-4 py-2.5 rounded-2xl shadow-lg flex items-center gap-3 z-20">
+                            <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold text-lg">
+                                <i class="ph ph-sparkle"></i>
                             </div>
-                            <div class="flex items-center gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                                <i class="ph ph-check-circle text-teal-500 text-xl"></i>
-                                <span class="text-sm font-semibold">Integrasi Midtrans &amp; iPaymu</span>
-                            </div>
-                            <div class="flex items-center gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                                <i class="ph ph-check-circle text-teal-500 text-xl"></i>
-                                <span class="text-sm font-semibold">Dashboard Admin &amp; Laporan</span>
+                            <div>
+                                <div class="text-xs font-bold text-slate-800">Expert Developers</div>
+                                <div class="text-[11px] text-slate-500">Ready for your project</div>
                             </div>
                         </div>
                     </div>
