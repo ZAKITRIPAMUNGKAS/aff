@@ -136,23 +136,23 @@ function h($str) {
 
   /* HERO SECTION */
   .hero-section {
-    position: relative; padding: 80px 0 100px; overflow: hidden;
+    position: relative; padding: 48px 0 64px; overflow: hidden;
   }
   .floating-tag {
     display: inline-flex; align-items: center; gap: 10px;
     background: #ffffff; border: 1px solid var(--border);
     border-radius: 999px; padding: 6px 16px; font-size: 13px; font-weight: 600;
-    box-shadow: var(--shadow-sm); margin-bottom: 28px; position: relative;
+    box-shadow: var(--shadow-sm); margin-bottom: 24px; position: relative;
   }
   .floating-tag .dot-stack { display: flex; margin-right: -4px; }
   .floating-tag .dot-stack span { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: -3px; }
   .hero-title {
-    font-size: clamp(38px, 5.5vw, 68px); font-weight: 300; color: #94a3b8;
-    line-height: 1.08; margin-bottom: 24px; max-width: 22ch;
+    font-size: clamp(32px, 4.2vw, 56px); font-weight: 300; color: #94a3b8;
+    line-height: 1.22; margin-bottom: 20px; max-width: 24ch; padding-top: 4px;
   }
   .hero-title .highlight { color: var(--ink); font-weight: 700; }
   .hero-lead {
-    font-size: 18px; color: var(--muted); max-width: 540px; margin-bottom: 40px; font-weight: 400; line-height: 1.7;
+    font-size: 17px; color: var(--muted); max-width: 520px; margin-bottom: 36px; font-weight: 400; line-height: 1.65;
   }
   
   /* TECHNICAL FRAMED BUTTON */
@@ -435,8 +435,7 @@ function h($str) {
 
           <!-- Main Headline -->
           <h1 class="hero-title">
-            Turning <span class="highlight">complex ideas</span><br>
-            into <span class="highlight">intuitive experiences.</span>
+            Turning <span class="highlight">complex ideas</span> into <span class="highlight">intuitive experiences.</span>
           </h1>
 
           <!-- Subheadline -->
@@ -457,7 +456,7 @@ function h($str) {
         </div>
 
         <!-- Right Content / Visual Card (Col 5) -->
-        <div class="lg:col-span-5 flex justify-center">
+        <div class="lg:col-span-5 flex justify-center mt-10 lg:mt-0">
           <div style="background:#ffffff;border:1.5px solid var(--border);border-radius:24px;padding:36px 32px;box-shadow:var(--shadow-md);width:100%;position:relative">
             <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:12px">LAYANAN UNGGULAN</div>
             <h3 style="font-size:24px;font-weight:800;margin-bottom:14px;letter-spacing:-0.02em;line-height:1.25">Web &amp; System Development</h3>
