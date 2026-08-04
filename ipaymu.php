@@ -27,10 +27,16 @@ function ipaymu_create_transaction(array $params) {
         return ['error' => 'API Key iPaymu belum diisi di admin/config.php'];
     }
 
+    // PENTING: field 'account' harus ada di body SEBELUM membuat hash signature
     $params['account'] = IPAYMU_VA;
-    $body = json_encode($params);
-    $signature = ipaymu_generate_signature('POST', $body);
-    $timestamp = date('YmdHis');
+    $body = json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+    // Signature: HMAC-SHA256(StringToSign, ApiKey)
+    // StringToSign = METHOD:VA:lowercase(sha256(body)):ApiKey
+    $bodyHash    = strtolower(hash('sha256', $body));
+    $stringToSign = 'POST:' . IPAYMU_VA . ':' . $bodyHash . ':' . IPAYMU_API_KEY;
+    $signature   = hash_hmac('sha256', $stringToSign, IPAYMU_API_KEY);
+    $timestamp   = date('YmdHis');
 
     $ch = curl_init(ipaymu_payment_url());
     curl_setopt_array($ch, [
@@ -39,12 +45,13 @@ function ipaymu_create_transaction(array $params) {
         CURLOPT_HTTPHEADER     => [
             'Accept: application/json',
             'Content-Type: application/json',
-            'va: ' . IPAYMU_VA,
+            'va: '        . IPAYMU_VA,
             'signature: ' . $signature,
             'timestamp: ' . $timestamp,
         ],
         CURLOPT_POSTFIELDS => $body,
         CURLOPT_TIMEOUT    => 25,
+        CURLOPT_SSL_VERIFYPEER => true,
     ]);
     $response = curl_exec($ch);
     $curlErr  = curl_error($ch);
