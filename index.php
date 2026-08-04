@@ -327,37 +327,146 @@ function h($str) {
         .form-input:focus { border-color: var(--teal); }
         .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
 
-        /* MODAL */
+        /* ===== PORTFOLIO MODAL — REDESIGNED ===== */
         .p-modal-overlay {
-            position: fixed; inset: 0; z-index: 10000; background: rgba(15, 23, 42, 0.82);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            display: flex; align-items: center; justify-content: center; padding: 24px;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s cubic-bezier(0.16,1,0.3,1);
+            position: fixed; inset: 0; z-index: 10000;
+            background: rgba(4, 10, 25, 0.75);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1);
         }
         .p-modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        /* Card layout: 2-column on desktop */
         .p-modal-card {
-            background: #ffffff; border-radius: 24px; width: 100%; max-width: 860px; max-height: 90vh;
-            overflow-y: auto; box-shadow: 0 32px 64px rgba(0,0,0,0.4);
-            transform: scale(0.92) translateY(24px); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-            position: relative; color: var(--ink);
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            width: 100%; max-width: 1000px; max-height: 88vh;
+            background: #0d1117;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+            transform: scale(0.93) translateY(30px);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+            position: relative; color: #fff;
+        }
+        @media (max-width: 720px) {
+            .p-modal-card { grid-template-columns: 1fr; max-height: 94vh; overflow-y: auto; }
         }
         .p-modal-overlay.active .p-modal-card { transform: scale(1) translateY(0); }
-        .p-modal-close {
-            position: absolute; top: 18px; right: 18px; width: 40px; height: 40px; border-radius: 50%;
-            background: rgba(15, 23, 42, 0.6); color: #fff; border: 1px solid rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer;
-            z-index: 10; transition: all 0.2s; backdrop-filter: blur(8px);
+
+        /* LEFT — media panel */
+        .p-modal-left {
+            position: relative; background: #080e1a;
+            display: flex; flex-direction: column;
+            min-height: 420px;
         }
-        .p-modal-close:hover { background: var(--ink); transform: scale(1.08); }
-        .p-modal-media-wrap { background: #0f172a; border-radius: 24px 24px 0 0; overflow: hidden; position: relative; aspect-ratio: 16/10; max-height: 460px; display: flex; align-items: center; justify-content: center; }
-        .p-modal-media-wrap img, .p-modal-media-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .p-modal-gallery-thumbs { display: flex; gap: 10px; padding: 14px 20px; background: #161c2b; overflow-x: auto; }
-        .pm-thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: all 0.2s; flex: none; }
-        .pm-thumb:hover, .pm-thumb.active { opacity: 1; border-color: var(--teal); transform: scale(1.05); }
-        .p-modal-body { padding: 36px; }
-        .p-modal-cat { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); background: rgba(47,184,174,0.1); padding: 4px 14px; border-radius: 999px; margin-bottom: 14px; }
-        .p-modal-body h3 { font-size: 28px; font-weight: 800; margin-bottom: 14px; }
-        .p-modal-body p { font-size: 15.5px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+        .p-modal-media-wrap {
+            flex: 1; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .p-modal-media-wrap img, .p-modal-media-wrap video {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.5s ease;
+        }
+        .p-modal-media-wrap img:hover { transform: scale(1.03); }
+        /* Bottom gradient on image */
+        .p-modal-media-wrap::after {
+            content: ''; position: absolute; inset: auto 0 0;
+            height: 40%; pointer-events: none;
+            background: linear-gradient(to top, rgba(8,14,26,0.9) 0%, transparent 100%);
+        }
+
+        /* Thumbnail strip */
+        .p-modal-gallery-thumbs {
+            display: flex; gap: 8px; padding: 14px 16px 14px;
+            background: rgba(255,255,255,0.03);
+            border-top: 1px solid rgba(255,255,255,0.07);
+            overflow-x: auto; flex-shrink: 0;
+            scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent;
+        }
+        .pm-thumb {
+            width: 52px; height: 52px; border-radius: 10px; object-fit: cover;
+            cursor: pointer; border: 2px solid transparent; opacity: 0.5;
+            transition: all 0.2s; flex: none;
+        }
+        .pm-thumb:hover { opacity: 0.85; transform: scale(1.06); }
+        .pm-thumb.active { opacity: 1; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(47,184,174,0.25); }
+
+        /* RIGHT — info panel */
+        .p-modal-right {
+            display: flex; flex-direction: column;
+            background: #ffffff; color: var(--ink);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        /* Close button */
+        .p-modal-close {
+            position: absolute; top: 16px; right: 16px;
+            width: 38px; height: 38px; border-radius: 50%;
+            background: rgba(255,255,255,0.12); color: #fff;
+            border: 1px solid rgba(255,255,255,0.18);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer; z-index: 20;
+            transition: all 0.2s; backdrop-filter: blur(10px);
+        }
+        .p-modal-close:hover { background: rgba(255,255,255,0.25); transform: rotate(90deg) scale(1.1); }
+
+        /* Info body */
+        .p-modal-body {
+            padding: 36px 32px 28px;
+            flex: 1; display: flex; flex-direction: column;
+        }
+        .p-modal-body-top { flex: 1; }
+        .p-modal-cat {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--teal); background: rgba(47,184,174,0.1);
+            border: 1px solid rgba(47,184,174,0.25);
+            padding: 5px 14px; border-radius: 999px; margin-bottom: 18px;
+        }
+        .p-modal-cat::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+        .p-modal-body h3 {
+            font-size: 26px; font-weight: 800; line-height: 1.25;
+            margin-bottom: 14px; letter-spacing: -0.02em; color: var(--ink);
+        }
+        .p-modal-body p {
+            font-size: 14.5px; color: var(--muted); line-height: 1.75;
+            margin-bottom: 0;
+        }
+
+        /* divider */
+        .p-modal-divider {
+            height: 1px; background: rgba(15,23,42,0.07);
+            margin: 24px 0;
+        }
+
+        /* Stat chips */
+        .p-modal-stats {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 10px; margin-bottom: 0;
+        }
+        .p-modal-stat {
+            background: #f8fafc; border: 1px solid rgba(15,23,42,0.07);
+            border-radius: 14px; padding: 12px 14px;
+        }
+        .p-modal-stat-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+        .p-modal-stat-val { font-size: 14px; font-weight: 700; color: var(--ink); }
+
+        /* Footer */
+        .p-modal-footer {
+            padding: 20px 32px 28px;
+            border-top: 1px solid rgba(15,23,42,0.07);
+        }
+        .p-modal-footer .btn-solid-dark {
+            width: 100%; text-align: center; display: flex;
+            align-items: center; justify-content: center; gap: 8px;
+            border-radius: 14px; padding: 14px 20px; font-size: 14px;
+        }
 
         /* CHATBOT WIDGET */
         .chat-widget-trigger {
@@ -883,20 +992,45 @@ function h($str) {
     </div>
 </footer>
 
-<!-- PORTFOLIO MODAL -->
+<!-- PORTFOLIO MODAL — REDESIGNED -->
 <div class="p-modal-overlay" id="portfolioModal" aria-hidden="true">
     <div class="p-modal-card">
-        <button class="p-modal-close" id="modalCloseBtn" aria-label="Tutup Detail">&times;</button>
-        <div class="p-modal-media-wrap" id="modalMediaContainer"></div>
-        <div class="p-modal-gallery-thumbs" id="modalGalleryContainer" style="display:none;"></div>
-        <div class="p-modal-body">
-            <span class="p-modal-cat" id="modalCategory">Kategori</span>
-            <h3 id="modalTitle">Judul Proyek</h3>
-            <p id="modalDescription">Deskripsi proyek...</p>
+
+        <!-- LEFT: Media Panel -->
+        <div class="p-modal-left">
+            <button class="p-modal-close" id="modalCloseBtn" aria-label="Tutup Detail">&times;</button>
+            <div class="p-modal-media-wrap" id="modalMediaContainer"></div>
+            <div class="p-modal-gallery-thumbs" id="modalGalleryContainer" style="display:none;"></div>
+        </div>
+
+        <!-- RIGHT: Info Panel -->
+        <div class="p-modal-right">
+            <div class="p-modal-body">
+                <div class="p-modal-body-top">
+                    <span class="p-modal-cat" id="modalCategory">Kategori</span>
+                    <h3 id="modalTitle">Judul Proyek</h3>
+                    <p id="modalDescription">Deskripsi proyek...</p>
+                    <div class="p-modal-divider"></div>
+                    <div class="p-modal-stats">
+                        <div class="p-modal-stat">
+                            <div class="p-modal-stat-label">Status</div>
+                            <div class="p-modal-stat-val">Selesai</div>
+                        </div>
+                        <div class="p-modal-stat">
+                            <div class="p-modal-stat-label">Kategori</div>
+                            <div class="p-modal-stat-val" id="modalCatStat">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="p-modal-footer">
-                <a href="#kontak" onclick="closePortfolioModal()" class="btn-solid-dark">Konsultasikan Proyek Serupa &rarr;</a>
+                <a href="#kontak" onclick="closePortfolioModal()" class="btn-solid-dark">
+                    <i class="ph ph-chat-circle-dots"></i>
+                    <span>Konsultasikan Proyek Serupa</span>
+                </a>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -1016,14 +1150,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalMediaContainer = document.getElementById('modalMediaContainer');
     const modalGalleryContainer = document.getElementById('modalGalleryContainer');
     const modalCategory = document.getElementById('modalCategory');
+    const modalCatStat = document.getElementById('modalCatStat');
     const modalTitle = document.getElementById('modalTitle');
     const modalDescription = document.getElementById('modalDescription');
 
     function openPortfolioModal(data) {
         if (!data) return;
-        modalCategory.textContent = data.category_label || 'Portofolio';
+        const catLabel = data.category_label || 'Portofolio';
+        modalCategory.textContent = catLabel;
+        if (modalCatStat) modalCatStat.textContent = catLabel;
         modalTitle.textContent = data.title || 'Judul Proyek';
         modalDescription.textContent = data.description || '';
+
 
         let images = [];
         if (data.images_json) {
