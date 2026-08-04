@@ -437,21 +437,21 @@ function h($str) {
 
         <!-- Right Content / Architectural Card (Col 5) -->
         <div class="lg:col-span-5 flex justify-center">
-          <div style="background:#ffffff;border:1.5px solid var(--border);border-radius:24px;padding:36px;box-shadow:var(--shadow-md);width:100%;position:relative">
-            <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px">LAYANAN UNGGULAN</div>
-            <h3 style="font-size:24px;font-weight:800;margin-bottom:14px;letter-spacing:-0.02em">Web &amp; System Development</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:28px">Solusi digital menyeluruh mulai dari Landing Page, Toko Online, hingga Sistem POS &amp; HR Custom.</p>
-            <div style="display:grid;gap:12px">
-              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
-                <i class="ph ph-check-circle text-teal text-xl"></i>
+          <div style="background:#ffffff;border:1.5px solid var(--border);border-radius:28px;padding:44px 38px;box-shadow:var(--shadow-md);width:100%;position:relative">
+            <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:14px">LAYANAN UNGGULAN</div>
+            <h3 style="font-size:26px;font-weight:800;margin-bottom:16px;letter-spacing:-0.02em;line-height:1.2">Web &amp; System Development</h3>
+            <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:32px">Solusi digital menyeluruh mulai dari Landing Page, Toko Online, hingga Sistem POS &amp; HR Custom.</p>
+            <div style="display:grid;gap:14px">
+              <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:16px 20px;border-radius:14px;border:1px solid var(--border);transition:all 0.2s">
+                <i class="ph ph-check-circle text-teal text-2xl"></i>
                 <span style="font-size:14px;font-weight:600">Desain Modern &amp; Fast Loading</span>
               </div>
-              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
-                <i class="ph ph-check-circle text-teal text-xl"></i>
+              <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:16px 20px;border-radius:14px;border:1px solid var(--border);transition:all 0.2s">
+                <i class="ph ph-check-circle text-teal text-2xl"></i>
                 <span style="font-size:14px;font-weight:600">Integrasi Midtrans &amp; iPaymu</span>
               </div>
-              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
-                <i class="ph ph-check-circle text-teal text-xl"></i>
+              <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:16px 20px;border-radius:14px;border:1px solid var(--border);transition:all 0.2s">
+                <i class="ph ph-check-circle text-teal text-2xl"></i>
                 <span style="font-size:14px;font-weight:600">Dashboard Admin &amp; Laporan</span>
               </div>
             </div>
@@ -717,44 +717,55 @@ function h($str) {
   </section>
 
   <!-- CONTACT SECTION -->
-  <section class="py-24" id="kontak">
+  <section class="py-24 bg-slate-50" id="kontak">
     <div class="wrap">
-      <div class="flex flex-col lg:flex-row gap-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         
-        <div class="w-full lg:w-1/2">
-          <div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:12px">HUBUNGI KAMI</div>
-          <h2 style="font-size:36px;font-weight:800;margin-bottom:16px">Mari Konsultasikan Proyek Digital Anda</h2>
-          <p style="color:var(--muted);font-size:16px;line-height:1.7;margin-bottom:32px">Tim ahli kami siap membantu memilihkan solusi terbaik sesuai anggaran dan tujuan bisnis Anda.</p>
+        <!-- Left Content: Info Cards (Col 5) -->
+        <div class="lg:col-span-5">
+          <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:12px">HUBUNGI KAMI</div>
+          <h2 style="font-size:38px;font-weight:800;margin-bottom:18px;line-height:1.15;letter-spacing:-0.03em">Mari Konsultasikan Proyek Digital Anda</h2>
+          <p style="color:var(--muted);font-size:15.5px;line-height:1.7;margin-bottom:40px">Tim ahli kami siap membantu memilihkan solusi terbaik sesuai anggaran dan tujuan bisnis Anda.</p>
           
-          <div style="display:grid;gap:18px">
-            <div style="display:flex;align-items:center;gap:14px">
-              <div style="width:44px;height:44px;border-radius:12px;background:rgba(47,184,174,0.1);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:22px"><i class="ph ph-whatsapp-logo"></i></div>
-              <div><div style="font-size:12px;color:var(--muted)">WhatsApp Fast Response</div><div style="font-weight:700;font-size:15px">+62 812-3456-7890</div></div>
+          <div style="display:grid;gap:16px">
+            <div style="display:flex;align-items:center;gap:16px;background:#ffffff;border:1.5px solid var(--border);padding:20px 24px;border-radius:18px;box-shadow:var(--shadow-sm);transition:all 0.2s">
+              <div style="width:50px;height:50px;border-radius:14px;background:rgba(47,184,174,0.12);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none"><i class="ph ph-whatsapp-logo"></i></div>
+              <div>
+                <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em">WhatsApp Fast Response</div>
+                <div style="font-weight:800;font-size:16px;color:var(--ink);margin-top:2px">+62 812-3456-7890</div>
+              </div>
             </div>
-            <div style="display:flex;align-items:center;gap:14px">
-              <div style="width:44px;height:44px;border-radius:12px;background:rgba(47,184,174,0.1);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:22px"><i class="ph ph-envelope"></i></div>
-              <div><div style="font-size:12px;color:var(--muted)">Email Konsultasi</div><div style="font-weight:700;font-size:15px">halo@affdigital.my.id</div></div>
+
+            <div style="display:flex;align-items:center;gap:16px;background:#ffffff;border:1.5px solid var(--border);padding:20px 24px;border-radius:18px;box-shadow:var(--shadow-sm);transition:all 0.2s">
+              <div style="width:50px;height:50px;border-radius:14px;background:rgba(47,184,174,0.12);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none"><i class="ph ph-envelope"></i></div>
+              <div>
+                <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em">Email Konsultasi</div>
+                <div style="font-weight:800;font-size:16px;color:var(--ink);margin-top:2px">halo@affdigital.my.id</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="w-full lg:w-1/2">
-          <div style="background:#ffffff;border:1px solid var(--border);border-radius:24px;padding:36px;box-shadow:var(--shadow-md)">
+        <!-- Right Content: Form Card (Col 7) -->
+        <div class="lg:col-span-7">
+          <div style="background:#ffffff;border:1.5px solid var(--border);border-radius:28px;padding:44px 40px;box-shadow:var(--shadow-md)">
+            <h3 style="font-size:22px;font-weight:800;margin-bottom:8px">Formulir Pesan &amp; Diskusi</h3>
+            <p style="font-size:14px;color:var(--muted);margin-bottom:28px">Isi formulir di bawah ini dan kami akan membalas pesan Anda dalam 1x24 jam.</p>
             <form method="POST" action="process_message.php">
-              <div style="display:grid;gap:16px">
+              <div style="display:grid;gap:20px">
                 <div>
-                  <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Nama Lengkap</label>
-                  <input type="text" name="name" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;font-size:14px;outline:none">
+                  <label style="display:block;font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Nama Lengkap</label>
+                  <input type="text" name="name" required placeholder="Contoh: Budi Santoso" style="width:100%;padding:14px 18px;border:1.5px solid var(--border);border-radius:12px;font-size:14.5px;outline:none;transition:border-color 0.2s;background:#f8fafc">
                 </div>
                 <div>
-                  <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Email / WhatsApp</label>
-                  <input type="text" name="contact" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;font-size:14px;outline:none">
+                  <label style="display:block;font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Email / Nomor WhatsApp</label>
+                  <input type="text" name="contact" required placeholder="081234567890 atau email@domain.com" style="width:100%;padding:14px 18px;border:1.5px solid var(--border);border-radius:12px;font-size:14.5px;outline:none;transition:border-color 0.2s;background:#f8fafc">
                 </div>
                 <div>
-                  <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Pesan / Kebutuhan Proyek</label>
-                  <textarea name="message" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;font-size:14px;min-height:100px;outline:none"></textarea>
+                  <label style="display:block;font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Pesan / Detail Kebutuhan Proyek</label>
+                  <textarea name="message" required placeholder="Jelaskan jenis website atau sistem yang ingin Anda buat..." style="width:100%;padding:14px 18px;border:1.5px solid var(--border);border-radius:12px;font-size:14.5px;min-height:120px;outline:none;transition:border-color 0.2s;background:#f8fafc;resize:vertical"></textarea>
                 </div>
-                <button type="submit" class="btn-solid-dark" style="width:100%">Kirim Pesan Konsultasi</button>
+                <button type="submit" class="btn-solid-dark" style="width:100%;padding:16px;font-size:15px;border-radius:12px;margin-top:6px">Kirim Pesan Konsultasi &rarr;</button>
               </div>
             </form>
           </div>
