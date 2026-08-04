@@ -37,6 +37,11 @@ function h($str) {
 <title>Aff Digital — Jasa Pembuatan Website, Sistem Custom &amp; Foto Video Promosi</title>
 <meta name="description" content="Aff Digital membantu UMKM &amp; Brand mengubah ide bisnis menjadi website berkinerja tinggi, sistem custom (POS, HR, Inventori), serta foto &amp; video promosi profesional.">
 
+<!-- Favicons -->
+<link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+<link rel="shortcut icon" type="image/jpeg" href="favicon.ico">
+<link rel="apple-touch-icon" href="assets/images/logo.jpg">
+
 <!-- Fonts & Icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,6 +113,26 @@ function h($str) {
     transition: all 0.25s ease;
   }
   .btn-outline-login:hover { border-color: var(--ink); background: var(--ink); color: #fff; }
+
+  /* MOBILE DRAWER NAV */
+  .mobile-toggle-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 10px; background: transparent;
+    border: 1.5px solid var(--border); color: var(--ink); font-size: 22px; cursor: pointer;
+  }
+  .mobile-nav-drawer {
+    position: absolute; top: 76px; left: 0; right: 0; background: #ffffff;
+    border-bottom: 1px solid var(--border); box-shadow: var(--shadow-lg);
+    padding: 20px 24px; display: flex; flex-direction: column; gap: 12px;
+    opacity: 0; pointer-events: none; transform: translateY(-10px);
+    transition: all 0.25s cubic-bezier(0.16,1,0.3,1); z-index: 9999;
+  }
+  .mobile-nav-drawer.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .mobile-nav-drawer a {
+    font-size: 15px; font-weight: 600; color: var(--ink); padding: 10px 0;
+    border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;
+  }
+  .mobile-nav-drawer a:last-child { border-bottom: none; }
 
   /* HERO SECTION */
   .hero-section {
@@ -353,7 +378,7 @@ function h($str) {
 
 <!-- SITE HEADER -->
 <header class="site-header">
-  <div class="wrap">
+  <div class="wrap" style="position:relative">
     <div class="header-inner">
       <a href="#" class="brand-logo" style="display:flex;align-items:center;gap:10px">
         <img src="assets/images/logo.jpg" alt="Aff Digital" style="height:38px;width:auto;border-radius:8px;object-fit:cover">
@@ -368,8 +393,20 @@ function h($str) {
         <a href="#kontak">Kontak</a>
       </nav>
       <div class="nav-actions">
-        <a href="admin/login.php" class="btn-outline-login"><i class="ph ph-user-key text-base"></i> Login Admin</a>
+        <a href="admin/login.php" class="btn-outline-login hidden sm:inline-flex"><i class="ph ph-user-key text-base"></i> Login Admin</a>
+        <button class="mobile-toggle-btn md:hidden" id="mobileNavToggle" aria-label="Buka Menu"><i class="ph ph-list"></i></button>
       </div>
+    </div>
+    
+    <!-- MOBILE NAV DRAWER -->
+    <div class="mobile-nav-drawer md:hidden" id="mobileNavDrawer">
+      <a href="#tentang" class="m-link"><span>Tentang</span> <i class="ph ph-caret-right text-gray-400"></i></a>
+      <a href="#layanan" class="m-link"><span>Layanan</span> <i class="ph ph-caret-right text-gray-400"></i></a>
+      <a href="#portofolio" class="m-link"><span>Portofolio</span> <i class="ph ph-caret-right text-gray-400"></i></a>
+      <a href="#harga" class="m-link"><span>Harga Paket</span> <i class="ph ph-caret-right text-gray-400"></i></a>
+      <a href="#testimoni" class="m-link"><span>Testimoni</span> <i class="ph ph-caret-right text-gray-400"></i></a>
+      <a href="#kontak" class="m-link"><span>Hubungi Kami</span> <i class="ph ph-caret-right text-gray-400"></i></a>
+      <a href="admin/login.php" class="m-link" style="color:var(--teal)"><span>🔑 Login Admin</span> <i class="ph ph-caret-right text-gray-400"></i></a>
     </div>
   </div>
 </header>
@@ -993,6 +1030,18 @@ function h($str) {
         }
       });
     });
+
+    // Mobile Nav Drawer Toggle
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+    if (mobileNavToggle && mobileNavDrawer) {
+      mobileNavToggle.addEventListener('click', () => {
+        mobileNavDrawer.classList.toggle('open');
+      });
+      document.querySelectorAll('.m-link').forEach(link => {
+        link.addEventListener('click', () => mobileNavDrawer.classList.remove('open'));
+      });
+    }
 
     if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePortfolioModal);
     if (modal) {

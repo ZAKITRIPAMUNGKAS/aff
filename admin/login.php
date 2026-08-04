@@ -31,6 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Login — Aff Digital</title>
+<!-- Favicons -->
+<link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+<link rel="shortcut icon" type="image/jpeg" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../assets/images/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
