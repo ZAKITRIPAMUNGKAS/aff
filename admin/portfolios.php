@@ -12,6 +12,16 @@ if (!is_dir($uploadDir)) {
     @mkdir($uploadDir, 0755, true);
 }
 
+// Static predefined categories
+$staticCategories = [
+    'Website',
+    'Sistem',
+    'Foto Produk',
+    'Video Promosi',
+    'Desain Grafis',
+    'Lainnya'
+];
+
 // --- Handle Form Submissions ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -26,13 +36,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'delete') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id) {
-            $stmt = $db->prepare("SELECT media_url FROM portfolios WHERE id=?");
+            $stmt = $db->prepare("SELECT media_url, images_json FROM portfolios WHERE id=?");
             $stmt->execute([$id]);
             $item = $stmt->fetch();
             if ($item) {
-                // Hapus file fisik jika tersimpan di folder uploads
+                // Hapus file fisik di folder uploads
+                $filesToDelete = [];
                 if ($item['media_url'] && strpos($item['media_url'], 'assets/uploads/portfolios/') === 0) {
-                    $fullPath = __DIR__ . '/../' . $item['media_url'];
+                    $filesToDelete[] = $item['media_url'];
+                }
+                if (!empty($item['images_json'])) {
+                    $imgs = json_decode($item['images_json'], true);
+                    if (is_array($imgs)) {
+                        foreach ($imgs as $imgUrl) {
+                            if (strpos($imgUrl, 'assets/uploads/portfolios/') === 0) {
+                                $filesToDelete[] = $imgUrl;
+                            }
+                        }
+                    }
+                }
+                foreach (array_unique($filesToDelete) as $relPath) {
+                    $fullPath = __DIR__ . '/../' . $relPath;
                     if (file_exists($fullPath)) {
                         @unlink($fullPath);
                     }
@@ -45,76 +69,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'save') {
         $id            = (int)($_POST['id'] ?? 0);
         $title         = trim(strip_tags($_POST['title'] ?? ''));
-        $categoryLabel = trim(strip_tags($_POST['category_label'] ?? ''));
+        $categoryLabel = in_array($_POST['category_label'] ?? '', $staticCategories) ? $_POST['category_label'] : 'Lainnya';
         $description   = trim(strip_tags($_POST['description'] ?? ''));
         $mediaType     = in_array($_POST['media_type'] ?? '', ['image', 'video']) ? $_POST['media_type'] : 'image';
         $mediaUrl      = trim($_POST['media_url_existing'] ?? '');
+        $imagesJson    = trim($_POST['images_json_existing'] ?? '[]');
         $sortOrder     = (int)($_POST['sort_order'] ?? 0);
         $isActive      = isset($_POST['is_active']) ? 1 : 0;
 
-        // Handling File Upload (Gambar / Video)
-        if (isset($_FILES['media_file']) && $_FILES['media_file']['error'] === UPLOAD_ERR_OK) {
-            $fileTmp  = $_FILES['media_file']['tmp_name'];
-            $fileName = $_FILES['media_file']['name'];
-            $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $existingImages = json_decode($imagesJson, true);
+        if (!is_array($existingImages)) $existingImages = [];
 
-            $allowedImg = ['jpg', 'jpeg', 'png', 'webp'];
-            $allowedVid = ['mp4', 'webm', 'ogg', 'mov'];
-            $allowed    = array_merge($allowedImg, $allowedVid);
-
-            if (!in_array($fileExt, $allowed)) {
-                $err = 'Format file tidak didukung. Harap upload format gambar (JPG, PNG, WEBP) atau video (MP4, WEBM).';
+        // Handling Multi-File Uploads (Max 10 files)
+        $uploadedFiles = [];
+        if (isset($_FILES['media_files']) && !empty($_FILES['media_files']['name'][0])) {
+            $totalFiles = count($_FILES['media_files']['name']);
+            if ($totalFiles > 10) {
+                $err = 'Maksimal upload 10 file sekaligus.';
             } else {
-                // Auto-detect media_type berdasarkan ekstensi
-                if (in_array($fileExt, $allowedVid)) {
-                    $mediaType = 'video';
-                } else {
-                    $mediaType = 'image';
-                }
+                $allowedImg = ['jpg', 'jpeg', 'png', 'webp'];
+                $allowedVid = ['mp4', 'webm', 'ogg', 'mov'];
+                $allowed    = array_merge($allowedImg, $allowedVid);
 
-                $safeName = time() . '_' . preg_replace('/[^a-zA-Z0-9\._-]/', '_', $fileName);
-                $targetFile = $uploadDir . $safeName;
+                for ($i = 0; $i < min($totalFiles, 10); $i++) {
+                    if ($_FILES['media_files']['error'][$i] === UPLOAD_ERR_OK) {
+                        $fileTmp  = $_FILES['media_files']['tmp_name'][$i];
+                        $fileName = $_FILES['media_files']['name'][$i];
+                        $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-                if (move_uploaded_file($fileTmp, $targetFile)) {
-                    $mediaUrl = 'assets/uploads/portfolios/' . $safeName;
-                } else {
-                    $err = 'Gagal mengunggah file ke server.';
+                        if (in_array($fileExt, $allowed)) {
+                            if (in_array($fileExt, $allowedVid)) {
+                                $mediaType = 'video';
+                            }
+                            $safeName = time() . '_' . $i . '_' . preg_replace('/[^a-zA-Z0-9\._-]/', '_', $fileName);
+                            $targetFile = $uploadDir . $safeName;
+
+                            if (move_uploaded_file($fileTmp, $targetFile)) {
+                                $uploadedFiles[] = 'assets/uploads/portfolios/' . $safeName;
+                            }
+                        }
+                    }
                 }
             }
         }
 
+        if ($uploadedFiles) {
+            $existingImages = $uploadedFiles;
+            $mediaUrl       = $uploadedFiles[0]; // Set file pertama sebagai cover/media utama
+        }
+
         if (!$title) {
             $err = 'Judul portofolio wajib diisi.';
-        } elseif (!$mediaUrl) {
-            $err = 'File gambar/video atau URL media wajib diisi.';
+        } elseif (!$mediaUrl && empty($existingImages)) {
+            $err = 'File gambar/video wajib diunggah.';
         }
 
         if (!$err) {
+            $finalImagesJson = json_encode(array_slice(array_values($existingImages), 0, 10));
+
             if ($id) {
                 $stmt = $db->prepare("
                     UPDATE portfolios
-                    SET title=?, category_label=?, description=?, media_type=?, media_url=?, sort_order=?, is_active=?
+                    SET title=?, category_label=?, description=?, media_type=?, media_url=?, images_json=?, sort_order=?, is_active=?
                     WHERE id=?
                 ");
-                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $mediaUrl, $sortOrder, $isActive, $id]);
+                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $mediaUrl, $finalImagesJson, $sortOrder, $isActive, $id]);
                 $msg = "Portofolio #{$id} berhasil diperbarui.";
             } else {
                 $stmt = $db->prepare("
-                    INSERT INTO portfolios (title, category_label, description, media_type, media_url, sort_order, is_active)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO portfolios (title, category_label, description, media_type, media_url, images_json, sort_order, is_active)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 ");
-                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $mediaUrl, $sortOrder, $isActive]);
+                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $mediaUrl, $finalImagesJson, $sortOrder, $isActive]);
                 $msg = 'Portofolio baru berhasil ditambahkan.';
             }
         }
     }
 }
 
-// Fetch all portfolios
-$portfolios = $db->query("SELECT * FROM portfolios ORDER BY sort_order ASC, id ASC")->fetchAll();
+// Fetch all portfolios ORDER BY id DESC (terbaru paling atas)
+$portfolios = [];
+try {
+    $portfolios = $db->query("SELECT * FROM portfolios ORDER BY id DESC")->fetchAll();
+} catch (PDOException $e) {
+    $portfolios = [];
+}
 
 // Edit Item Logic
-$editId  = (int)($_GET['edit'] ?? 0);
+$editId   = (int)($_GET['edit'] ?? 0);
 $editItem = null;
 if ($editId) {
     foreach ($portfolios as $p) {
@@ -170,15 +212,15 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink); d
 .alert { padding:12px 16px; border-radius:10px; font-size:13.5px; margin-bottom:20px; }
 .alert-ok  { background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.3); color:#34d399; }
 .alert-err { background:rgba(248,81,73,0.1); border:1px solid rgba(248,81,73,0.3); color:#f85149; }
-.grid { display:grid; grid-template-columns:1fr 400px; gap:24px; align-items:start; }
-@media (max-width:1100px) { .grid { grid-template-columns:1fr; } }
+.grid { display:grid; grid-template-columns:1fr 420px; gap:24px; align-items:start; }
+@media (max-width:1150px) { .grid { grid-template-columns:1fr; } }
 .table-wrap { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:auto; }
 table { width:100%; border-collapse:collapse; min-width:650px; }
 th { padding:12px 16px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); text-align:left; border-bottom:1px solid var(--border); }
 td { padding:13px 16px; font-size:13.5px; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
 tr:last-child td { border-bottom:none; }
 tr:hover td { background:rgba(255,255,255,0.02); }
-.thumb-preview { width:52px; height:52px; border-radius:8px; object-fit:cover; background:#0f1623; border:1px solid var(--border); display:block; }
+.thumb-preview { width:56px; height:56px; border-radius:8px; object-fit:cover; background:#0f1623; border:1px solid var(--border); display:block; }
 .media-badge { display:inline-block; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700; text-transform:uppercase; }
 .badge-image { background:rgba(59,130,246,0.15); color:#60a5fa; }
 .badge-video { background:rgba(236,72,153,0.15); color:#f472b6; }
@@ -192,6 +234,9 @@ tr:hover td { background:rgba(255,255,255,0.02); }
 .btn-toggle:hover { border-color:var(--muted); color:var(--ink); }
 .btn-delete { background:rgba(248,81,73,0.1); color:#f85149; border:1px solid rgba(248,81,73,0.2); padding:5px 10px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.2s; }
 .btn-delete:hover { background:#f85149; color:#fff; }
+
+.gallery-preview { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.gallery-thumb { width:40px; height:40px; border-radius:6px; object-fit:cover; border:1px solid var(--border); }
 
 .form-panel { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; position:sticky; top:80px; }
 .form-panel h2 { font-size:15px; font-weight:700; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--border); }
@@ -258,15 +303,18 @@ tr:hover td { background:rgba(255,255,255,0.02); }
             <tr>
               <th>Preview</th>
               <th>Judul & Deskripsi</th>
-              <th>Kategori Tag</th>
+              <th>Kategori</th>
               <th>Tipe</th>
-              <th>Urutan</th>
               <th>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($portfolios as $p): ?>
+            <?php foreach ($portfolios as $p):
+              $imgList = !empty($p['images_json']) ? json_decode($p['images_json'], true) : [];
+              if (!is_array($imgList)) $imgList = [];
+              $imgCount = count($imgList);
+            ?>
             <tr>
               <td>
                 <?php if ($p['media_type'] === 'video'): ?>
@@ -278,10 +326,12 @@ tr:hover td { background:rgba(255,255,255,0.02); }
               <td>
                 <div style="font-weight:700"><?php echo h4($p['title']); ?></div>
                 <div style="font-size:12px;color:var(--muted);max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?php echo h4($p['description']); ?></div>
+                <?php if ($imgCount > 1): ?>
+                  <div style="font-size:11px;color:var(--teal);margin-top:4px;font-weight:600;">🖼️ <?php echo $imgCount; ?> Gambar terlampir</div>
+                <?php endif; ?>
               </td>
-              <td><span style="font-size:12px;background:var(--surface2);padding:3px 8px;border-radius:6px;color:var(--ink)"><?php echo h4($p['category_label']); ?></span></td>
+              <td><span style="font-size:12px;background:var(--surface2);padding:3px 10px;border-radius:6px;color:var(--ink);font-weight:600"><?php echo h4($p['category_label']); ?></span></td>
               <td><span class="media-badge badge-<?php echo h4($p['media_type']); ?>"><?php echo strtoupper($p['media_type']); ?></span></td>
-              <td style="font-weight:700"><?php echo (int)$p['sort_order']; ?></td>
               <td>
                 <span class="active-dot <?php echo $p['is_active'] ? 'dot-on' : 'dot-off'; ?>"></span>
                 <?php echo $p['is_active'] ? 'Aktif' : 'Nonaktif'; ?>
@@ -304,7 +354,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
             </tr>
             <?php endforeach; ?>
             <?php if (empty($portfolios)): ?>
-            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">Belum ada portofolio. Klik tombol "+ Tambah Portofolio" di atas.</td></tr>
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">Belum ada portofolio. Klik "+ Tambah Portofolio" di atas.</td></tr>
             <?php endif; ?>
           </tbody>
         </table>
@@ -318,42 +368,53 @@ tr:hover td { background:rgba(255,255,255,0.02); }
           <input type="hidden" name="action" value="save">
           <input type="hidden" name="id" value="<?php echo $editItem ? $editItem['id'] : '0'; ?>">
           <input type="hidden" name="media_url_existing" value="<?php echo h4($editItem['media_url'] ?? ''); ?>">
+          <input type="hidden" name="images_json_existing" value="<?php echo h4($editItem['images_json'] ?? '[]'); ?>">
 
           <div class="field">
             <label>Judul Portofolio</label>
-            <input type="text" name="title" required maxlength="150" value="<?php echo h4($editItem['title'] ?? ''); ?>" placeholder="Contoh: Toko Online E-Commerce">
+            <input type="text" name="title" required maxlength="150" value="<?php echo h4($editItem['title'] ?? ''); ?>" placeholder="Contoh: Website Profil Toko Online">
           </div>
 
           <div class="field">
-            <label>Label Kategori</label>
-            <input type="text" name="category_label" required maxlength="100" value="<?php echo h4($editItem['category_label'] ?? ''); ?>" placeholder="Contoh: Website · E-Commerce, Foto · Produk">
+            <label>Kategori (Statis)</label>
+            <select name="category_label" required>
+              <?php foreach ($staticCategories as $cat): ?>
+                <option value="<?php echo $cat; ?>" <?php if(($editItem['category_label']??'')===$cat) echo 'selected';?>><?php echo $cat; ?></option>
+              <?php endforeach; ?>
+            </select>
           </div>
 
           <div class="field">
-            <label>Deskripsi Singkat</label>
-            <textarea name="description" placeholder="Deskripsi ringkas proyek..."><?php echo h4($editItem['description'] ?? ''); ?></textarea>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label>Tipe Media</label>
-              <select name="media_type">
-                <option value="image" <?php if(($editItem['media_type']??'image')==='image') echo 'selected';?>>Gambar (Image)</option>
-                <option value="video" <?php if(($editItem['media_type']??'')==='video') echo 'selected';?>>Video</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Urutan (Sort)</label>
-              <input type="number" name="sort_order" min="0" max="99" value="<?php echo (int)($editItem['sort_order'] ?? 0); ?>">
-            </div>
+            <label>Deskripsi Lengkap Proyek</label>
+            <textarea name="description" placeholder="Penjelasan mengenai fitur, hasil pengerjaan, atau detail proyek..."><?php echo h4($editItem['description'] ?? ''); ?></textarea>
           </div>
 
           <div class="field">
-            <label>Upload File Media (Gambar / Video)</label>
-            <input type="file" name="media_file" accept="image/*,video/*">
-            <div class="file-note">Format gambar: JPG, PNG, WEBP. Format video: MP4, WEBM. Max 20MB.</div>
-            <?php if (!empty($editItem['media_url'])): ?>
-              <div class="file-note" style="color:var(--teal);margin-top:6px;">Media saat ini: <code><?php echo h4($editItem['media_url']); ?></code></div>
+            <label>Tipe Media Utama</label>
+            <select name="media_type">
+              <option value="image" <?php if(($editItem['media_type']??'image')==='image') echo 'selected';?>>Gambar / Galeri Foto</option>
+              <option value="video" <?php if(($editItem['media_type']??'')==='video') echo 'selected';?>>Video Promosi</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Upload File Media (Maksimal 10 Gambar/Video)</label>
+            <input type="file" name="media_files[]" accept="image/*,video/*" multiple>
+            <div class="file-note">Anda dapat memilih hingga <strong>10 gambar/video sekaligus</strong>. Format: JPG, PNG, WEBP, MP4, WEBM.</div>
+            
+            <?php
+            $currentGallery = !empty($editItem['images_json']) ? json_decode($editItem['images_json'], true) : [];
+            if (!is_array($currentGallery) && !empty($editItem['media_url'])) {
+                $currentGallery = [$editItem['media_url']];
+            }
+            if (!empty($currentGallery)):
+            ?>
+              <div style="font-size:12px;color:var(--muted);margin-top:10px;font-weight:600;">Media Terpasang (<?php echo count($currentGallery); ?> file):</div>
+              <div class="gallery-preview">
+                <?php foreach ($currentGallery as $gUrl): ?>
+                  <img src="../<?php echo h4($gUrl); ?>" class="gallery-thumb" onerror="this.style.display='none'">
+                <?php endforeach; ?>
+              </div>
             <?php endif; ?>
           </div>
 
@@ -372,7 +433,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
       <div class="form-panel" style="text-align:center;padding:40px">
         <div style="font-size:40px;margin-bottom:12px">🖼️</div>
         <div style="font-weight:600;margin-bottom:8px">Kelola Portofolio Website</div>
-        <div style="font-size:13px;color:var(--muted)">Pilih item di tabel untuk diedit, atau tambahkan karya portofolio baru dengan gambar atau video.</div>
+        <div style="font-size:13px;color:var(--muted)">Item otomatis diurutkan <strong>terbaru di atas</strong>. Anda dapat mengunggah hingga 10 gambar per proyek.</div>
         <a class="add-btn" href="portfolios.php?new" style="display:inline-block;margin-top:20px;text-decoration:none;">+ Tambah Portofolio Baru</a>
       </div>
       <?php endif; ?>

@@ -41,22 +41,27 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS portfolios (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(150) NOT NULL,
-  category_label VARCHAR(100) NOT NULL,
+  category_label VARCHAR(100) NOT NULL,   -- 'Website', 'Sistem', 'Foto Produk', 'Video Promosi', 'Desain Grafis', 'Lainnya'
   description TEXT DEFAULT NULL,
   media_type ENUM('image', 'video') NOT NULL DEFAULT 'image',
-  media_url VARCHAR(255) NOT NULL,
+  media_url VARCHAR(255) NOT NULL,        -- Gambar/Video utama
+  images_json TEXT DEFAULT NULL,           -- JSON Array untuk hingga 10 gambar gallery (misal: ["path1.jpg", "path2.jpg"])
   sort_order INT NOT NULL DEFAULT 0,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Migrasi (jika tabel portfolios sudah ada di DB sebelumnya):
+-- ALTER TABLE portfolios ADD COLUMN images_json TEXT DEFAULT NULL AFTER media_url;
+
 -- CONTOH DATA PORTOFOLIO AWAL
 INSERT INTO portfolios (title, category_label, description, media_type, media_url, sort_order) VALUES
-('Company Profile UMKM', 'Website · Company Profile', 'Landing page satu halaman, fokus konversi.', 'image', 'assets/images/company_profile.jpg', 1),
-('Toko Online', 'Website · E-Commerce', 'Katalog produk lengkap dengan halaman detail.', 'image', 'assets/images/toko_online.jpg', 2),
-('Sistem Absensi HR', 'Sistem · HR & Absensi', 'Pencatatan kehadiran karyawan berbasis web.', 'image', 'assets/images/sistem_absensi.jpg', 3),
-('Sistem Retail / Kasir (POS)', 'Sistem · Kasir / POS', 'Transaksi, stok, dan laporan penjualan.', 'image', 'assets/images/sistem_pos.jpg', 4),
-('Sistem Manajemen Gudang', 'Sistem · Warehouse', 'Stok masuk-keluar, lokasi rak, dan laporan gudang.', 'image', 'assets/images/sistem_gudang.jpg', 5),
-('Foto Produk', 'Foto · Produk Studio', 'Set foto katalog untuk marketplace.', 'image', 'assets/images/foto_produk.jpg', 6),
-('Video Promosi', 'Video · Promosi Brand', 'Video pendek untuk media sosial.', 'image', 'assets/images/video_promosi.jpg', 7);
+('Company Profile UMKM', 'Website', 'Landing page satu halaman, fokus konversi.', 'image', 'assets/images/company_profile.jpg', 1),
+('Toko Online', 'Website', 'Katalog produk lengkap dengan halaman detail.', 'image', 'assets/images/toko_online.jpg', 2),
+('Sistem Absensi HR', 'Sistem', 'Pencatatan kehadiran karyawan berbasis web.', 'image', 'assets/images/sistem_absensi.jpg', 3),
+('Sistem Retail / Kasir (POS)', 'Sistem', 'Transaksi, stok, dan laporan penjualan.', 'image', 'assets/images/sistem_pos.jpg', 4),
+('Sistem Manajemen Gudang', 'Sistem', 'Stok masuk-keluar, lokasi rak, dan laporan gudang.', 'image', 'assets/images/sistem_gudang.jpg', 5),
+('Foto Produk', 'Foto Produk', 'Set foto katalog untuk marketplace.', 'image', 'assets/images/foto_produk.jpg', 6),
+('Video Promosi', 'Video Promosi', 'Video pendek untuk media sosial.', 'image', 'assets/images/video_promosi.jpg', 7);
+
 

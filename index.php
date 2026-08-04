@@ -224,14 +224,55 @@ function stars_for($rating) {
   .portfolio-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
   @media (max-width:900px){ .portfolio-grid{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:560px){ .portfolio-grid{ grid-template-columns:1fr; } }
-  .p-item{ border-radius:var(--radius); overflow:hidden; border:1px solid var(--line-soft); background:var(--card); }
+  .p-item{ border-radius:var(--radius); overflow:hidden; border:1px solid var(--line-soft); background:var(--card); cursor:pointer; transition:transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s; }
+  .p-item:hover{ transform:translateY(-6px); box-shadow:var(--shadow-md); }
+  .p-item.hidden{ display:none !important; }
   .p-thumb{ aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; position:relative; color:#fff; overflow:hidden; background:#12172B; }
   .p-thumb img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.6s cubic-bezier(0.16,1,0.3,1); }
   .p-item:hover .p-thumb img{ transform:scale(1.08); }
   .p-thumb span.ph-label{ position:absolute; bottom:10px; left:12px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; background:rgba(18,23,43,0.75); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); color:#fff; padding:4px 10px; border-radius:6px; z-index:2; border:1px solid rgba(255,255,255,0.15); }
   .p-body{ padding:16px 18px 20px; }
-  .p-body h4{ font-size:16px; margin-bottom:4px; }
-  .p-body p{ margin:0; font-size:13.5px; color:var(--muted); }
+  .p-body h4{ font-size:16px; margin-bottom:4px; font-weight:700; }
+  .p-body p{ margin:0; font-size:13.5px; color:var(--muted); line-height:1.6; }
+
+  /* CATEGORY FILTER TABS */
+  .p-filter-tabs{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:36px; }
+  .pf-tab{ background:rgba(255,255,255,0.7); border:1.5px solid var(--line); border-radius:999px; padding:8px 20px; font-size:13.5px; font-weight:600; color:var(--muted); cursor:pointer; transition:all 0.2s ease; backdrop-filter:blur(8px); }
+  .pf-tab:hover{ border-color:var(--teal); color:var(--ink); transform:translateY(-2px); }
+  .pf-tab.active{ background:linear-gradient(135deg,var(--teal),var(--teal-dark)); color:#fff; border-color:transparent; box-shadow:var(--shadow-teal); }
+
+  /* MODAL DETAIL POPUP */
+  .p-modal-overlay{
+    position:fixed; inset:0; z-index:10000; background:rgba(15,22,35,0.78);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+    opacity:0; pointer-events:none; transition:opacity 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+  .p-modal-overlay.active{ opacity:1; pointer-events:auto; }
+  .p-modal-card{
+    background:#ffffff; border-radius:24px; width:100%; max-width:840px; max-height:90vh;
+    overflow-y:auto; box-shadow:0 32px 64px rgba(15,22,35,0.4), 0 0 0 1px rgba(255,255,255,0.2);
+    transform:scale(0.92) translateY(24px); transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    position:relative; color:var(--ink);
+  }
+  .p-modal-overlay.active .p-modal-card{ transform:scale(1) translateY(0); }
+  .p-modal-close{
+    position:absolute; top:18px; right:18px; width:38px; height:38px; border-radius:50%;
+    background:rgba(15,22,35,0.6); color:#fff; border:1px solid rgba(255,255,255,0.2);
+    display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer;
+    z-index:10; transition:all 0.2s; backdrop-filter:blur(8px);
+  }
+  .p-modal-close:hover{ background:var(--ink); transform:scale(1.08); }
+  .p-modal-media-wrap{ background:#0f1623; border-radius:24px 24px 0 0; overflow:hidden; position:relative; aspect-ratio:16/10; max-height:460px; display:flex; align-items:center; justify-content:center; }
+  .p-modal-media-wrap img, .p-modal-media-wrap video{ width:100%; height:100%; object-fit:cover; display:block; }
+  .p-modal-gallery-thumbs{ display:flex; gap:10px; padding:14px 20px; background:#161c2b; overflow-x:auto; }
+  .pm-thumb{ width:56px; height:56px; border-radius:8px; object-fit:cover; cursor:pointer; border:2px solid transparent; opacity:0.6; transition:all 0.2s; flex:none; }
+  .pm-thumb:hover, .pm-thumb.active{ opacity:1; border-color:var(--teal); transform:scale(1.05); }
+  .p-modal-body{ padding:32px; }
+  .p-modal-cat{ display:inline-block; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal); background:rgba(47,184,174,0.1); padding:4px 12px; border-radius:999px; margin-bottom:12px; }
+  .p-modal-body h3{ font-size:26px; font-weight:800; margin-bottom:12px; letter-spacing:-0.02em; }
+  .p-modal-body p{ font-size:15.5px; color:var(--muted); line-height:1.7; margin-bottom:24px; }
+  .p-modal-footer{ display:flex; gap:12px; align-items:center; }
   .grad-1{ background:linear-gradient(135deg,#2d3561,#12172B); }
   .grad-2{ background:linear-gradient(135deg,#3FA9A0,#1f5c57); }
   .grad-3{ background:linear-gradient(135deg,#E8A33D,#a8621c); }
@@ -997,34 +1038,47 @@ function stars_for($rating) {
 
 <section id="portofolio">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" style="text-align:center;margin:0 auto 36px;">
       <h2>Katalog & portofolio</h2>
-      <p>Contoh jenis website (termasuk sistem custom) dan hasil foto/video yang bisa kami kerjakan.</p>
+      <p>Contoh jenis website, sistem custom, serta hasil karya foto & video profesional dari Aff Digital.</p>
     </div>
+
+    <!-- CATEGORY FILTER TABS -->
+    <div class="p-filter-tabs">
+      <button class="pf-tab active" data-filter="all">Semua</button>
+      <button class="pf-tab" data-filter="Website">Website</button>
+      <button class="pf-tab" data-filter="Sistem">Sistem</button>
+      <button class="pf-tab" data-filter="Foto Produk">Foto Produk</button>
+      <button class="pf-tab" data-filter="Video Promosi">Video Promosi</button>
+      <button class="pf-tab" data-filter="Desain Grafis">Desain Grafis</button>
+      <button class="pf-tab" data-filter="Lainnya">Lainnya</button>
+    </div>
+
     <div class="portfolio-grid">
       <?php
       if (empty($portfoliosList)) {
-          // Default fallback data jika database belum di-seed
           $portfoliosList = [
-              ['title' => 'Company Profile UMKM', 'category_label' => 'Website · Company Profile', 'description' => 'Landing page satu halaman, fokus konversi.', 'media_type' => 'image', 'media_url' => 'assets/images/company_profile.jpg'],
-              ['title' => 'Toko Online', 'category_label' => 'Website · E-Commerce', 'description' => 'Katalog produk lengkap dengan halaman detail.', 'media_type' => 'image', 'media_url' => 'assets/images/toko_online.jpg'],
-              ['title' => 'Sistem Absensi HR', 'category_label' => 'Sistem · HR & Absensi', 'description' => 'Pencatatan kehadiran karyawan berbasis web.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_absensi.jpg'],
-              ['title' => 'Sistem Retail / Kasir (POS)', 'category_label' => 'Sistem · Kasir / POS', 'description' => 'Transaksi, stok, dan laporan penjualan.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_pos.jpg'],
-              ['title' => 'Sistem Manajemen Gudang', 'category_label' => 'Sistem · Warehouse', 'description' => 'Stok masuk-keluar, lokasi rak, dan laporan gudang.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_gudang.jpg'],
-              ['title' => 'Foto Produk', 'category_label' => 'Foto · Produk Studio', 'description' => 'Set foto katalog untuk marketplace.', 'media_type' => 'image', 'media_url' => 'assets/images/foto_produk.jpg'],
-              ['title' => 'Video Promosi', 'category_label' => 'Video · Promosi Brand', 'description' => 'Video pendek untuk media sosial.', 'media_type' => 'image', 'media_url' => 'assets/images/video_promosi.jpg'],
+              ['title' => 'Company Profile UMKM', 'category_label' => 'Website', 'description' => 'Landing page satu halaman, fokus konversi.', 'media_type' => 'image', 'media_url' => 'assets/images/company_profile.jpg'],
+              ['title' => 'Toko Online', 'category_label' => 'Website', 'description' => 'Katalog produk lengkap dengan halaman detail.', 'media_type' => 'image', 'media_url' => 'assets/images/toko_online.jpg'],
+              ['title' => 'Sistem Absensi HR', 'category_label' => 'Sistem', 'description' => 'Pencatatan kehadiran karyawan berbasis web.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_absensi.jpg'],
+              ['title' => 'Sistem Retail / Kasir (POS)', 'category_label' => 'Sistem', 'description' => 'Transaksi, stok, dan laporan penjualan.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_pos.jpg'],
+              ['title' => 'Sistem Manajemen Gudang', 'category_label' => 'Sistem', 'description' => 'Stok masuk-keluar, lokasi rak, dan laporan gudang.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_gudang.jpg'],
+              ['title' => 'Foto Produk', 'category_label' => 'Foto Produk', 'description' => 'Set foto katalog untuk marketplace.', 'media_type' => 'image', 'media_url' => 'assets/images/foto_produk.jpg'],
+              ['title' => 'Video Promosi', 'category_label' => 'Video Promosi', 'description' => 'Video pendek untuk media sosial.', 'media_type' => 'image', 'media_url' => 'assets/images/video_promosi.jpg'],
           ];
       }
       foreach ($portfoliosList as $p):
+          $dataJson = json_encode($p, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+          $catLabel = $p['category_label'] ?? 'Lainnya';
       ?>
-      <div class="p-item reveal">
+      <div class="p-item reveal" data-category="<?php echo h($catLabel); ?>" data-portfolio="<?php echo h($dataJson); ?>">
         <div class="p-thumb">
           <?php if (($p['media_type'] ?? 'image') === 'video'): ?>
             <video src="<?php echo h($p['media_url']); ?>" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
           <?php else: ?>
             <img src="<?php echo h($p['media_url']); ?>" alt="<?php echo h($p['title']); ?>" loading="lazy">
           <?php endif; ?>
-          <span class="ph-label"><?php echo h($p['category_label']); ?></span>
+          <span class="ph-label"><?php echo h($catLabel); ?></span>
         </div>
         <div class="p-body">
           <h4><?php echo h($p['title']); ?></h4>
@@ -1035,6 +1089,27 @@ function stars_for($rating) {
     </div>
   </div>
 </section>
+
+<!-- PORTFOLIO DETAIL MODAL POPUP -->
+<div class="p-modal-overlay" id="portfolioModal" aria-hidden="true">
+  <div class="p-modal-card">
+    <button class="p-modal-close" id="modalCloseBtn" aria-label="Tutup Detail">&times;</button>
+    <div class="p-modal-media-wrap" id="modalMediaContainer">
+      <!-- Dynamic Media (Image/Video) inserted here via JS -->
+    </div>
+    <div class="p-modal-gallery-thumbs" id="modalGalleryContainer" style="display:none;">
+      <!-- Dynamic Thumbnail Strip inserted here via JS -->
+    </div>
+    <div class="p-modal-body">
+      <span class="p-modal-cat" id="modalCategory">Kategori</span>
+      <h3 id="modalTitle">Judul Proyek</h3>
+      <p id="modalDescription">Deskripsi proyek...</p>
+      <div class="p-modal-footer">
+        <a href="#kontak" onclick="closePortfolioModal()" class="cta-btn cta-teal">Konsultasikan Proyek Serupa &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <section id="testimoni">
   <div class="wrap">
@@ -1331,6 +1406,126 @@ function stars_for($rating) {
       appendChatMsg(reply, 'bot');
     }, 650);
   }
+
+  // --- PORTFOLIO CATEGORY FILTERING & DETAIL MODAL POPUP ---
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Filter Tabs
+    const filterTabs = document.querySelectorAll('.pf-tab');
+    const portfolioItems = document.querySelectorAll('.p-item');
+
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const filter = tab.getAttribute('data-filter');
+        portfolioItems.forEach(item => {
+          const itemCat = item.getAttribute('data-category');
+          if (filter === 'all' || itemCat === filter) {
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // 2. Modal Lightbox Detail Popup
+    const modal = document.getElementById('portfolioModal');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalMediaContainer = document.getElementById('modalMediaContainer');
+    const modalGalleryContainer = document.getElementById('modalGalleryContainer');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+
+    function openPortfolioModal(data) {
+      if (!data) return;
+
+      modalCategory.textContent = data.category_label || 'Portofolio';
+      modalTitle.textContent = data.title || 'Judul Proyek';
+      modalDescription.textContent = data.description || 'Tidak ada deskripsi.';
+
+      let images = [];
+      if (data.images_json) {
+        try {
+          const parsed = JSON.parse(data.images_json);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            images = parsed;
+          }
+        } catch (e) {}
+      }
+      if (images.length === 0 && data.media_url) {
+        images = [data.media_url];
+      }
+
+      // Render main media
+      function setMainMedia(url, isVid = false) {
+        if (isVid || (data.media_type === 'video' && url === data.media_url)) {
+          modalMediaContainer.innerHTML = `<video src="${url}" controls autoplay loop muted style="width:100%;height:100%;object-fit:contain;background:#0d1117;"></video>`;
+        } else {
+          modalMediaContainer.innerHTML = `<img src="${url}" alt="${data.title}" style="width:100%;height:100%;object-fit:contain;background:#0d1117;">`;
+        }
+      }
+
+      setMainMedia(images[0] || data.media_url);
+
+      // Render thumbnail strip if multiple images
+      if (images.length > 1) {
+        modalGalleryContainer.style.display = 'flex';
+        modalGalleryContainer.innerHTML = '';
+        images.forEach((imgUrl, idx) => {
+          const thumb = document.createElement('img');
+          thumb.src = imgUrl;
+          thumb.className = `pm-thumb ${idx === 0 ? 'active' : ''}`;
+          thumb.addEventListener('click', () => {
+            document.querySelectorAll('.pm-thumb').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+            setMainMedia(imgUrl);
+          });
+          modalGalleryContainer.appendChild(thumb);
+        });
+      } else {
+        modalGalleryContainer.style.display = 'none';
+        modalGalleryContainer.innerHTML = '';
+      }
+
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    window.closePortfolioModal = function() {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      modalMediaContainer.innerHTML = '';
+    };
+
+    portfolioItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const rawJson = item.getAttribute('data-portfolio');
+        if (rawJson) {
+          try {
+            const data = JSON.parse(rawJson);
+            openPortfolioModal(data);
+          } catch(e) {}
+        }
+      });
+    });
+
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePortfolioModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closePortfolioModal();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closePortfolioModal();
+      }
+    });
+  });
 </script>
 
 </body>

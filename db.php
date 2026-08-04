@@ -43,10 +43,10 @@ function get_package_by_id($id) {
     return $stmt->fetch() ?: null;
 }
 
-// Ambil semua portofolio aktif.
+// Ambil semua portofolio aktif (terbaru paling atas).
 function get_active_portfolios() {
     try {
-        $stmt = get_db()->query("SELECT * FROM portfolios WHERE is_active = 1 ORDER BY sort_order ASC, id ASC");
+        $stmt = get_db()->query("SELECT * FROM portfolios WHERE is_active = 1 ORDER BY id DESC");
         return $stmt->fetchAll();
     } catch (PDOException $e) {
         return [];
