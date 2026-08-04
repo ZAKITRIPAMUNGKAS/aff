@@ -416,6 +416,20 @@ function h($str) {
         }
         .p-modal-close:hover { background: rgba(255,255,255,0.25); transform: rotate(90deg) scale(1.1); }
 
+        /* Carousel Navigation */
+        .p-modal-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(255,255,255,0.12); color: #fff;
+            border: 1px solid rgba(255,255,255,0.18);
+            display: none; align-items: center; justify-content: center;
+            font-size: 24px; cursor: pointer; z-index: 20;
+            transition: all 0.2s; backdrop-filter: blur(10px);
+        }
+        .p-modal-nav:hover { background: rgba(255,255,255,0.3); transform: translateY(-50%) scale(1.1); }
+        .p-modal-prev { left: 16px; }
+        .p-modal-next { right: 16px; }
+
         /* Info body */
         .p-modal-body {
             padding: 36px 32px 28px;
@@ -999,6 +1013,8 @@ function h($str) {
         <!-- LEFT: Media Panel -->
         <div class="p-modal-left">
             <button class="p-modal-close" id="modalCloseBtn" aria-label="Tutup Detail">&times;</button>
+            <button class="p-modal-nav p-modal-prev" id="modalPrevBtn" aria-label="Previous">&#10094;</button>
+            <button class="p-modal-nav p-modal-next" id="modalNextBtn" aria-label="Next">&#10095;</button>
             <div class="p-modal-media-wrap" id="modalMediaContainer"></div>
             <div class="p-modal-gallery-thumbs" id="modalGalleryContainer" style="display:none;"></div>
         </div>
@@ -1147,6 +1163,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTitle = document.getElementById('modalTitle');
     const modalDescription = document.getElementById('modalDescription');
 
+    let currentCarouselIndex = 0;
+    
     function openPortfolioModal(data) {
         if (!data) return;
         const catLabel = data.category_label || 'Portofolio';
@@ -1154,7 +1172,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modalCatStat) modalCatStat.textContent = catLabel;
         modalTitle.textContent = data.title || 'Judul Proyek';
         modalDescription.textContent = data.description || '';
-
 
         let images = [];
         if (data.images_json) {
@@ -1165,15 +1182,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (images.length === 0 && data.media_url) images = [data.media_url];
 
-        function setMainMedia(url) {
+        currentCarouselIndex = 0;
+
+        function setMainMedia(url, idx) {
+            currentCarouselIndex = idx !== undefined ? idx : 0;
             if (data.media_type === 'video' && url === data.media_url) {
                 modalMediaContainer.innerHTML = `<video src="${url}" controls autoplay loop muted style="width:100%;height:100%;object-fit:contain;background:#0d1117;"></video>`;
             } else {
                 modalMediaContainer.innerHTML = `<img src="${url}" alt="${data.title}" style="width:100%;height:100%;object-fit:contain;background:#0d1117;">`;
             }
+            document.querySelectorAll('.pm-thumb').forEach((t, i) => {
+                if (i === currentCarouselIndex) t.classList.add('active');
+                else t.classList.remove('active');
+            });
         }
 
-        setMainMedia(images[0] || data.media_url);
+        setMainMedia(images[0] || data.media_url, 0);
+
+        const prevBtn = document.getElementById('modalPrevBtn');
+        const nextBtn = document.getElementById('modalNextBtn');
 
         if (images.length > 1) {
             modalGalleryContainer.style.display = 'flex';
@@ -1183,14 +1210,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 thumb.src = imgUrl;
                 thumb.className = `pm-thumb ${idx === 0 ? 'active' : ''}`;
                 thumb.addEventListener('click', () => {
-                    document.querySelectorAll('.pm-thumb').forEach(t => t.classList.remove('active'));
-                    thumb.classList.add('active');
-                    setMainMedia(imgUrl);
+                    setMainMedia(imgUrl, idx);
                 });
                 modalGalleryContainer.appendChild(thumb);
             });
+            
+            if (prevBtn) {
+                prevBtn.style.display = 'flex';
+                prevBtn.onclick = () => {
+                    let nextIdx = (currentCarouselIndex - 1 + images.length) % images.length;
+                    setMainMedia(images[nextIdx], nextIdx);
+                };
+            }
+            if (nextBtn) {
+                nextBtn.style.display = 'flex';
+                nextBtn.onclick = () => {
+                    let nextIdx = (currentCarouselIndex + 1) % images.length;
+                    setMainMedia(images[nextIdx], nextIdx);
+                };
+            }
         } else {
             modalGalleryContainer.style.display = 'none';
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
         }
 
         modal.classList.add('active');
