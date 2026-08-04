@@ -1070,25 +1070,18 @@ function handleWaContactForm(e) {
 
     if (!name || !contact || !message) return false;
 
-    const wave   = '\uD83D\uDC4B'; // 👋
-    const person = '\uD83D\uDC64'; // 👤
-    const phone  = '\uD83D\uDCF1'; // 📱
-    const tool   = '\uD83D\uDEE0\uFE0F'; // 🛠️
-    const chat   = '\uD83D\uDCAC'; // 💬
-    const pray   = '\uD83D\uDE4F'; // 🙏
-
     const template =
-`Halo Aff Digital! ${wave}
+`Halo Aff Digital!
 
 Saya ingin berkonsultasi mengenai kebutuhan proyek digital:
 
-${person} *Nama Lengkap:* ${name}
-${phone} *Kontak (WA/Email):* ${contact}
-${tool} *Layanan yang Diminati:* ${service}
-${chat} *Detail Kebutuhan:*
+*Nama Lengkap:* ${name}
+*Kontak (WA/Email):* ${contact}
+*Layanan yang Diminati:* ${service}
+*Detail Kebutuhan:*
 ${message}
 
-Mohon informasi lebih lanjut dan estimasi penawaran. Terima kasih! ${pray}`;
+Mohon informasi lebih lanjut dan estimasi penawaran. Terima kasih!`;
 
     window.open('https://wa.me/6289612339608?text=' + encodeURIComponent(template), '_blank');
     return false;
