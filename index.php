@@ -355,7 +355,10 @@ function h($str) {
 <header class="site-header">
   <div class="wrap">
     <div class="header-inner">
-      <a href="#" class="brand-logo">aff digital<span class="dot">.</span></a>
+      <a href="#" class="brand-logo" style="display:flex;align-items:center;gap:10px">
+        <img src="assets/images/logo.jpg" alt="Aff Digital" style="height:38px;width:auto;border-radius:8px;object-fit:cover">
+        <span>aff digital<span class="dot">.</span></span>
+      </a>
       <nav class="nav-menu hidden md:flex">
         <a href="#tentang">Tentang</a>
         <a href="#layanan">Layanan</a>
@@ -782,7 +785,10 @@ function h($str) {
   <div class="wrap">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.08)">
       <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:12px">aff digital.</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <img src="assets/images/logo.jpg" alt="Aff Digital" style="height:36px;width:auto;border-radius:8px;object-fit:cover">
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:#fff">aff digital.</span>
+        </div>
         <p style="max-width:320px;line-height:1.6">Agency Jasa Pembuatan Website, Sistem Custom, dan Foto/Video Promosi Profesional Indonesia.</p>
       </div>
       <div>
