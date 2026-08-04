@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:css": "npx @tailwindcss/cli -i assets/css/tailwind.css -o assets/css/tailwind.min.css --minify",
-    "watch:css": "npx @tailwindcss/cli -i assets/css/tailwind.css -o assets/css/tailwind.min.css --watch",
+    "build:css": "tailwindcss -i assets/css/tailwind.css -o assets/css/tailwind.min.css --minify",
+    "watch:css": "tailwindcss -i assets/css/tailwind.css -o assets/css/tailwind.min.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/ZAKITRIPAMUNGKAS/aff#readme",
   "devDependencies": {
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^3.4.19"
   }
 }
