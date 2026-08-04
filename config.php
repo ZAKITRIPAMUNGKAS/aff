@@ -15,7 +15,7 @@ define('ADMIN_PASSWORD_HASH', '$2y$10$J03ePhefLn9Ihme4GAQnK.2kSLvMWM0D0VKxmbif8Q
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'aff');
 define('DB_USER', 'root');
-define('DB_PASS', '272800');
+define('DB_PASS', '');
 
 // ============================================================
 // KONFIGURASI MIDTRANS (Payment Gateway)
@@ -32,8 +32,8 @@ define('MIDTRANS_IS_PRODUCTION', false);
 // atau https://sandbox.ipaymu.com (Sandbox, untuk uji coba)
 // Menu: Integrasi > API Integration
 // ============================================================
-define('IPAYMU_VA', 'M406885362');
-define('IPAYMU_API_KEY', 'GANTI_DENGAN_API_KEY_IPAYMU');
+define('IPAYMU_VA', '1179009612339608');
+define('IPAYMU_API_KEY', '9A6BC28B-12C5-4EB7-B776-A2D0C5F2E8BF');
 define('IPAYMU_IS_PRODUCTION', true);
 
 // Alamat website ini TANPA garis miring di akhir, dipakai untuk redirect setelah pembayaran.
