@@ -80,6 +80,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $existingImages = json_decode($imagesJson, true);
         if (!is_array($existingImages)) $existingImages = [];
 
+        // Handle kept vs deleted existing images
+        if (isset($_POST['keep_images']) && is_array($_POST['keep_images'])) {
+            $keptImages = $_POST['keep_images'];
+            $filteredExisting = [];
+            foreach ($existingImages as $oldImg) {
+                if (in_array($oldImg, $keptImages)) {
+                    $filteredExisting[] = $oldImg;
+                } else {
+                    // Remove physical file from disk if local upload
+                    if (strpos($oldImg, 'assets/uploads/portfolios/') === 0) {
+                        $fullPath = __DIR__ . '/../' . $oldImg;
+                        if (file_exists($fullPath)) {
+                            @unlink($fullPath);
+                        }
+                    }
+                }
+            }
+            $existingImages = $filteredExisting;
+        } elseif (isset($_POST['id']) && (int)$_POST['id'] > 0) {
+            // Edit mode but keep_images wasn't set -> all existing images removed
+            foreach ($existingImages as $oldImg) {
+                if (strpos($oldImg, 'assets/uploads/portfolios/') === 0) {
+                    $fullPath = __DIR__ . '/../' . $oldImg;
+                    if (file_exists($fullPath)) {
+                        @unlink($fullPath);
+                    }
+                }
+            }
+            $existingImages = [];
+        }
+
         // Handling Multi-File Uploads (Max 10 files)
         $uploadedFiles = [];
         if (isset($_FILES['media_files']) && !empty($_FILES['media_files']['name'][0])) {
@@ -114,9 +145,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($uploadedFiles) {
-            $existingImages = $uploadedFiles;
-            $mediaUrl       = $uploadedFiles[0]; // Set file pertama sebagai cover/media utama
+            $existingImages = array_merge($existingImages, $uploadedFiles);
         }
+
+        $mediaUrl = !empty($existingImages) ? $existingImages[0] : '';
 
         if (!$title) {
             $err = 'Judul portofolio wajib diisi.';
@@ -235,8 +267,19 @@ tr:hover td { background:rgba(255,255,255,0.02); }
 .btn-delete { background:rgba(248,81,73,0.1); color:#f85149; border:1px solid rgba(248,81,73,0.2); padding:5px 10px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.2s; }
 .btn-delete:hover { background:#f85149; color:#fff; }
 
-.gallery-preview { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
-.gallery-thumb { width:40px; height:40px; border-radius:6px; object-fit:cover; border:1px solid var(--border); }
+.gallery-preview { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.gallery-thumb-item { position:relative; display:inline-block; }
+.gallery-thumb { width:52px; height:52px; border-radius:8px; object-fit:cover; border:1px solid var(--border); display:block; }
+.btn-remove-thumb {
+  position:absolute; top:-6px; right:-6px;
+  width:20px; height:20px; border-radius:50%;
+  background:#f85149; color:#fff; border:none;
+  font-size:12px; font-weight:bold; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  line-height:1; box-shadow:0 2px 4px rgba(0,0,0,0.4);
+  transition:transform 0.15s, background 0.15s; z-index:5;
+}
+.btn-remove-thumb:hover { transform:scale(1.15); background:#d73a49; }
 
 .form-panel { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; position:sticky; top:80px; }
 .form-panel h2 { font-size:15px; font-weight:700; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--border); }
@@ -404,17 +447,26 @@ tr:hover td { background:rgba(255,255,255,0.02); }
             
             <?php
             $currentGallery = !empty($editItem['images_json']) ? json_decode($editItem['images_json'], true) : [];
-            if (!is_array($currentGallery) && !empty($editItem['media_url'])) {
-                $currentGallery = [$editItem['media_url']];
+            if (!is_array($currentGallery) || empty($currentGallery)) {
+                if (!empty($editItem['media_url'])) {
+                    $currentGallery = [$editItem['media_url']];
+                } else {
+                    $currentGallery = [];
+                }
             }
             if (!empty($currentGallery)):
             ?>
               <div style="font-size:12px;color:var(--muted);margin-top:10px;font-weight:600;">Media Terpasang (<?php echo count($currentGallery); ?> file):</div>
-              <div class="gallery-preview">
-                <?php foreach ($currentGallery as $gUrl): ?>
-                  <img src="../<?php echo h4($gUrl); ?>" class="gallery-thumb" onerror="this.style.display='none'">
+              <div class="gallery-preview" id="galleryPreview">
+                <?php foreach ($currentGallery as $idx => $gUrl): ?>
+                  <div class="gallery-thumb-item" id="thumb-item-<?php echo $idx; ?>">
+                    <input type="hidden" name="keep_images[]" value="<?php echo h4($gUrl); ?>">
+                    <img src="../<?php echo h4($gUrl); ?>" class="gallery-thumb" onerror="this.parentElement.style.display='none'">
+                    <button type="button" class="btn-remove-thumb" title="Hapus Gambar Ini" onclick="document.getElementById('thumb-item-<?php echo $idx; ?>').remove()">&times;</button>
+                  </div>
                 <?php endforeach; ?>
               </div>
+              <div style="font-size:11px;color:var(--muted);margin-top:6px;">Klik tanda (<span style="color:#f85149;font-weight:bold;">×</span>) pada gambar untuk menghapusnya.</div>
             <?php endif; ?>
           </div>
 
