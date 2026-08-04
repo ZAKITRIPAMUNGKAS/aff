@@ -798,21 +798,21 @@ function h($str) {
                     <p class="text-slate-500 text-base leading-relaxed mb-10">Tim ahli kami siap membantu memilihkan solusi terbaik sesuai anggaran dan tujuan bisnis Anda.</p>
                     
                     <div class="grid gap-4">
-                        <div class="contact-info-card">
+                        <a href="https://wa.me/6289612339608" target="_blank" rel="noopener" class="contact-info-card hover:border-teal-400 hover:shadow-md transition-all duration-200">
                             <div class="contact-icon-box"><i class="ph ph-whatsapp-logo"></i></div>
                             <div>
                                 <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">WhatsApp Fast Response</div>
-                                <div class="font-extrabold text-base text-slate-900 mt-0.5">+62 812-3456-7890</div>
+                                <div class="font-extrabold text-base text-slate-900 mt-0.5">+62 896-1233-9608</div>
                             </div>
-                        </div>
+                        </a>
 
-                        <div class="contact-info-card">
+                        <a href="mailto:owener@affdigital.my.id" class="contact-info-card hover:border-teal-400 hover:shadow-md transition-all duration-200">
                             <div class="contact-icon-box"><i class="ph ph-envelope"></i></div>
                             <div>
                                 <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Email Konsultasi</div>
-                                <div class="font-extrabold text-base text-slate-900 mt-0.5">halo@affdigital.my.id</div>
+                                <div class="font-extrabold text-base text-slate-900 mt-0.5">owener@affdigital.my.id</div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
@@ -820,22 +820,35 @@ function h($str) {
                 <div class="lg:col-span-7">
                     <div class="bg-white border-2 border-slate-100 rounded-3xl p-10 shadow-md">
                         <h3 class="text-2xl font-extrabold mb-2">Formulir Pesan &amp; Diskusi</h3>
-                        <p class="text-sm text-slate-500 mb-7">Isi formulir di bawah ini dan kami akan membalas pesan Anda dalam 1x24 jam.</p>
-                        <form method="POST" action="process_message.php">
+                        <p class="text-sm text-slate-500 mb-7">Isi formulir di bawah dan pesan Anda langsung dikirim ke WhatsApp kami. <span class="text-teal-600 font-semibold">Respon cepat!</span></p>
+                        <form id="contactWaForm" onsubmit="return handleWaContactForm(event)">
                             <div class="grid gap-5">
                                 <div>
                                     <label class="form-label">Nama Lengkap</label>
-                                    <input type="text" name="name" required placeholder="Contoh: Budi Santoso" class="form-input">
+                                    <input type="text" name="name" id="waName" required placeholder="Contoh: Budi Santoso" class="form-input">
                                 </div>
                                 <div>
-                                    <label class="form-label">Email / Nomor WhatsApp</label>
-                                    <input type="text" name="contact" required placeholder="081234567890 atau email@domain.com" class="form-input">
+                                    <label class="form-label">Email / Nomor WhatsApp Anda</label>
+                                    <input type="text" name="contact" id="waContact" required placeholder="081234567890 atau email@domain.com" class="form-input">
+                                </div>
+                                <div>
+                                    <label class="form-label">Jenis Layanan yang Dibutuhkan</label>
+                                    <select name="service" id="waService" class="form-input">
+                                        <option value="Website / Landing Page">Website / Landing Page</option>
+                                        <option value="Toko Online (E-Commerce)">Toko Online (E-Commerce)</option>
+                                        <option value="Sistem POS / HR Custom">Sistem POS / HR Custom</option>
+                                        <option value="Foto &amp; Video Promosi">Foto &amp; Video Promosi</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label class="form-label">Pesan / Detail Kebutuhan Proyek</label>
-                                    <textarea name="message" required placeholder="Jelaskan jenis website atau sistem yang ingin Anda buat..." class="form-input min-h-[120px] resize-y"></textarea>
+                                    <textarea name="message" id="waMessage" required placeholder="Jelaskan kebutuhan, target, atau anggaran proyek Anda..." class="form-input min-h-[120px] resize-y"></textarea>
                                 </div>
-                                <button type="submit" class="btn-solid-dark w-full py-4 text-base rounded-xl mt-2">Kirim Pesan Konsultasi &rarr;</button>
+                                <button type="submit" class="btn-solid-dark w-full py-4 text-base rounded-xl mt-2 flex items-center justify-center gap-2">
+                                    <i class="ph ph-whatsapp-logo text-xl"></i>
+                                    <span>Kirim ke WhatsApp Sekarang &rarr;</span>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -912,6 +925,34 @@ function h($str) {
 </div>
 
 <script>
+// === WHATSAPP CONTACT FORM HANDLER ===
+function handleWaContactForm(e) {
+    e.preventDefault();
+
+    const name    = document.getElementById('waName').value.trim();
+    const contact = document.getElementById('waContact').value.trim();
+    const service = document.getElementById('waService').value;
+    const message = document.getElementById('waMessage').value.trim();
+
+    if (!name || !contact || !message) return false;
+
+    const template =
+`Halo Aff Digital! 👋
+
+Saya ingin berkonsultasi mengenai kebutuhan proyek digital:
+
+👤 *Nama Lengkap:* ${name}
+📱 *Kontak (WA/Email):* ${contact}
+🛠️ *Layanan yang Diminati:* ${service}
+💬 *Detail Kebutuhan:*
+${message}
+
+Mohon informasi lebih lanjut dan estimasi penawaran. Terima kasih! 🙏`;
+
+    window.open('https://wa.me/6289612339608?text=' + encodeURIComponent(template), '_blank');
+    return false;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // CHATBOT LOGIC
     const chatTrigger = document.getElementById('chatTrigger');
