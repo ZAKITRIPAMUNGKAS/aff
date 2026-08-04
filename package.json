@@ -1,0 +1,26 @@
+{
+  "name": "aff-digital-payment-update-(1)",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i assets/css/tailwind.css -o assets/css/tailwind.min.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i assets/css/tailwind.css -o assets/css/tailwind.min.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZAKITRIPAMUNGKAS/aff.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ZAKITRIPAMUNGKAS/aff/issues"
+  },
+  "homepage": "https://github.com/ZAKITRIPAMUNGKAS/aff#readme",
+  "devDependencies": {
+    "tailwindcss": "^4.3.3"
+  }
+}

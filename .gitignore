@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Tailwind source (input only)
+# assets/css/tailwind.css -- keep tracked
+# assets/css/tailwind.min.css -- keep tracked (deployed to server)
+
+# Build logs
+npm-debug.log*
