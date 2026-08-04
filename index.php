@@ -379,11 +379,12 @@ function h($str) {
   <!-- HERO SECTION (LIGHT MODE + GRID PATTERN) -->
   <section class="hero-section bg-grid-pattern">
     <div class="wrap">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Top Grid: Content & Feature Card -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         
         <!-- Left Content (Col 7) -->
         <div class="lg:col-span-7">
-          
           <!-- Floating Tag -->
           <div class="floating-tag">
             <div class="dot-stack">
@@ -416,45 +417,25 @@ function h($str) {
             </a>
             <a href="#portofolio" class="btn-solid-dark">Lihat Portofolio</a>
           </div>
-
-          <!-- Hero Stats -->
-          <div class="hero-stats-grid">
-            <div class="stat-item">
-              <b>50+</b>
-              <div class="label">Proyek Selesai</div>
-              <div class="sub">Website &amp; Sistem Custom</div>
-            </div>
-            <div class="stat-item" style="border-left:1px solid var(--border);padding-left:20px">
-              <b>99%</b>
-              <div class="label">Kepuasan Klien</div>
-              <div class="sub">Hasil Kualitas Terbaik</div>
-            </div>
-            <div class="stat-item" style="border-left:1px solid var(--border);padding-left:20px">
-              <b>3+</b>
-              <div class="label">Tahun Pengalaman</div>
-              <div class="sub">Pengembangan Digital</div>
-            </div>
-          </div>
-
         </div>
 
-        <!-- Right Content / Architectural Card (Col 5) -->
+        <!-- Right Content / Visual Card (Col 5) -->
         <div class="lg:col-span-5 flex justify-center">
-          <div style="background:#ffffff;border:1.5px solid var(--border);border-radius:28px;padding:44px 38px;box-shadow:var(--shadow-md);width:100%;position:relative">
-            <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:14px">LAYANAN UNGGULAN</div>
-            <h3 style="font-size:26px;font-weight:800;margin-bottom:16px;letter-spacing:-0.02em;line-height:1.2">Web &amp; System Development</h3>
-            <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:32px">Solusi digital menyeluruh mulai dari Landing Page, Toko Online, hingga Sistem POS &amp; HR Custom.</p>
-            <div style="display:grid;gap:14px">
-              <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:16px 20px;border-radius:14px;border:1px solid var(--border);transition:all 0.2s">
-                <i class="ph ph-check-circle text-teal text-2xl"></i>
+          <div style="background:#ffffff;border:1.5px solid var(--border);border-radius:24px;padding:36px 32px;box-shadow:var(--shadow-md);width:100%;position:relative">
+            <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:12px">LAYANAN UNGGULAN</div>
+            <h3 style="font-size:24px;font-weight:800;margin-bottom:14px;letter-spacing:-0.02em;line-height:1.25">Web &amp; System Development</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:24px">Solusi digital menyeluruh mulai dari Landing Page, Toko Online, hingga Sistem POS &amp; HR Custom.</p>
+            <div style="display:grid;gap:12px">
+              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
+                <i class="ph ph-check-circle text-teal text-xl"></i>
                 <span style="font-size:14px;font-weight:600">Desain Modern &amp; Fast Loading</span>
               </div>
-              <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:16px 20px;border-radius:14px;border:1px solid var(--border);transition:all 0.2s">
-                <i class="ph ph-check-circle text-teal text-2xl"></i>
+              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
+                <i class="ph ph-check-circle text-teal text-xl"></i>
                 <span style="font-size:14px;font-weight:600">Integrasi Midtrans &amp; iPaymu</span>
               </div>
-              <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:16px 20px;border-radius:14px;border:1px solid var(--border);transition:all 0.2s">
-                <i class="ph ph-check-circle text-teal text-2xl"></i>
+              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
+                <i class="ph ph-check-circle text-teal text-xl"></i>
                 <span style="font-size:14px;font-weight:600">Dashboard Admin &amp; Laporan</span>
               </div>
             </div>
@@ -462,6 +443,28 @@ function h($str) {
         </div>
 
       </div>
+
+      <!-- Bottom Grid: Hero Stats Row (Full Width Clean Alignment) -->
+      <div style="border-top:1px solid var(--border);margin-top:56px;padding-top:40px">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="stat-item" style="padding-right:16px">
+            <b>50+</b>
+            <div class="label">Proyek Selesai</div>
+            <div class="sub">Website, Toko Online &amp; Sistem Custom</div>
+          </div>
+          <div class="stat-item" style="border-left:1px solid var(--border);padding-left:24px;padding-right:16px">
+            <b>99%</b>
+            <div class="label">Kepuasan Klien</div>
+            <div class="sub">Hasil Kualitas Terbaik &amp; Fast Response</div>
+          </div>
+          <div class="stat-item" style="border-left:1px solid var(--border);padding-left:24px">
+            <b>3+</b>
+            <div class="label">Tahun Pengalaman</div>
+            <div class="sub">Pengembangan Ekosistem Digital</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -533,47 +536,74 @@ function h($str) {
     </div>
   </section>
 
-  <!-- SERVICES SECTION -->
-  <section class="py-24" id="layanan">
+  <!-- SERVICES SECTION (REDESIGNED TO MATCH TECHNICAL THEME) -->
+  <section class="py-24 bg-white" id="layanan">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Layanan &amp; Solusi Digital</h2>
-        <p>Layanan profesional kami dirancang untuk mengakselerasi pertumbuhan bisnis Anda secara digital.</p>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:8px">SOLUSI &amp; LAYANAN UNGGULAN</div>
+        <h2>Layanan Berstandar Tinggi</h2>
+        <p>Setiap solusi dirancang presisi dengan arsitektur modern untuk mendorong pertumbuhan bisnis Anda.</p>
       </div>
 
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="icon-box"><i class="ph ph-globe"></i></div>
-          <h3>Pembuatan Website</h3>
-          <p>Company Profile, Toko Online (E-Commerce), dan Landing Page berorientasi konversi yang cepat &amp; responsive di semua perangkat.</p>
-          <ul class="service-features">
-            <li><i class="ph ph-check text-teal"></i> Responsif HP &amp; Desktop</li>
-            <li><i class="ph ph-check text-teal"></i> Optimasi SEO Dasar</li>
-            <li><i class="ph ph-check text-teal"></i> Integrasi Form &amp; WhatsApp</li>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Service Card 1 -->
+        <div class="service-card" style="border:1.5px solid var(--border);border-radius:24px;padding:36px 30px;background:#ffffff;position:relative;transition:all 0.3s ease">
+          <div class="icon-box" style="width:56px;height:56px;border-radius:16px;background:rgba(47,184,174,0.12);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:24px">
+            <i class="ph ph-globe font-bold"></i>
+          </div>
+          <h3 style="font-size:22px;font-weight:800;margin-bottom:12px;letter-spacing:-0.02em">Pembuatan Website</h3>
+          <p style="color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:24px">Company Profile, Toko Online (E-Commerce), dan Landing Page berorientasi konversi yang cepat &amp; responsive.</p>
+          <ul class="service-features" style="margin-bottom:32px">
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Desain Premium &amp; Responsive HP/PC</span></li>
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Optimasi SEO &amp; Performa Cepat</span></li>
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Integrasi WhatsApp &amp; Payment Gateway</span></li>
           </ul>
+          <a href="#kontak" class="framed-btn" style="width:100%;justify-content:center;text-align:center">
+            <div class="corner c-tl"></div><div class="corner c-tr"></div>
+            <div class="corner c-bl"></div><div class="corner c-br"></div>
+            <span>Konsultasi Website &rarr;</span>
+          </a>
         </div>
 
-        <div class="service-card">
-          <div class="icon-box"><i class="ph ph-cpu"></i></div>
-          <h3>Sistem Web Custom</h3>
-          <p>Sistem Kasir (POS), Manajemen Absensi &amp; HR, Inventori Gudang, hingga portal khusus yang disesuaikan dengan alur bisnis Anda.</p>
-          <ul class="service-features">
-            <li><i class="ph ph-check text-teal"></i> Dashboard Laporan &amp; Analytics</li>
-            <li><i class="ph ph-check text-teal"></i> Hak Akses Multi-User</li>
-            <li><i class="ph ph-check text-teal"></i> Keamanan Database MySQL</li>
+        <!-- Service Card 2 -->
+        <div class="service-card" style="border:1.5px solid var(--border);border-radius:24px;padding:36px 30px;background:#ffffff;position:relative;transition:all 0.3s ease">
+          <div class="icon-box" style="width:56px;height:56px;border-radius:16px;background:rgba(47,184,174,0.12);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:24px">
+            <i class="ph ph-cpu font-bold"></i>
+          </div>
+          <h3 style="font-size:22px;font-weight:800;margin-bottom:12px;letter-spacing:-0.02em">Sistem Web Custom</h3>
+          <p style="color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:24px">Sistem Kasir (POS), Manajemen Absensi &amp; HR, Inventori Gudang, hingga portal internal sesuai kebutuhan.</p>
+          <ul class="service-features" style="margin-bottom:32px">
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Dashboard Rekap &amp; Analytics Laporan</span></li>
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Akses Multi-Role &amp; Otorisasi User</span></li>
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Keamanan Database &amp; Data Backup</span></li>
           </ul>
+          <a href="#kontak" class="framed-btn" style="width:100%;justify-content:center;text-align:center">
+            <div class="corner c-tl"></div><div class="corner c-tr"></div>
+            <div class="corner c-bl"></div><div class="corner c-br"></div>
+            <span>Konsultasi Sistem Custom &rarr;</span>
+          </a>
         </div>
 
-        <div class="service-card">
-          <div class="icon-box"><i class="ph ph-camera"></i></div>
-          <h3>Foto &amp; Video Promosi</h3>
-          <p>Konten visual produk studio &amp; video promosi brand profesional untuk meningkatkan kepercayaan calon pembeli di media sosial.</p>
-          <ul class="service-features">
-            <li><i class="ph ph-check text-teal"></i> Equipment Studio Lengkap</li>
-            <li><i class="ph ph-check text-teal"></i> Editing &amp; Color Grading</li>
-            <li><i class="ph ph-check text-teal"></i> Format Siap Unggah Sosmed</li>
+        <!-- Service Card 3 -->
+        <div class="service-card" style="border:1.5px solid var(--border);border-radius:24px;padding:36px 30px;background:#ffffff;position:relative;transition:all 0.3s ease">
+          <div class="icon-box" style="width:56px;height:56px;border-radius:16px;background:rgba(47,184,174,0.12);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:24px">
+            <i class="ph ph-camera font-bold"></i>
+          </div>
+          <h3 style="font-size:22px;font-weight:800;margin-bottom:12px;letter-spacing:-0.02em">Foto &amp; Video Promosi</h3>
+          <p style="color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:24px">Konten visual produk studio &amp; video promosi brand profesional untuk meningkatkan kepercayaan calon pembeli.</p>
+          <ul class="service-features" style="margin-bottom:32px">
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Peralatan Studio Lighting Lengkap</span></li>
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Editing Profesional &amp; Color Grading</span></li>
+            <li><i class="ph ph-check-circle text-teal text-lg"></i> <span>Format Konten Siap Upload Sosmed</span></li>
           </ul>
+          <a href="#kontak" class="framed-btn" style="width:100%;justify-content:center;text-align:center">
+            <div class="corner c-tl"></div><div class="corner c-tr"></div>
+            <div class="corner c-bl"></div><div class="corner c-br"></div>
+            <span>Konsultasi Foto &amp; Video &rarr;</span>
+          </a>
         </div>
+
       </div>
     </div>
   </section>
