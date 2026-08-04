@@ -154,13 +154,17 @@ function h($str) {
   .btn-solid-dark:hover { background: #1e293b; transform: translateY(-2px); }
 
   .hero-stats-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
-    padding-top: 40px; margin-top: 56px; border-top: 1px solid var(--border);
-    max-width: 650px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    padding-top: 36px; margin-top: 48px; border-top: 1px solid var(--border);
+    width: 100%;
   }
-  .stat-item b { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; color: var(--ink); }
-  .stat-item .label { font-size: 13px; font-weight: 600; color: var(--ink); margin-top: 2px; }
-  .stat-item .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  @media (max-width: 640px) {
+    .hero-stats-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+  .stat-item { display: flex; flex-direction: column; }
+  .stat-item b { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; color: var(--ink); line-height: 1.1; }
+  .stat-item .label { font-size: 13px; font-weight: 700; color: var(--ink); margin-top: 6px; }
+  .stat-item .sub { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
 
   /* METHODOLOGY DARK SECTION */
   .dark-section {
@@ -372,10 +376,10 @@ function h($str) {
   <!-- HERO SECTION (LIGHT MODE + GRID PATTERN) -->
   <section class="hero-section bg-grid-pattern">
     <div class="wrap">
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
-        <!-- Left Content -->
-        <div class="w-full lg:w-3/5">
+        <!-- Left Content (Col 7) -->
+        <div class="lg:col-span-7">
           
           <!-- Floating Tag -->
           <div class="floating-tag">
@@ -417,12 +421,12 @@ function h($str) {
               <div class="label">Proyek Selesai</div>
               <div class="sub">Website &amp; Sistem Custom</div>
             </div>
-            <div class="stat-item" style="border-left:1px solid var(--border);padding-left:24px">
+            <div class="stat-item" style="border-left:1px solid var(--border);padding-left:20px">
               <b>99%</b>
               <div class="label">Kepuasan Klien</div>
               <div class="sub">Hasil Kualitas Terbaik</div>
             </div>
-            <div class="stat-item" style="border-left:1px solid var(--border);padding-left:24px">
+            <div class="stat-item" style="border-left:1px solid var(--border);padding-left:20px">
               <b>3+</b>
               <div class="label">Tahun Pengalaman</div>
               <div class="sub">Pengembangan Digital</div>
@@ -431,24 +435,24 @@ function h($str) {
 
         </div>
 
-        <!-- Right Content / Visual Card -->
-        <div class="w-full lg:w-2/5 flex justify-center">
-          <div style="background:#ffffff;border:1px solid var(--border);border-radius:28px;padding:32px;box-shadow:var(--shadow-lg);width:100%;max-width:440px;position:relative">
-            <div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:12px">Layanan Unggulan</div>
-            <h3 style="font-size:24px;font-weight:800;margin-bottom:16px">Web &amp; System Development</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:24px">Solusi digital menyeluruh mulai dari Landing Page, Toko Online, hingga Sistem POS &amp; HR Custom.</p>
+        <!-- Right Content / Architectural Card (Col 5) -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div style="background:#ffffff;border:1.5px solid var(--border);border-radius:24px;padding:36px;box-shadow:var(--shadow-md);width:100%;position:relative">
+            <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px">LAYANAN UNGGULAN</div>
+            <h3 style="font-size:24px;font-weight:800;margin-bottom:14px;letter-spacing:-0.02em">Web &amp; System Development</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:28px">Solusi digital menyeluruh mulai dari Landing Page, Toko Online, hingga Sistem POS &amp; HR Custom.</p>
             <div style="display:grid;gap:12px">
-              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:12px 16px;border-radius:12px;border:1px solid var(--border)">
-                <i class="ph ph-check-circle text-teal-500 text-xl"></i>
-                <span style="font-size:13.5px;font-weight:600">Desain Modern &amp; Fast Loading</span>
+              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
+                <i class="ph ph-check-circle text-teal text-xl"></i>
+                <span style="font-size:14px;font-weight:600">Desain Modern &amp; Fast Loading</span>
               </div>
-              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:12px 16px;border-radius:12px;border:1px solid var(--border)">
-                <i class="ph ph-check-circle text-teal-500 text-xl"></i>
-                <span style="font-size:13.5px;font-weight:600">Integrasi Midtrans &amp; iPaymu</span>
+              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
+                <i class="ph ph-check-circle text-teal text-xl"></i>
+                <span style="font-size:14px;font-weight:600">Integrasi Midtrans &amp; iPaymu</span>
               </div>
-              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:12px 16px;border-radius:12px;border:1px solid var(--border)">
-                <i class="ph ph-check-circle text-teal-500 text-xl"></i>
-                <span style="font-size:13.5px;font-weight:600">Dashboard Admin &amp; Laporan</span>
+              <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid var(--border)">
+                <i class="ph ph-check-circle text-teal text-xl"></i>
+                <span style="font-size:14px;font-weight:600">Dashboard Admin &amp; Laporan</span>
               </div>
             </div>
           </div>
