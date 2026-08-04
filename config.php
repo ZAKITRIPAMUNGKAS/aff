@@ -13,9 +13,9 @@ define('ADMIN_PASSWORD_HASH', '$2y$10$J03ePhefLn9Ihme4GAQnK.2kSLvMWM0D0VKxmbif8Q
 // lalu import file schema.sql lewat phpMyAdmin sebelum mengisi ini.
 // ============================================================
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'lisx4671_aff');
-define('DB_USER', 'lisx4671_aff');
-define('DB_PASS', 'aff123098_');
+define('DB_NAME', 'aff');
+define('DB_USER', 'root');
+define('DB_PASS', '272800');
 
 // ============================================================
 // KONFIGURASI MIDTRANS (Payment Gateway)

@@ -43,6 +43,17 @@ function get_package_by_id($id) {
     return $stmt->fetch() ?: null;
 }
 
+// Ambil semua portofolio aktif.
+function get_active_portfolios() {
+    try {
+        $stmt = get_db()->query("SELECT * FROM portfolios WHERE is_active = 1 ORDER BY sort_order ASC, id ASC");
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
 function format_rupiah($amount) {
     return 'Rp' . number_format((float) $amount, 0, ',', '.');
 }
+

@@ -5,12 +5,13 @@
 require_once __DIR__ . '/db.php';
 
 $packagesByCategory = [];
+$portfoliosList = [];
 try {
     $packagesByCategory = get_active_packages();
+    $portfoliosList     = get_active_portfolios();
 } catch (Exception $e) {
-    // Jika database belum di-setup (schema.sql belum di-import / config.php belum diisi),
-    // bagian harga akan otomatis disembunyikan tanpa membuat seluruh halaman error.
     $packagesByCategory = [];
+    $portfoliosList     = [];
 }
 
 $dataFile = __DIR__ . '/data/comments.json';
@@ -1001,55 +1002,36 @@ function stars_for($rating) {
       <p>Contoh jenis website (termasuk sistem custom) dan hasil foto/video yang bisa kami kerjakan.</p>
     </div>
     <div class="portfolio-grid">
+      <?php
+      if (empty($portfoliosList)) {
+          // Default fallback data jika database belum di-seed
+          $portfoliosList = [
+              ['title' => 'Company Profile UMKM', 'category_label' => 'Website · Company Profile', 'description' => 'Landing page satu halaman, fokus konversi.', 'media_type' => 'image', 'media_url' => 'assets/images/company_profile.jpg'],
+              ['title' => 'Toko Online', 'category_label' => 'Website · E-Commerce', 'description' => 'Katalog produk lengkap dengan halaman detail.', 'media_type' => 'image', 'media_url' => 'assets/images/toko_online.jpg'],
+              ['title' => 'Sistem Absensi HR', 'category_label' => 'Sistem · HR & Absensi', 'description' => 'Pencatatan kehadiran karyawan berbasis web.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_absensi.jpg'],
+              ['title' => 'Sistem Retail / Kasir (POS)', 'category_label' => 'Sistem · Kasir / POS', 'description' => 'Transaksi, stok, dan laporan penjualan.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_pos.jpg'],
+              ['title' => 'Sistem Manajemen Gudang', 'category_label' => 'Sistem · Warehouse', 'description' => 'Stok masuk-keluar, lokasi rak, dan laporan gudang.', 'media_type' => 'image', 'media_url' => 'assets/images/sistem_gudang.jpg'],
+              ['title' => 'Foto Produk', 'category_label' => 'Foto · Produk Studio', 'description' => 'Set foto katalog untuk marketplace.', 'media_type' => 'image', 'media_url' => 'assets/images/foto_produk.jpg'],
+              ['title' => 'Video Promosi', 'category_label' => 'Video · Promosi Brand', 'description' => 'Video pendek untuk media sosial.', 'media_type' => 'image', 'media_url' => 'assets/images/video_promosi.jpg'],
+          ];
+      }
+      foreach ($portfoliosList as $p):
+      ?>
       <div class="p-item reveal">
         <div class="p-thumb">
-          <img src="assets/images/company_profile.jpg" alt="Company Profile UMKM" loading="lazy">
-          <span class="ph-label">Website · Company Profile</span>
+          <?php if (($p['media_type'] ?? 'image') === 'video'): ?>
+            <video src="<?php echo h($p['media_url']); ?>" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+          <?php else: ?>
+            <img src="<?php echo h($p['media_url']); ?>" alt="<?php echo h($p['title']); ?>" loading="lazy">
+          <?php endif; ?>
+          <span class="ph-label"><?php echo h($p['category_label']); ?></span>
         </div>
-        <div class="p-body"><h4>Company Profile UMKM</h4><p>Landing page satu halaman, fokus konversi.</p></div>
-      </div>
-      <div class="p-item reveal">
-        <div class="p-thumb">
-          <img src="assets/images/toko_online.jpg" alt="Toko Online" loading="lazy">
-          <span class="ph-label">Website · E-Commerce</span>
+        <div class="p-body">
+          <h4><?php echo h($p['title']); ?></h4>
+          <p><?php echo h($p['description']); ?></p>
         </div>
-        <div class="p-body"><h4>Toko Online</h4><p>Katalog produk lengkap dengan halaman detail.</p></div>
       </div>
-      <div class="p-item reveal">
-        <div class="p-thumb">
-          <img src="assets/images/sistem_absensi.jpg" alt="Sistem Absensi HR" loading="lazy">
-          <span class="ph-label">Sistem · HR & Absensi</span>
-        </div>
-        <div class="p-body"><h4>Sistem Absensi HR</h4><p>Pencatatan kehadiran karyawan berbasis web.</p></div>
-      </div>
-      <div class="p-item reveal">
-        <div class="p-thumb">
-          <img src="assets/images/sistem_pos.jpg" alt="Sistem Retail / Kasir (POS)" loading="lazy">
-          <span class="ph-label">Sistem · Kasir / POS</span>
-        </div>
-        <div class="p-body"><h4>Sistem Retail / Kasir (POS)</h4><p>Transaksi, stok, dan laporan penjualan.</p></div>
-      </div>
-      <div class="p-item reveal">
-        <div class="p-thumb">
-          <img src="assets/images/sistem_gudang.jpg" alt="Sistem Manajemen Gudang" loading="lazy">
-          <span class="ph-label">Sistem · Warehouse</span>
-        </div>
-        <div class="p-body"><h4>Sistem Manajemen Gudang</h4><p>Stok masuk-keluar, lokasi rak, dan laporan gudang.</p></div>
-      </div>
-      <div class="p-item reveal">
-        <div class="p-thumb">
-          <img src="assets/images/foto_produk.jpg" alt="Foto Produk" loading="lazy">
-          <span class="ph-label">Foto · Produk Studio</span>
-        </div>
-        <div class="p-body"><h4>Foto Produk</h4><p>Set foto katalog untuk marketplace.</p></div>
-      </div>
-      <div class="p-item reveal">
-        <div class="p-thumb">
-          <img src="assets/images/video_promosi.jpg" alt="Video Promosi" loading="lazy">
-          <span class="ph-label">Video · Promosi Brand</span>
-        </div>
-        <div class="p-body"><h4>Video Promosi</h4><p>Video pendek untuk media sosial.</p></div>
-      </div>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>

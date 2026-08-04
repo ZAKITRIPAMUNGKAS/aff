@@ -163,6 +163,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     <a class="nav-link active" href="dashboard.php"><span class="icon">📊</span> Dashboard</a>
     <a class="nav-link" href="orders.php"><span class="icon">🧾</span> Pesanan</a>
     <a class="nav-link" href="packages.php"><span class="icon">📦</span> Paket Layanan</a>
+    <a class="nav-link" href="portfolios.php"><span class="icon">🖼️</span> Portofolio</a>
     <div class="nav-label">Website</div>
     <a class="nav-link" href="../index.php" target="_blank"><span class="icon">🌐</span> Lihat Website</a>
   </nav>
