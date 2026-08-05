@@ -772,8 +772,8 @@ function h($str) {
                                 <i class="ph ph-sparkle"></i>
                             </div>
                             <div>
-                                <div class="text-xs font-bold text-slate-800">Developer Berpengalaman</div>
-                                <div class="text-slate-500 hero-badge-sub">Siap mengerjakan proyek Anda</div>
+                                <div class="text-xs font-bold text-slate-800">Achmad Farhan Fahrezi</div>
+                                <div class="text-slate-500 hero-badge-sub">Web Developer & Visual Designer</div>
                             </div>
                         </div>
                     </div>
