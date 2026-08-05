@@ -389,13 +389,15 @@ function h($str) {
             color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 24px; flex: none;
         }
 
-        /* INPUT FORMS */
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: #475569; letter-spacing: 0.01em; margin-bottom: 5px; }
         .form-input {
-            width: 100%; padding: 14px 18px; border: 1.5px solid var(--border);
-            border-radius: 12px; font-size: 14.5px; outline: none; transition: border-color 0.2s; background: #f8fafc;
+            width: 100%; padding: 11px 14px; border: 1.5px solid #e2e8f0;
+            border-radius: 10px; font-size: 14px; outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s; background: #f8fafc;
+            color: #0f172a; font-family: 'Inter', sans-serif;
         }
-        .form-input:focus { border-color: var(--teal); }
-        .form-label { display: block; font-size: 13px; font-weight: 600; color: #475569; letter-spacing: 0.01em; margin-bottom: 7px; }
+        .form-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(47,184,174,0.12); background: #fff; }
+        .form-input::placeholder { color: #94a3b8; }
 
         /* ===== PORTFOLIO MODAL — REDESIGNED ===== */
         .p-modal-overlay {
@@ -1039,7 +1041,7 @@ function h($str) {
                         <h3 class="text-xl sm:text-2xl font-extrabold mb-2">Formulir Pesan &amp; Diskusi</h3>
                         <p class="text-sm text-slate-500 mb-7">Isi formulir di bawah dan pesan Anda langsung dikirim ke WhatsApp kami. <span class="text-teal-600 font-semibold">Respon cepat!</span></p>
                         <form id="contactWaForm" onsubmit="return handleWaContactForm(event)">
-                            <div class="grid gap-5">
+                            <div style="display:grid; gap:14px;">
                                 <div>
                                     <label class="form-label">Nama Lengkap</label>
                                     <input type="text" name="name" id="waName" required placeholder="Contoh: Budi Santoso" class="form-input">
@@ -1059,14 +1061,14 @@ function h($str) {
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="form-label">Pesan / Detail Kebutuhan Proyek</label>
-                                    <textarea name="message" id="waMessage" required placeholder="Jelaskan kebutuhan, target, atau anggaran proyek Anda..." class="form-input min-h-[120px] resize-y"></textarea>
+                                    <label class="form-label">Pesan / Detail Kebutuhan</label>
+                                    <textarea name="message" id="waMessage" required placeholder="Jelaskan kebutuhan, target, atau anggaran proyek Anda..." class="form-input" style="min-height:100px; resize:vertical;"></textarea>
                                 </div>
-                                <button type="submit" class="btn-solid-dark w-full py-4 text-base rounded-xl mt-2 flex items-center justify-center gap-2">
-                                    <i class="ph ph-whatsapp-logo text-xl"></i>
-                                    <span>Kirim ke WhatsApp Sekarang &rarr;</span>
-                                </button>
                             </div>
+                            <button type="submit" class="btn-solid-dark" style="width:100%; padding:13px 20px; font-size:14px; border-radius:10px; margin-top:16px; display:flex; align-items:center; justify-content:center; gap:8px;">
+                                <i class="ph ph-whatsapp-logo" style="font-size:18px;"></i>
+                                <span>Kirim ke WhatsApp Sekarang &rarr;</span>
+                            </button>
                         </form>
                     </div>
                 </div>
