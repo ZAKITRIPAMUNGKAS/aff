@@ -389,14 +389,43 @@ function h($str) {
             color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 24px; flex: none;
         }
 
-        .form-label { display: block; font-size: 13.5px; font-weight: 600; color: #334155; letter-spacing: 0.01em; margin-bottom: 8px; }
-        .form-input {
-            width: 100%; padding: 13px 16px; border: 1.5px solid #cbd5e1;
-            border-radius: 12px; font-size: 14.5px; outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s; background: #f8fafc;
-            color: #0f172a; font-family: 'Inter', sans-serif;
+        /* INPUT FORMS & CONTACT CARD */
+        .contact-form-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
         }
-        .form-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(47,184,174,0.12); background: #fff; }
+        @media (min-width: 640px) { .contact-form-card { padding: 36px 36px; } }
+        @media (min-width: 1024px) { .contact-form-card { padding: 44px 40px; } }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 14.5px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background: #f8fafc;
+            color: #0f172a;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+        .form-input:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3.5px rgba(47,184,174,0.15);
+            background: #ffffff;
+        }
         .form-input::placeholder { color: #94a3b8; }
 
         /* ===== PORTFOLIO MODAL — REDESIGNED ===== */
@@ -665,7 +694,7 @@ function h($str) {
                     </div>
 
                     <h1 class="hero-title">
-                        Turning <span class="highlight">complex ideas</span> into <span class="highlight">intuitive experiences.</span>
+                        Mengubah <span class="highlight">ide kompleks</span> menjadi <span class="highlight">pengalaman intuitif.</span>
                     </h1>
 
                     <p class="hero-lead">
@@ -1037,11 +1066,11 @@ function h($str) {
 
                 <!-- Form Kolom Kanan -->
                 <div class="lg:col-span-7">
-                    <div class="bg-white border-2 border-slate-100 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-md">
-                        <h3 class="text-xl sm:text-2xl font-extrabold mb-2">Formulir Pesan &amp; Diskusi</h3>
-                        <p class="text-sm text-slate-500 mb-7">Isi formulir di bawah dan pesan Anda langsung dikirim ke WhatsApp kami. <span class="text-teal-600 font-semibold">Respon cepat!</span></p>
+                    <div class="contact-form-card">
+                        <h3 class="text-2xl sm:text-3xl font-extrabold mb-2 text-slate-900 tracking-tight">Formulir Pesan &amp; Diskusi</h3>
+                        <p class="text-sm sm:text-base text-slate-500 mb-8">Isi formulir di bawah dan pesan Anda langsung dikirim ke WhatsApp kami. <span class="text-teal-600 font-semibold">Respon cepat!</span></p>
                         <form id="contactWaForm" onsubmit="return handleWaContactForm(event)">
-                            <div style="display:grid; gap:18px;">
+                            <div style="display:grid; gap:20px;">
                                 <div>
                                     <label class="form-label">Nama Lengkap</label>
                                     <input type="text" name="name" id="waName" required placeholder="Contoh: Budi Santoso" class="form-input">
@@ -1062,11 +1091,11 @@ function h($str) {
                                 </div>
                                 <div>
                                     <label class="form-label">Pesan / Detail Kebutuhan</label>
-                                    <textarea name="message" id="waMessage" required placeholder="Jelaskan kebutuhan, target, atau anggaran proyek Anda..." class="form-input" style="min-height:100px; resize:vertical;"></textarea>
+                                    <textarea name="message" id="waMessage" required placeholder="Jelaskan kebutuhan, target, atau anggaran proyek Anda..." class="form-input" style="min-height:110px; resize:vertical;"></textarea>
                                 </div>
                             </div>
-                            <button type="submit" class="btn-solid-dark" style="width:100%; padding:13px 20px; font-size:14px; border-radius:10px; margin-top:16px; display:flex; align-items:center; justify-content:center; gap:8px;">
-                                <i class="ph ph-whatsapp-logo" style="font-size:18px;"></i>
+                            <button type="submit" class="btn-solid-dark" style="width:100%; padding:15px 24px; font-size:15px; font-weight:700; border-radius:12px; margin-top:22px; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow: 0 4px 16px rgba(15,23,42,0.15);">
+                                <i class="ph ph-whatsapp-logo" style="font-size:20px;"></i>
                                 <span>Kirim ke WhatsApp Sekarang &rarr;</span>
                             </button>
                         </form>
