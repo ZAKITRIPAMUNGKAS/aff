@@ -207,6 +207,19 @@ function h($str) {
         }
         .btn-solid-dark:hover { background: #1e293b; transform: translateY(-2px); }
 
+        /* PORTRAIT OVERRIDES (No Tailwind JIT) */
+        .hero-portrait-wrap { max-width: 320px; }
+        @media (min-width: 640px) { .hero-portrait-wrap { max-width: 380px; } }
+        @media (min-width: 1024px) { .hero-portrait-wrap { max-width: 420px; } }
+        .hero-portrait-img { max-height: 400px; }
+        @media (min-width: 640px) { .hero-portrait-img { max-height: 500px; } }
+        .hero-badge { bottom: -8px; left: -4px; padding: 8px 12px; border-radius: 12px; gap: 8px; }
+        @media (min-width: 640px) { .hero-badge { bottom: -12px; left: -8px; padding: 10px 16px; border-radius: 16px; gap: 12px; } }
+        .hero-badge-icon { width: 32px; height: 32px; border-radius: 8px; font-size: 16px; }
+        @media (min-width: 640px) { .hero-badge-icon { width: 40px; height: 40px; border-radius: 12px; font-size: 18px; } }
+        .hero-badge-sub { font-size: 10px; }
+        @media (min-width: 640px) { .hero-badge-sub { font-size: 11px; } }
+
         /* HERO STATS */
         .hero-stats-grid {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
@@ -656,7 +669,7 @@ function h($str) {
 
                 <!-- Right Content Visual (Person Portrait Photo) -->
                 <div class="lg:col-span-5 flex justify-center items-end relative mt-6 lg:mt-0">
-                    <div class="relative w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[420px] aspect-[4/5] flex items-end justify-center">
+                    <div class="relative w-full hero-portrait-wrap aspect-[4/5] flex items-end justify-center">
                         <!-- Soft Gradient Backdrop Podium -->
                         <div class="absolute inset-0 bg-gradient-to-b from-slate-100 to-teal-500/10 rounded-t-full border border-slate-200/60 -z-10 shadow-sm"></div>
                         
@@ -664,18 +677,18 @@ function h($str) {
                         <img 
                             src="assets/images/orang.png" 
                             alt="Aff Digital Lead Specialist" 
-                            class="w-full h-auto object-contain max-h-[400px] sm:max-h-[500px] drop-shadow-xl relative z-10"
+                            class="w-full h-auto object-contain hero-portrait-img drop-shadow-xl relative z-10"
                             loading="eager"
                         />
 
                         <!-- Floating Accent Badge -->
-                        <div class="absolute -bottom-2 -left-1 sm:-bottom-3 sm:-left-2 bg-white/95 backdrop-blur-md border border-slate-200 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl shadow-lg flex items-center gap-2 sm:gap-3 z-20">
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold text-base sm:text-lg">
+                        <div class="absolute bg-white/95 backdrop-blur-md border border-slate-200 shadow-lg flex items-center z-20 hero-badge">
+                            <div class="bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold hero-badge-icon">
                                 <i class="ph ph-sparkle"></i>
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-slate-800">Expert Developers</div>
-                                <div class="text-[10px] sm:text-[11px] text-slate-500">Ready for your project</div>
+                                <div class="text-slate-500 hero-badge-sub">Ready for your project</div>
                             </div>
                         </div>
                     </div>
