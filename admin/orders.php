@@ -13,6 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['update_status'])) {
     if ($orderId && in_array($newStatus, $allowed)) {
         $db->prepare("UPDATE orders SET status=? WHERE id=?")->execute([$newStatus, $orderId]);
     }
+    
+    // AJAX response
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'status' => $newStatus]);
+        exit;
+    }
+
     header('Location: orders.php?' . http_build_query(array_intersect_key($_GET, ['status'=>1,'gateway'=>1,'q'=>1,'page'=>1])));
     exit;
 }
@@ -249,5 +257,62 @@ tr:hover td { background:rgba(255,255,255,0.02); }
 
   </div>
 </div>
+
+<script>
+// AJAX Status Update
+document.querySelectorAll('.status-form').forEach(form => {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button');
+    const select = this.querySelector('select');
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = '...';
+    btn.disabled = true;
+    
+    const formData = new FormData(this);
+    formData.append('update_status', '1');
+    
+    fetch('orders.php', {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      
+      if(data.success) {
+        // Flash row green
+        const tr = this.closest('tr');
+        const origBg = tr.style.backgroundColor;
+        tr.style.transition = 'background-color 0.4s';
+        tr.style.backgroundColor = 'rgba(52,211,153,0.15)';
+        setTimeout(() => { tr.style.backgroundColor = origBg; }, 600);
+        
+        // Update Badge text directly (if possible, but requires knowing the exact badge class)
+        // A simple page reload without scrolling is another option, but JS DOM update is smoother.
+        const badgeTd = tr.querySelector('td:nth-child(6)');
+        if (badgeTd) {
+          const s = data.status;
+          let bg = 'rgba(107,114,128,0.1)', color = '#6b7280', label = s.charAt(0).toUpperCase() + s.slice(1);
+          if (s === 'paid') { bg = 'rgba(52,211,153,0.1)'; color = '#34d399'; }
+          else if (s === 'pending') { bg = 'rgba(251,191,36,0.1)'; color = '#fbbf24'; }
+          else if (s === 'failed') { bg = 'rgba(248,81,73,0.1)'; color = '#f85149'; }
+          
+          badgeTd.innerHTML = `<span style="display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;background:${bg};color:${color};border:1px solid ${bg}">${label}</span>`;
+        }
+      }
+    })
+    .catch(err => {
+      alert('Terjadi kesalahan koneksi.');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    });
+  });
+});
+</script>
+
 </body>
 </html>
