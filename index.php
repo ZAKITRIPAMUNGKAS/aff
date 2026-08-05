@@ -161,23 +161,7 @@ function h($str) {
         @media (min-width: 768px) { .hero-section { padding: 48px 0 64px; } }
         .hero-section .wrap { position: relative; z-index: 2; }
 
-        /* BACKGROUND PATHS ANIMATION */
-        .bg-paths-wrapper {
-            position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1;
-        }
-        .bg-paths-svg {
-            width: 100%; height: 100%;
-        }
-        .bg-path-line {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: bgPathDash 15s linear infinite;
-        }
-        @keyframes bgPathDash {
-            0% { stroke-dashoffset: 1000; opacity: 0.2; }
-            50% { opacity: 0.7; }
-            100% { stroke-dashoffset: 0; opacity: 0.2; }
-        }
+
         .floating-tag {
             display: inline-flex; align-items: center; gap: 10px;
             background: #ffffff; border: 1px solid var(--border);
@@ -734,7 +718,6 @@ function h($str) {
 
     <!-- HERO SECTION -->
     <section class="hero-section bg-grid-pattern">
-        <div class="bg-paths-wrapper" id="bgPathsContainer"></div>
         <div class="wrap">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                 
@@ -1602,49 +1585,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // BACKGROUND PATHS ANIMATION
-    function initBackgroundPaths() {
-        const container = document.getElementById('bgPathsContainer');
-        if (!container) return;
-        
-        const createPaths = (position) => {
-            let pathStrings = [];
-            for (let i = 0; i < 36; i++) {
-                const d = `M-${380 - i * 5 * position} -${189 + i * 6}C-${
-                    380 - i * 5 * position
-                } -${189 + i * 6} -${312 - i * 5 * position} ${216 - i * 6} ${
-                    152 - i * 5 * position
-                } ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${
-                    684 - i * 5 * position
-                } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`;
-                const width = 0.5 + i * 0.03;
-                const opacity = 0.1 + i * 0.03;
-                const animDuration = 12 + Math.random() * 10;
-                const animDelay = Math.random() * 5;
-                pathStrings.push(`
-                    <path
-                        d="${d}"
-                        stroke="rgba(15,23,42,${opacity})"
-                        stroke-width="${width}"
-                        fill="none"
-                        class="bg-path-line"
-                        style="animation-duration: ${animDuration}s; animation-delay: -${animDelay}s;"
-                    />
-                `);
-            }
-            return pathStrings.join('');
-        };
 
-        const svgContent = `
-            <svg class="bg-paths-svg" viewBox="0 0 696 316" fill="none" preserveAspectRatio="xMidYMid slice">
-                <title>Background Paths</title>
-                ${createPaths(1)}
-                ${createPaths(-1)}
-            </svg>
-        `;
-        container.innerHTML = svgContent;
-    }
-    initBackgroundPaths();
 
     if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePortfolioModal);
     if (modal) {
