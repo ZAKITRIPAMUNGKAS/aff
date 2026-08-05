@@ -659,7 +659,7 @@ function h($str) {
                             <span class="bg-blue-500"></span>
                             <span class="bg-green-500"></span>
                         </div>
-                        <span>Aff Digital Studio <span class="text-slate-400 font-normal">/ WEBSITE &amp; VISUAL AGENCY</span></span>
+                        <span>Aff Digital Studio <span class="text-slate-400 font-normal">/ AGENSI WEBSITE &amp; VISUAL</span></span>
                     </div>
 
                     <h1 class="hero-title">
@@ -701,8 +701,8 @@ function h($str) {
                                 <i class="ph ph-sparkle"></i>
                             </div>
                             <div>
-                                <div class="text-xs font-bold text-slate-800">Expert Developers</div>
-                                <div class="text-slate-500 hero-badge-sub">Ready for your project</div>
+                                <div class="text-xs font-bold text-slate-800">Developer Berpengalaman</div>
+                                <div class="text-slate-500 hero-badge-sub">Siap mengerjakan proyek Anda</div>
                             </div>
                         </div>
                     </div>
@@ -740,8 +740,8 @@ function h($str) {
                 <!-- Left Text Content -->
                 <div class="w-full lg:w-1/2">
                     <h2 class="dark-title">
-                        Developing with<br>
-                        <span class="highlight">Clarity, Performance and Intention.</span>
+                        Dikembangkan dengan<br>
+                        <span class="highlight">Kejernihan, Performa, dan Tujuan yang Jelas.</span>
                     </h2>
                     <p class="dark-lead">
                         Kami percaya bahwa website &amp; sistem bukan hanya tentang estetika visual, tetapi juga tentang kecepatan akses, alur kerja yang efisien, dan dampak konversi yang nyata bagi bisnis Anda.
@@ -750,11 +750,11 @@ function h($str) {
                     <!-- Tambahkan atribut data-tech di sini -->
                     <div class="skill-tags" id="techTags">
                         <div class="skill-tag active" data-tech="php">PHP &amp; PDO</div>
-                        <div class="skill-tag" data-tech="mysql">MySQL Database</div>
+                        <div class="skill-tag" data-tech="mysql">Basis Data MySQL</div>
                         <div class="skill-tag" data-tech="tailwind">Tailwind &amp; CSS3</div>
-                        <div class="skill-tag" data-tech="uiux">UI/UX Design</div>
-                        <div class="skill-tag" data-tech="midtrans">Midtrans Gateway</div>
-                        <div class="skill-tag" data-tech="ipaymu">iPaymu Gateway</div>
+                        <div class="skill-tag" data-tech="uiux">Desain UI/UX</div>
+                        <div class="skill-tag" data-tech="midtrans">Pembayaran Midtrans</div>
+                        <div class="skill-tag" data-tech="ipaymu">Pembayaran iPaymu</div>
                     </div>
                 </div>
 
@@ -1018,7 +1018,7 @@ function h($str) {
                         <a href="https://wa.me/6289612339608" target="_blank" rel="noopener" class="contact-info-card hover:border-teal-400 hover:shadow-md transition-all duration-200">
                             <div class="contact-icon-box"><i class="ph ph-whatsapp-logo"></i></div>
                             <div>
-                                <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">WhatsApp Fast Response</div>
+                                <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">WhatsApp Respon Cepat</div>
                                 <div class="font-extrabold text-base text-slate-900 mt-0.5">+62 896-1233-9608</div>
                             </div>
                         </a>
@@ -1088,15 +1088,15 @@ function h($str) {
                 <p class="leading-relaxed">Agency Jasa Pembuatan Website, Sistem Custom, dan Foto/Video Promosi Profesional Indonesia.</p>
             </div>
             <div>
-                <div class="text-white font-bold mb-3.5">Legality &amp; Policy</div>
+                <div class="text-white font-bold mb-3.5">Legalitas &amp; Kebijakan</div>
                 <div class="grid gap-2">
                     <a href="syarat-ketentuan.php" class="hover:text-white transition-colors">Syarat &amp; Ketentuan</a>
-                    <a href="refund-policy.php" class="hover:text-white transition-colors">Refund Policy</a>
+                    <a href="refund-policy.php" class="hover:text-white transition-colors">Kebijakan Pengembalian Dana</a>
                     <a href="faq.php" class="hover:text-white transition-colors">Pertanyaan Umum (FAQ)</a>
                 </div>
             </div>
         </div>
-        <div class="text-center pt-6 sm:pt-7 text-[13px]">&copy; <?php echo date('Y'); ?> Aff Digital. All rights reserved.</div>
+        <div class="text-center pt-6 sm:pt-7 text-[13px]">&copy; <?php echo date('Y'); ?> Aff Digital. Hak Cipta Dilindungi.</div>
     </div>
 </footer>
 
@@ -1107,8 +1107,8 @@ function h($str) {
         <!-- LEFT: Media Panel -->
         <div class="p-modal-left">
             <button class="p-modal-close" id="modalCloseBtn" aria-label="Tutup Detail">&times;</button>
-            <button class="p-modal-nav p-modal-prev" id="modalPrevBtn" aria-label="Previous">&#10094;</button>
-            <button class="p-modal-nav p-modal-next" id="modalNextBtn" aria-label="Next">&#10095;</button>
+            <button class="p-modal-nav p-modal-prev" id="modalPrevBtn" aria-label="Sebelumnya">&#10094;</button>
+            <button class="p-modal-nav p-modal-next" id="modalNextBtn" aria-label="Berikutnya">&#10095;</button>
             <div class="p-modal-media-wrap" id="modalMediaContainer"></div>
             <div class="p-modal-gallery-thumbs" id="modalGalleryContainer" style="display:none;"></div>
         </div>
@@ -1154,7 +1154,7 @@ function h($str) {
             <div class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center font-extrabold text-xs text-white">AFF</div>
             <div>
                 <div class="font-bold text-sm">Aff Assistant</div>
-                <div class="text-[11px] text-white/70">Online</div>
+                <div class="text-[11px] text-white/70">Online — Siap Membantu</div>
             </div>
         </div>
         <button id="chatClose" class="bg-transparent border-none text-white text-2xl cursor-pointer">&times;</button>
