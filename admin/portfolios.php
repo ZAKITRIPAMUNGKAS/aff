@@ -249,8 +249,9 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink); d
 
 /* RESPONSIVE */
 @media (max-width: 1023px) {
-  body { flex-direction: column; }
-  .sidebar { position: static; width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  body { flex-direction: column; overflow-x: hidden; max-width: 100vw; }
+  .sidebar { position: static; width: 100%; border-right: none; border-bottom: 1px solid var(--border); box-sizing: border-box; }
+  .main { max-width: 100vw; box-sizing: border-box; }
   .sidebar-nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; }
   .nav-link { margin-bottom: 0; padding: 8px 12px; }
   .nav-label { width: 100%; margin: 8px 0 4px; }

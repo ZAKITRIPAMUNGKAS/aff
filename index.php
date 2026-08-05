@@ -442,9 +442,7 @@ function h($str) {
         }
         .p-modal-media-wrap img, .p-modal-media-wrap video {
             width: 100%; height: 100%; object-fit: contain; display: block;
-            transition: transform 0.5s ease;
         }
-        .p-modal-media-wrap img:hover { transform: scale(1.03); }
         /* Bottom gradient on image */
         .p-modal-media-wrap::after {
             content: ''; position: absolute; inset: auto 0 0;
