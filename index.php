@@ -156,10 +156,200 @@ function h($str) {
             .mobile-nav-drawer { display: none !important; }
         }
 
-        /* HERO SECTION */
-        .hero-section { position: relative; padding: 32px 0 48px; overflow: hidden; }
-        @media (min-width: 768px) { .hero-section { padding: 48px 0 64px; } }
+        /* HERO SECTION - GLASSMORPHISM DARK */
+        .hero-section {
+            position: relative;
+            background: #09090b;
+            color: #ffffff;
+            overflow: hidden;
+            padding: 96px 0 64px;
+        }
+        @media (min-width: 768px) { .hero-section { padding: 128px 0 80px; } }
+
+        /* Hero background image */
+        .hero-bg-image {
+            position: absolute; inset: 0; z-index: 0;
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80');
+            background-size: cover; background-position: center;
+            opacity: 0.25;
+            mask-image: linear-gradient(180deg, transparent 0%, black 15%, black 75%, transparent 100%);
+            -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 15%, black 75%, transparent 100%);
+        }
+
         .hero-section .wrap { position: relative; z-index: 2; }
+
+        /* Hero badge pill */
+        .hero-badge-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            padding: 6px 16px; border-radius: 999px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+            text-transform: uppercase; color: #d4d4d8;
+            margin-bottom: 28px; cursor: default;
+            transition: background 0.2s;
+        }
+        .hero-badge-pill:hover { background: rgba(255,255,255,0.1); }
+        .hero-badge-pill .star { color: #facc15; font-size: 13px; }
+
+        /* Hero title */
+        .hero-title {
+            font-size: clamp(38px, 7vw, 80px);
+            font-weight: 500;
+            line-height: 0.92;
+            letter-spacing: -0.04em;
+            color: #ffffff;
+            margin-bottom: 24px;
+            max-width: 100%;
+            padding-top: 0;
+            mask-image: linear-gradient(180deg, black 0%, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(180deg, black 0%, black 80%, transparent 100%);
+        }
+        .hero-title .highlight {
+            background: linear-gradient(135deg, #ffffff 0%, #ffffff 60%, #ffcd75 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        @media (min-width: 768px) { .hero-title { max-width: none; margin-bottom: 28px; } }
+
+        /* Hero lead */
+        .hero-lead {
+            font-size: 16px; color: #a1a1aa;
+            max-width: 100%; margin-bottom: 36px;
+            font-weight: 400; line-height: 1.7;
+        }
+        @media (min-width: 768px) { .hero-lead { font-size: 18px; max-width: 520px; } }
+
+        /* Hero CTA Buttons */
+        .hero-btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #ffffff; color: #09090b;
+            padding: 14px 28px; border-radius: 999px;
+            font-size: 14px; font-weight: 700;
+            transition: all 0.2s ease; border: none; cursor: pointer;
+            text-decoration: none;
+        }
+        .hero-btn-primary:hover { background: #e4e4e7; transform: scale(1.02); }
+        .hero-btn-primary:active { transform: scale(0.98); }
+        .hero-btn-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            color: #ffffff; padding: 14px 28px; border-radius: 999px;
+            font-size: 14px; font-weight: 600;
+            transition: all 0.2s ease; cursor: pointer; text-decoration: none;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .hero-btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+
+        /* Stats Card - Right column */
+        .glass-card {
+            position: relative; overflow: hidden;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06);
+        }
+        .glass-card-glow {
+            position: absolute; top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+            filter: blur(40px);
+            pointer-events: none;
+        }
+        .glass-card-inner { position: relative; z-index: 1; padding: 28px; }
+        @media (min-width: 640px) { .glass-card-inner { padding: 32px; } }
+
+        .gc-icon-wrap {
+            display: flex; align-items: center; justify-content: center;
+            width: 48px; height: 48px; border-radius: 14px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            font-size: 22px; margin-bottom: 0;
+        }
+        .gc-big-num { font-size: 36px; font-weight: 800; letter-spacing: -0.04em; color: #fff; }
+        .gc-sub { font-size: 13px; color: #71717a; }
+
+        .gc-progress-label { display: flex; justify-content: space-between; font-size: 13px; color: #a1a1aa; margin-bottom: 8px; }
+        .gc-progress-label span:last-child { color: #fff; font-weight: 600; }
+        .gc-progress-track { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+        .gc-progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(to right, #ffffff, #a1a1aa); }
+
+        .gc-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 24px 0; }
+
+        .gc-mini-stats { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; gap: 0; text-align: center; }
+        .gc-mini-stat { padding: 0 8px; }
+        .gc-mini-stat b { display: block; font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.03em; }
+        .gc-mini-stat span { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #52525b; font-weight: 600; }
+        .gc-mini-divider { background: rgba(255,255,255,0.1); }
+
+        .gc-tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            padding: 4px 12px; border-radius: 999px;
+            font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+            color: #d4d4d8; text-transform: uppercase;
+        }
+        .gc-tag .ping-dot { position: relative; display: inline-flex; width: 8px; height: 8px; }
+        .gc-tag .ping-dot::before {
+            content: ''; position: absolute; inset: 0;
+            border-radius: 50%; background: #4ade80; opacity: 0.75;
+            animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite;
+        }
+        .gc-tag .ping-dot::after {
+            content: ''; position: relative; display: inline-flex;
+            width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+        }
+        @keyframes ping {
+            75%, 100% { transform: scale(2); opacity: 0; }
+        }
+        .gc-tag .crown { color: #eab308; }
+
+        /* Marquee Card */
+        .marquee-card { margin-top: 16px; }
+        .marquee-label { font-size: 13px; color: #52525b; font-weight: 500; padding: 0 28px 20px; }
+        .marquee-track {
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+        }
+        .marquee-inner {
+            display: flex; gap: 40px; white-space: nowrap; width: max-content;
+            animation: marqueescroll 30s linear infinite;
+        }
+        @keyframes marqueescroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .marquee-item {
+            display: inline-flex; align-items: center; gap: 8px;
+            opacity: 0.45; transition: opacity 0.2s;
+            font-size: 15px; font-weight: 800; color: #fff;
+            letter-spacing: -0.02em; cursor: default;
+        }
+        .marquee-item:hover { opacity: 1; }
+        .marquee-item i { font-size: 20px; }
+
+        /* Fade-in animations */
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(22px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hfi { opacity: 0; animation: heroFadeIn 0.8s ease-out forwards; }
+        .hfi-1 { animation-delay: 0.1s; }
+        .hfi-2 { animation-delay: 0.2s; }
+        .hfi-3 { animation-delay: 0.3s; }
+        .hfi-4 { animation-delay: 0.4s; }
+        .hfi-5 { animation-delay: 0.5s; }
+
 
         /* BACKGROUND PATHS ANIMATION */
         .bg-paths-wrapper {
@@ -645,93 +835,148 @@ function h($str) {
 <main>
 
     <!-- HERO SECTION -->
-    <section class="hero-section bg-grid-pattern">
-        <div class="bg-paths-wrapper" id="bgPathsContainer"></div>
+    <section class="hero-section">
+        <div class="hero-bg-image"></div>
         <div class="wrap">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                
-                <!-- Left Content -->
-                <div class="lg:col-span-7">
-                    <div class="floating-tag">
-                        <div class="dot-stack">
-                            <span class="bg-red-500"></span>
-                            <span class="bg-purple-500"></span>
-                            <span class="bg-blue-500"></span>
-                            <span class="bg-green-500"></span>
+            <div style="display:grid; grid-template-columns:1fr; gap:40px; align-items:start;"
+                 class="hero-grid">
+
+                <!-- LEFT: Text content -->
+                <div class="lg-col-7" style="padding-top:8px;">
+
+                    <!-- Badge -->
+                    <div class="hfi hfi-1">
+                        <div class="hero-badge-pill">
+                            Aff Digital Studio
+                            &nbsp;<span style="color:#52525b;">/ Website &amp; Visual Agency</span>
+                            <i class="ph ph-star-four star"></i>
                         </div>
-                        <span>Aff Digital Studio <span class="text-slate-400 font-normal">/ WEBSITE &amp; VISUAL AGENCY</span></span>
                     </div>
 
-                    <h1 class="hero-title">
-                        Turning <span class="highlight">complex ideas</span> into <span class="highlight">intuitive experiences.</span>
+                    <!-- Title -->
+                    <h1 class="hero-title hfi hfi-2">
+                        Turning <span class="highlight">complex ideas</span><br>
+                        into <span class="highlight">intuitive<br>experiences.</span>
                     </h1>
 
-                    <p class="hero-lead">
-                        Kami membantu UMKM &amp; Brand mengubah ide bisnis menjadi website berkinerja tinggi, sistem custom yang efisien, serta konten foto &amp; video promosi profesional.
+                    <!-- Lead -->
+                    <p class="hero-lead hfi hfi-3">
+                        Kami membantu UMKM &amp; Brand mengubah ide bisnis menjadi website berkinerja tinggi,
+                        sistem custom yang efisien, serta konten foto &amp; video promosi profesional.
                     </p>
 
-                    <div class="flex flex-wrap items-center gap-4">
-                        <a href="#kontak" class="framed-btn">
-                            <div class="corner c-tl"></div><div class="corner c-tr"></div>
-                            <div class="corner c-bl"></div><div class="corner c-br"></div>
-                            <i class="ph ph-chat-circle-dots text-lg"></i>
-                            <span>Konsultasi Sekarang</span>
+                    <!-- CTA Buttons -->
+                    <div class="hfi hfi-4" style="display:flex; flex-wrap:wrap; gap:14px;">
+                        <a href="#kontak" class="hero-btn-primary">
+                            <i class="ph ph-chat-circle-dots"></i>
+                            Konsultasi Sekarang
+                            <i class="ph ph-arrow-right"></i>
                         </a>
-                        <a href="#portofolio" class="btn-solid-dark">Lihat Portofolio</a>
+                        <a href="#portofolio" class="hero-btn-secondary">
+                            <i class="ph ph-play-circle"></i>
+                            Lihat Portofolio
+                        </a>
                     </div>
                 </div>
 
-                <!-- Right Content Visual (Person Portrait Photo) -->
-                <div class="lg:col-span-5 flex justify-center items-end relative mt-6 lg:mt-0">
-                    <div class="relative w-full hero-portrait-wrap aspect-[4/5] flex items-end justify-center">
-                        <!-- Soft Gradient Backdrop Podium -->
-                        <div class="absolute inset-0 bg-gradient-to-b from-slate-100 to-teal-500/10 rounded-t-full border border-slate-200/60 -z-10 shadow-sm"></div>
-                        
-                        <!-- Person Portrait Image -->
-                        <img 
-                            src="assets/images/orang.png" 
-                            alt="Aff Digital Lead Specialist" 
-                            class="w-full h-auto object-contain hero-portrait-img drop-shadow-xl relative z-10"
-                            loading="eager"
-                        />
+                <!-- RIGHT: Glass Cards -->
+                <div class="lg-col-5 hfi hfi-5" style="display:flex; flex-direction:column; gap:16px;">
 
-                        <!-- Floating Accent Badge -->
-                        <div class="absolute bg-white/95 backdrop-blur-md border border-slate-200 shadow-lg flex items-center z-20 hero-badge">
-                            <div class="bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold hero-badge-icon">
-                                <i class="ph ph-sparkle"></i>
+                    <!-- Stats Card -->
+                    <div class="glass-card">
+                        <div class="glass-card-glow"></div>
+                        <div class="glass-card-inner">
+                            <!-- Top: icon + big number -->
+                            <div style="display:flex; align-items:center; gap:16px; margin-bottom:24px;">
+                                <div class="gc-icon-wrap">
+                                    <i class="ph ph-target" style="color:#fff;"></i>
+                                </div>
+                                <div>
+                                    <div class="gc-big-num">50+</div>
+                                    <div class="gc-sub">Proyek Selesai</div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-800">Expert Developers</div>
-                                <div class="text-slate-500 hero-badge-sub">Ready for your project</div>
+
+                            <!-- Progress bar -->
+                            <div class="gc-progress-label">
+                                <span>Kepuasan Klien</span>
+                                <span>99%</span>
+                            </div>
+                            <div class="gc-progress-track">
+                                <div class="gc-progress-fill" style="width:99%;"></div>
+                            </div>
+
+                            <!-- Divider -->
+                            <div class="gc-divider"></div>
+
+                            <!-- Mini stats -->
+                            <div class="gc-mini-stats">
+                                <div class="gc-mini-stat">
+                                    <b>3+</b>
+                                    <span>Tahun</span>
+                                </div>
+                                <div class="gc-mini-divider"></div>
+                                <div class="gc-mini-stat">
+                                    <b>24/7</b>
+                                    <span>Support</span>
+                                </div>
+                                <div class="gc-mini-divider"></div>
+                                <div class="gc-mini-stat">
+                                    <b>100%</b>
+                                    <span>Kualitas</span>
+                                </div>
+                            </div>
+
+                            <!-- Tags -->
+                            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:24px;">
+                                <div class="gc-tag">
+                                    <span class="ping-dot"></span>
+                                    AKTIF
+                                </div>
+                                <div class="gc-tag">
+                                    <i class="ph ph-crown crown"></i>
+                                    PREMIUM
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
+                    <!-- Marquee Card -->
+                    <div class="glass-card marquee-card" style="padding: 24px 0;">
+                        <div class="marquee-label">Dipercaya oleh berbagai industri</div>
+                        <div class="marquee-track">
+                            <div class="marquee-inner">
+                                <!-- Item duplikat 3x untuk seamless loop -->
+                                <?php
+                                $brands = [
+                                    ['icon'=>'ph-storefront','name'=>'Toko Online'],
+                                    ['icon'=>'ph-buildings','name'=>'Perusahaan'],
+                                    ['icon'=>'ph-camera','name'=>'Fotografer'],
+                                    ['icon'=>'ph-chart-line-up','name'=>'Startup'],
+                                    ['icon'=>'ph-house','name'=>'Properti'],
+                                    ['icon'=>'ph-fork-knife','name'=>'Kuliner'],
+                                ];
+                                $all = array_merge($brands, $brands, $brands);
+                                foreach($all as $b): ?>
+                                <div class="marquee-item">
+                                    <i class="ph <?= $b['icon'] ?>"></i>
+                                    <span><?= $b['name'] ?></span>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Hero Stats -->
-            <div class="border-t border-slate-200 mt-10 sm:mt-14 pt-6 sm:pt-10">
-                <div class="grid grid-cols-3 sm:grid-cols-3 gap-4 sm:gap-8">
-                    <div class="stat-item">
-                        <b>50+</b>
-                        <div class="label">Proyek Selesai</div>
-                        <div class="sub hidden sm:block">Website, Toko Online &amp; Sistem Custom</div>
-                    </div>
-                    <div class="stat-item sm:border-l border-slate-200 sm:pl-6">
-                        <b>99%</b>
-                        <div class="label">Klien Puas</div>
-                        <div class="sub hidden sm:block">Hasil Kualitas Terbaik &amp; Fast Response</div>
-                    </div>
-                    <div class="stat-item sm:border-l border-slate-200 sm:pl-6">
-                        <b>3+</b>
-                        <div class="label">Tahun Kerja</div>
-                        <div class="sub hidden sm:block">Pengembangan Ekosistem Digital</div>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <style>
+    @media (min-width: 1024px) {
+        .hero-grid { grid-template-columns: 7fr 5fr !important; gap: 48px !important; }
+    }
+    </style>
 
     <!-- METHODOLOGY DARK SECTION -->
     <section class="dark-section" id="tentang">
