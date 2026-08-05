@@ -338,10 +338,11 @@ function h($str) {
         .figma-sidebar-left { width: 44px; background: #2c2c2c; border-right: 1px solid #383838; display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 16px; color: #64748b; font-size: 16px; }
         .figma-canvas { flex: 1; background: #1e1e1e; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px; }
         .canvas-card {
-            background: #ffffff; border-radius: 8px; width: 100%; max-width: 320px; padding: 20px;
-            color: var(--ink); box-shadow: 0 12px 28px rgba(0,0,0,0.3); transform: scale(0.95); position: relative;
+            background: #ffffff; border-radius: 12px; width: 100%; max-width: 340px; padding: 24px;
+            color: var(--ink); box-shadow: 0 16px 36px rgba(0,0,0,0.4); position: relative;
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
-        .canvas-card .selection-border { position: absolute; inset: -4px; border: 1.5px solid #3b82f6; pointer-events: none; border-radius: 10px; }
+        .canvas-card .selection-border { position: absolute; inset: -4px; border: 1.5px solid #3b82f6; pointer-events: none; border-radius: 14px; }
         .canvas-card .selection-border .s-handle { position: absolute; width: 7px; height: 7px; background: #ffffff; border: 1.5px solid #3b82f6; }
 
         /* SECTION HEADERS */
@@ -1581,9 +1582,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = techData[techKey];
 
                 if (data) {
-                    // Animasi Fade Out & Scale Down
+                    // Animasi Smooth Fade Out
                     ideCard.style.opacity = '0';
-                    ideCard.style.transform = 'scale(0.9)';
                     if (ideFilename) ideFilename.style.opacity = '0';
 
                     setTimeout(() => {
@@ -1593,11 +1593,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (ideTitle) ideTitle.textContent = data.title;
                         if (ideDesc) ideDesc.textContent = data.desc;
 
-                        // Animasi Fade In & Scale Up
+                        // Animasi Smooth Fade In
                         ideCard.style.opacity = '1';
-                        ideCard.style.transform = 'scale(0.95)';
                         if (ideFilename) ideFilename.style.opacity = '1';
-                    }, 250);
+                    }, 180);
                 }
             });
         });
