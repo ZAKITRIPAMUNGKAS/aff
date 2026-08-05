@@ -389,10 +389,10 @@ function h($str) {
             color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 24px; flex: none;
         }
 
-        .form-label { display: block; font-size: 13px; font-weight: 600; color: #475569; letter-spacing: 0.01em; margin-bottom: 5px; }
+        .form-label { display: block; font-size: 13.5px; font-weight: 600; color: #334155; letter-spacing: 0.01em; margin-bottom: 8px; }
         .form-input {
-            width: 100%; padding: 11px 14px; border: 1.5px solid #e2e8f0;
-            border-radius: 10px; font-size: 14px; outline: none;
+            width: 100%; padding: 13px 16px; border: 1.5px solid #cbd5e1;
+            border-radius: 12px; font-size: 14.5px; outline: none;
             transition: border-color 0.2s, box-shadow 0.2s; background: #f8fafc;
             color: #0f172a; font-family: 'Inter', sans-serif;
         }
@@ -1041,7 +1041,7 @@ function h($str) {
                         <h3 class="text-xl sm:text-2xl font-extrabold mb-2">Formulir Pesan &amp; Diskusi</h3>
                         <p class="text-sm text-slate-500 mb-7">Isi formulir di bawah dan pesan Anda langsung dikirim ke WhatsApp kami. <span class="text-teal-600 font-semibold">Respon cepat!</span></p>
                         <form id="contactWaForm" onsubmit="return handleWaContactForm(event)">
-                            <div style="display:grid; gap:14px;">
+                            <div style="display:grid; gap:18px;">
                                 <div>
                                     <label class="form-label">Nama Lengkap</label>
                                     <input type="text" name="name" id="waName" required placeholder="Contoh: Budi Santoso" class="form-input">

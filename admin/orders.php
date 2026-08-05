@@ -130,10 +130,10 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink); d
 .count { font-size:13px; color:var(--muted); margin-bottom:16px; }
 .table-wrap { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:auto; }
 table { width:100%; border-collapse:collapse; min-width:900px; }
-th { padding:12px 16px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); text-align:left; border-bottom:1px solid var(--border); white-space:nowrap; }
-td { padding:13px 16px; font-size:13.5px; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
+th { padding:16px 20px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); text-align:left; border-bottom:1px solid var(--border); white-space:nowrap; }
+td { padding:18px 20px; font-size:14px; border-bottom:1px solid rgba(255,255,255,0.05); vertical-align:middle; line-height:1.6; }
 tr:last-child td { border-bottom:none; }
-tr:hover td { background:rgba(255,255,255,0.02); }
+tr:hover td { background:rgba(255,255,255,0.03); }
 .order-code { font-family:monospace; font-size:12px; color:var(--muted); }
 .amount { font-weight:700; }
 .status-form { display:inline-flex; gap:6px; align-items:center; }
