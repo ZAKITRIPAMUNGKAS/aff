@@ -79,9 +79,10 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink); d
 .user-role { font-size:11px;color:var(--muted); }
 .logout-btn { display:block;margin-top:10px;text-align:center;padding:8px;background:rgba(248,81,73,0.1);border:1px solid rgba(248,81,73,0.2);color:#f85149;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s; }
 .logout-btn:hover { background:rgba(248,81,73,0.2); }
-.main { margin-left:var(--sidebar-w); flex:1; display:flex; flex-direction:column; }
+.main { margin-left:var(--sidebar-w); flex:1; display:flex; flex-direction:column; min-width:0; }
 .topbar { padding:20px 28px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:var(--sidebar); position:sticky;top:0;z-index:50; }
 .topbar h1 { font-size:18px; font-weight:700; }
+.topbar-right { font-size:13px; color:var(--muted); }
 .add-btn { background:var(--teal); color:#fff; text-decoration:none; padding:9px 18px; border-radius:8px; font-size:13.5px; font-weight:600; transition:opacity 0.2s; }
 .add-btn:hover { opacity:0.85; }
 .content { padding:28px; }
@@ -89,6 +90,19 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink); d
 .alert-ok  { background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.3); color:#34d399; }
 .alert-err { background:rgba(248,81,73,0.1); border:1px solid rgba(248,81,73,0.3); color:#f85149; }
 .grid { display:grid; grid-template-columns:1fr 380px; gap:24px; align-items:start; }
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  body { flex-direction: column; }
+  .sidebar { position: static; width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  .sidebar-nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; }
+  .nav-link { margin-bottom: 0; padding: 8px 12px; }
+  .nav-label { width: 100%; margin: 8px 0 4px; }
+  .main { margin-left: 0; }
+  .topbar { padding: 16px; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .content { padding: 16px; overflow-x: auto; }
+  .grid { grid-template-columns: 1fr; }
+  .table-card { overflow-x: auto; }
+}
 /* TABLE */
 .table-wrap { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:auto; }
 table { width:100%; border-collapse:collapse; min-width:600px; }

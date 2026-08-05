@@ -145,6 +145,17 @@ function h($str) {
         }
         .mobile-nav-drawer a:last-child { border-bottom: none; }
 
+        /* HEADER RESPONSIVE OVERRIDES */
+        @media (max-width: 767px) {
+            .nav-menu { display: none !important; }
+            .btn-outline-login { display: none !important; }
+            .mobile-toggle-btn { display: inline-flex !important; }
+        }
+        @media (min-width: 768px) {
+            .mobile-toggle-btn { display: none !important; }
+            .mobile-nav-drawer { display: none !important; }
+        }
+
         /* HERO SECTION */
         .hero-section { position: relative; padding: 32px 0 48px; overflow: hidden; }
         @media (min-width: 768px) { .hero-section { padding: 48px 0 64px; } }
