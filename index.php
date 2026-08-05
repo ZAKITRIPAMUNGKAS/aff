@@ -773,7 +773,7 @@ function h($str) {
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-slate-800">Achmad Farhan Fahrezi</div>
-                                <div class="text-slate-500 hero-badge-sub">Web Developer & Visual Designer</div>
+                                <div class="text-slate-500 hero-badge-sub">Digital Specialist</div>
                             </div>
                         </div>
                     </div>
