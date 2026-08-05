@@ -142,9 +142,9 @@ $features = array_filter(array_map('trim', explode("\n", (string) $package['feat
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkout — <?php echo h($package['name']); ?> | Aff Digital</title>
 <!-- Favicons -->
-<link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-<link rel="shortcut icon" type="image/jpeg" href="favicon.ico">
-<link rel="apple-touch-icon" href="assets/images/logo.jpg">
+<link rel="icon" type="image/png" href="assets/images/logo.png">
+<link rel="shortcut icon" type="image/png" href="favicon.ico">
+<link rel="apple-touch-icon" href="assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>

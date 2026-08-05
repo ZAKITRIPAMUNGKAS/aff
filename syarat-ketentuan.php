@@ -50,10 +50,7 @@ function h($str) {
 <header>
   <div class="nav">
     <a href="index.php" class="brand">
-      <svg viewBox="0 0 40 40" fill="none" width="28" height="28">
-        <circle cx="20" cy="20" r="19" stroke="#12172B" stroke-width="2"/>
-        <path d="M20 6 L20 20 L30 26" stroke="#E8A33D" stroke-width="2.4" stroke-linecap="round"/>
-      </svg>
+      <img src="assets/images/logo.png" alt="Aff Digital" style="height:32px; width:auto; border-radius:6px; object-fit:cover;">
       Aff Digital
     </a>
     <a href="index.php" class="back-link">&larr; Kembali ke Beranda</a>

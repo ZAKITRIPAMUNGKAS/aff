@@ -56,9 +56,8 @@ function badge($status) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dashboard — Admin Aff Digital</title>
 <!-- Favicons -->
-<link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
-<link rel="shortcut icon" type="image/jpeg" href="../favicon.ico">
-<link rel="apple-touch-icon" href="../assets/images/logo.jpg">
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -170,7 +169,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <div class="brand-icon">⚡</div>
+    <img src="../assets/images/logo.png" alt="Aff Digital" style="height:36px; width:auto; border-radius:8px; object-fit:cover;">
     <div>
       <div class="brand-name">Aff Digital</div>
       <div class="brand-sub">Admin Panel</div>
