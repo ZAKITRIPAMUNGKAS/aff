@@ -103,10 +103,14 @@ function h($str) {
             height: 76px;
         }
         .brand-logo {
-            font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 800;
-            color: var(--ink); letter-spacing: -0.04em; display: flex; align-items: center; gap: 10px;
+            font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 800;
+            color: var(--ink); letter-spacing: -0.04em; display: flex; align-items: center; gap: 8px;
         }
-        .brand-logo img { height: 38px; width: auto; border-radius: 8px; object-fit: cover; }
+        @media (min-width: 640px) {
+            .brand-logo { font-size: 24px; gap: 10px; }
+        }
+        .brand-logo img { height: 32px; width: auto; border-radius: 8px; object-fit: cover; }
+        @media (min-width: 640px) { .brand-logo img { height: 38px; } }
         .brand-logo span.dot { color: var(--teal); }
         .nav-menu { display: flex; align-items: center; gap: 32px; font-size: 14px; font-weight: 500; color: var(--muted); }
         .nav-menu a { transition: color 0.2s; }
@@ -127,11 +131,12 @@ function h($str) {
             border: 1.5px solid var(--border); color: var(--ink); font-size: 22px; cursor: pointer;
         }
         .mobile-nav-drawer {
-            position: absolute; top: 76px; left: 0; right: 0; background: #ffffff;
+            position: absolute; top: 76px; left: 0; right: 0; width: 100%; background: #ffffff;
             border-bottom: 1px solid var(--border); box-shadow: var(--shadow-lg);
             padding: 20px 24px; display: flex; flex-direction: column; gap: 12px;
             opacity: 0; pointer-events: none; transform: translateY(-10px);
             transition: all 0.25s cubic-bezier(0.16,1,0.3,1); z-index: 9999;
+            box-sizing: border-box;
         }
         .mobile-nav-drawer.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .mobile-nav-drawer a {
