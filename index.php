@@ -41,9 +41,9 @@ function h($str) {
     <meta name="description" content="Aff Digital membantu UMKM &amp; Brand mengubah ide bisnis menjadi website berkinerja tinggi, sistem custom (POS, HR, Inventori), serta foto &amp; video promosi profesional.">
 
     <!-- Favicons -->
-    <link rel="icon" type="image/png" href="assets/images/logo.png">
-    <link rel="shortcut icon" type="image/png" href="assets/images/logo.png">
-    <link rel="apple-touch-icon" href="assets/images/logo.png">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.jpg">
 
     <!-- Fonts, Icons & Tailwind CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -696,7 +696,7 @@ function h($str) {
     <div class="wrap relative">
         <div class="header-inner">
             <a href="#" class="brand-logo">
-                <img src="assets/images/logo.png" alt="Aff Digital">
+                <img src="assets/images/logo.jpg" alt="Aff Digital">
                 <span>aff digital<span class="dot">.</span></span>
             </a>
             <nav class="nav-menu hidden md:flex">
@@ -1172,7 +1172,7 @@ function h($str) {
             <!-- Kolom 1: Brand -->
             <div>
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
-                    <img src="assets/images/logo.png" alt="Aff Digital" style="height:40px; width:auto; border-radius:10px; object-fit:cover;">
+                    <img src="assets/images/logo.jpg" alt="Aff Digital" style="height:40px; width:auto; border-radius:10px; object-fit:cover;">
                     <span style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:800; color:#fff; letter-spacing:-0.04em;">aff digital<span style="color:#2fb8ae;">.</span></span>
                 </div>
                 <p style="line-height:1.75; max-width:280px; color:#64748b; font-size:13.5px;">

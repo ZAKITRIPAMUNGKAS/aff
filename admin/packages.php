@@ -147,7 +147,7 @@ tr:hover td { background:rgba(255,255,255,0.03); }
 <body>
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <img src="../assets/images/logo.png" alt="Aff Digital" style="height:36px; width:auto; border-radius:8px; object-fit:cover;">
+    <img src="../assets/images/logo.jpg" alt="Aff Digital" style="height:36px; width:auto; border-radius:8px; object-fit:cover;">
     <div><div class="brand-name">Aff Digital</div><div class="brand-sub">Admin Panel</div></div>
   </div>
   <nav class="sidebar-nav">
