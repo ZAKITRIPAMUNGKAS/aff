@@ -395,7 +395,7 @@ function h($str) {
             border-radius: 12px; font-size: 14.5px; outline: none; transition: border-color 0.2s; background: #f8fafc;
         }
         .form-input:focus { border-color: var(--teal); }
-        .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: #475569; letter-spacing: 0.01em; margin-bottom: 7px; }
 
         /* ===== PORTFOLIO MODAL — REDESIGNED ===== */
         .p-modal-overlay {
@@ -1077,28 +1077,101 @@ function h($str) {
 </main>
 
 <!-- FOOTER -->
-<footer class="bg-slate-900 text-slate-400 py-12 sm:py-16 text-sm">
-    <div class="wrap">
-        <div class="flex flex-col sm:flex-row flex-wrap justify-between gap-8 pb-8 sm:pb-10 border-b border-white/10">
-            <div class="max-w-xs">
-                <div class="flex items-center gap-2.5 mb-3.5">
-                    <img src="assets/images/logo.jpg" alt="Aff Digital" class="h-9 w-auto rounded-lg object-cover">
-                    <span class="font-['Space_Grotesk'] text-[22px] font-extrabold text-white">aff digital.</span>
-                </div>
-                <p class="leading-relaxed">Agency Jasa Pembuatan Website, Sistem Custom, dan Foto/Video Promosi Profesional Indonesia.</p>
-            </div>
+<footer style="background:#0f172a; color:#94a3b8; font-size:14px;">
+    <div class="wrap" style="padding-top:64px; padding-bottom:64px;">
+        <div style="display:grid; grid-template-columns:1fr; gap:40px;" class="footer-grid">
+
+            <!-- Kolom 1: Brand -->
             <div>
-                <div class="text-white font-bold mb-3.5">Legalitas &amp; Kebijakan</div>
-                <div class="grid gap-2">
-                    <a href="syarat-ketentuan.php" class="hover:text-white transition-colors">Syarat &amp; Ketentuan</a>
-                    <a href="refund-policy.php" class="hover:text-white transition-colors">Kebijakan Pengembalian Dana</a>
-                    <a href="faq.php" class="hover:text-white transition-colors">Pertanyaan Umum (FAQ)</a>
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+                    <img src="assets/images/logo.jpg" alt="Aff Digital" style="height:40px; width:auto; border-radius:10px; object-fit:cover;">
+                    <span style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:800; color:#fff; letter-spacing:-0.04em;">aff digital<span style="color:#2fb8ae;">.</span></span>
+                </div>
+                <p style="line-height:1.75; max-width:280px; color:#64748b; font-size:13.5px;">
+                    Agensi digital profesional yang membantu UMKM &amp; Brand bertransformasi lewat website, sistem custom, dan konten visual.
+                </p>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <a href="https://wa.me/6289612339608" target="_blank" rel="noopener"
+                       style="display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#94a3b8; font-size:18px; transition:all 0.2s;"
+                       onmouseover="this.style.background='rgba(47,184,174,0.15)';this.style.color='#2fb8ae';"
+                       onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='#94a3b8';">
+                        <i class="ph ph-whatsapp-logo"></i>
+                    </a>
+                    <a href="mailto:owener@affdigital.my.id"
+                       style="display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#94a3b8; font-size:18px; transition:all 0.2s;"
+                       onmouseover="this.style.background='rgba(47,184,174,0.15)';this.style.color='#2fb8ae';"
+                       onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='#94a3b8';">
+                        <i class="ph ph-envelope"></i>
+                    </a>
                 </div>
             </div>
+
+            <!-- Kolom 2: Navigasi -->
+            <div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#2fb8ae; margin-bottom:18px;">Navigasi</div>
+                <div style="display:flex; flex-direction:column; gap:11px;">
+                    <a href="#tentang" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Tentang Kami</a>
+                    <a href="#layanan" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Layanan</a>
+                    <a href="#portofolio" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Portofolio</a>
+                    <a href="#harga" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Harga Paket</a>
+                    <a href="#testimoni" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Testimoni</a>
+                </div>
+            </div>
+
+            <!-- Kolom 3: Kebijakan -->
+            <div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#2fb8ae; margin-bottom:18px;">Legalitas &amp; Kebijakan</div>
+                <div style="display:flex; flex-direction:column; gap:11px;">
+                    <a href="syarat-ketentuan.php" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Syarat &amp; Ketentuan</a>
+                    <a href="refund-policy.php" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Kebijakan Pengembalian Dana</a>
+                    <a href="faq.php" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Pertanyaan Umum (FAQ)</a>
+                    <a href="admin/login.php" style="color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">Login Admin</a>
+                </div>
+            </div>
+
+            <!-- Kolom 4: Kontak -->
+            <div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#2fb8ae; margin-bottom:18px;">Hubungi Kami</div>
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                    <a href="https://wa.me/6289612339608" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:10px; color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">
+                        <i class="ph ph-whatsapp-logo" style="font-size:18px; color:#2fb8ae;"></i>
+                        <span>+62 896-1233-9608</span>
+                    </a>
+                    <a href="mailto:owener@affdigital.my.id" style="display:flex; align-items:center; gap:10px; color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">
+                        <i class="ph ph-envelope" style="font-size:18px; color:#2fb8ae;"></i>
+                        <span>owener@affdigital.my.id</span>
+                    </a>
+                    <div style="display:flex; align-items:center; gap:10px; color:#64748b;">
+                        <i class="ph ph-globe" style="font-size:18px; color:#2fb8ae;"></i>
+                        <span>affdigital.my.id</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="text-center pt-6 sm:pt-7 text-[13px]">&copy; <?php echo date('Y'); ?> Aff Digital. Hak Cipta Dilindungi.</div>
+
+        <!-- Divider -->
+        <div style="height:1px; background:rgba(255,255,255,0.07); margin:40px 0 28px;"></div>
+
+        <!-- Bottom Bar -->
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; font-size:13px; color:#475569;">
+            <span>&copy; <?php echo date('Y'); ?> Aff Digital. Hak Cipta Dilindungi.</span>
+            <span style="display:flex; align-items:center; gap:6px;">
+                <span class="relative inline-flex" style="width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,0.2);display:inline-block;"></span>
+                Beroperasi aktif &amp; siap menerima proyek baru
+            </span>
+        </div>
     </div>
+    <style>
+    @media (min-width: 640px) {
+        .footer-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (min-width: 1024px) {
+        .footer-grid { grid-template-columns: 2fr 1fr 1fr 1.5fr !important; gap: 48px !important; }
+    }
+    </style>
 </footer>
+
 
 <!-- PORTFOLIO MODAL — REDESIGNED -->
 <div class="p-modal-overlay" id="portfolioModal" aria-hidden="true">
