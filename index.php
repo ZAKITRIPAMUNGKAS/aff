@@ -237,18 +237,74 @@ function h($str) {
         @media (min-width: 640px) { .hero-badge-sub { font-size: 11px; } }
 
         /* HERO STATS */
-        .hero-stats-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-            padding-top: 24px; margin-top: 28px; border-top: 1px solid var(--border);
+        .hero-stats-container {
+            border-top: 1px solid #e2e8f0;
+            margin-top: 32px;
+            padding-top: 24px;
             width: 100%;
         }
-        @media (min-width: 768px) { .hero-stats-grid { gap: 24px; padding-top: 36px; margin-top: 48px; } }
-        @media (max-width: 480px) { .hero-stats-grid { grid-template-columns: 1fr; gap: 16px; } }
-        .stat-item { display: flex; flex-direction: column; }
-        .stat-item b { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1.1; }
-        @media (min-width: 768px) { .stat-item b { font-size: 32px; } }
-        .stat-item .label { font-size: 13px; font-weight: 700; color: var(--ink); margin-top: 6px; }
-        .stat-item .sub { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+        @media (min-width: 768px) {
+            .hero-stats-container {
+                margin-top: 48px;
+                padding-top: 36px;
+            }
+        }
+
+        .hero-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .hero-stats-grid { gap: 24px; }
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 4px;
+            position: relative;
+        }
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background: #e2e8f0;
+        }
+
+        .stat-item b {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+        }
+        @media (min-width: 640px) { .stat-item b { font-size: 32px; } }
+
+        .stat-item .label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #334155;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+        @media (min-width: 640px) { .stat-item .label { font-size: 14px; margin-top: 6px; } }
+
+        .stat-item .sub {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 3px;
+            line-height: 1.4;
+            display: none;
+        }
+        @media (min-width: 640px) { .stat-item .sub { display: block; } }
 
         /* METHODOLOGY DARK SECTION */
         .dark-section { background: #111111; color: #ffffff; padding: 64px 0; position: relative; z-index: 20; }
@@ -742,22 +798,22 @@ function h($str) {
             </div>
 
             <!-- Hero Stats -->
-            <div class="border-t border-slate-200 mt-10 sm:mt-14 pt-6 sm:pt-10">
-                <div class="grid grid-cols-3 sm:grid-cols-3 gap-4 sm:gap-8">
+            <div class="hero-stats-container">
+                <div class="hero-stats-grid">
                     <div class="stat-item">
                         <b>50+</b>
                         <div class="label">Proyek Selesai</div>
-                        <div class="sub hidden sm:block">Website, Toko Online &amp; Sistem Custom</div>
+                        <div class="sub">Website, Toko Online &amp; Sistem Custom</div>
                     </div>
-                    <div class="stat-item sm:border-l border-slate-200 sm:pl-6">
+                    <div class="stat-item">
                         <b>99%</b>
                         <div class="label">Klien Puas</div>
-                        <div class="sub hidden sm:block">Hasil Kualitas Terbaik &amp; Fast Response</div>
+                        <div class="sub">Hasil Kualitas Terbaik &amp; Fast Response</div>
                     </div>
-                    <div class="stat-item sm:border-l border-slate-200 sm:pl-6">
+                    <div class="stat-item">
                         <b>3+</b>
                         <div class="label">Tahun Kerja</div>
-                        <div class="sub hidden sm:block">Pengembangan Ekosistem Digital</div>
+                        <div class="sub">Pengembangan Ekosistem Digital</div>
                     </div>
                 </div>
             </div>
