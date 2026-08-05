@@ -91,7 +91,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink); d
 .alert-err { background:rgba(248,81,73,0.1); border:1px solid rgba(248,81,73,0.3); color:#f85149; }
 .grid { display:grid; grid-template-columns:1fr 380px; gap:24px; align-items:start; }
 /* RESPONSIVE */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   body { flex-direction: column; }
   .sidebar { position: static; width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
   .sidebar-nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; }

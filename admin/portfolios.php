@@ -248,7 +248,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink); d
 .grid { display:grid; grid-template-columns:1fr 380px; gap:24px; align-items:start; }
 
 /* RESPONSIVE */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   body { flex-direction: column; }
   .sidebar { position: static; width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
   .sidebar-nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; }
