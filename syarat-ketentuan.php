@@ -26,13 +26,19 @@ function h($str) {
   .nav{max-width:1160px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;}
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;color:var(--ink);}
   .back-link{font-size:14px;color:var(--muted);font-weight:500;}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:48px 24px 80px;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:40px 36px;box-shadow:0 10px 30px rgba(18,23,43,0.04);}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:32px 16px 64px;}
+  @media (min-width: 640px) { .wrap{padding:48px 24px 80px;} }
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 20px;box-shadow:0 10px 30px rgba(18,23,43,0.04);}
+  @media (min-width: 640px) { .card{padding:40px 36px;} }
   .badge-tag{display:inline-block;background:rgba(63,169,160,0.12);color:#1f5c57;border:1px solid rgba(63,169,160,0.3);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.06em;}
-  h1{font-size:32px;line-height:1.2;}
-  p.lead{color:var(--muted);font-size:16px;margin-bottom:32px;border-bottom:1px solid var(--line);padding-bottom:24px;}
-  .content-section{margin-bottom:32px;}
-  .content-section h2{font-size:20px;color:var(--ink);border-left:3px solid var(--teal);padding-left:12px;margin-top:28px;}
+  h1{font-size:24px;line-height:1.2;}
+  @media (min-width: 640px) { h1{font-size:32px;} }
+  p.lead{color:var(--muted);font-size:15px;margin-bottom:24px;border-bottom:1px solid var(--line);padding-bottom:20px;}
+  @media (min-width: 640px) { p.lead{font-size:16px;margin-bottom:32px;padding-bottom:24px;} }
+  .content-section{margin-bottom:24px;}
+  @media (min-width: 640px) { .content-section{margin-bottom:32px;} }
+  .content-section h2{font-size:18px;color:var(--ink);border-left:3px solid var(--teal);padding-left:12px;margin-top:24px;}
+  @media (min-width: 640px) { .content-section h2{font-size:20px;margin-top:28px;} }
   .content-section p, .content-section li{color:#3a4052;font-size:15px;}
   .content-section ul{padding-left:20px;margin:12px 0;}
   .content-section li{margin-bottom:8px;}

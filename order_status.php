@@ -62,8 +62,10 @@ $statusInfo = $order ? ($labels[$order['status']] ?? ['Status Tidak Diketahui', 
   body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
   h1,h2{font-family:'Space Grotesk',sans-serif;margin:0;}
   a{color:var(--ink);}
-  .wrap{max-width:560px;margin:0 auto;padding:64px 24px;text-align:center;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:40px 32px;}
+  .wrap{max-width:540px;margin:0 auto;padding:40px 16px 80px;}
+  @media (min-width: 640px) { .wrap{padding:60px 24px 80px;} }
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px 24px;text-align:center;box-shadow:0 12px 32px rgba(18,23,43,0.06);}
+  @media (min-width: 640px) { .card{padding:40px 36px;} }
   .badge{display:inline-block;padding:8px 18px;border-radius:999px;font-weight:700;font-size:14px;margin-bottom:20px;}
   .row{display:flex;justify-content:space-between;font-size:14.5px;padding:10px 0;border-bottom:1px solid var(--line);text-align:left;}
   .row:last-child{border-bottom:none;}
