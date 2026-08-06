@@ -1102,6 +1102,14 @@ function h($str) {
                                 <div class="font-extrabold text-base text-slate-900 mt-0.5">owener@affdigital.my.id</div>
                             </div>
                         </a>
+                        
+                        <div class="contact-info-card">
+                            <div class="contact-icon-box"><i class="ph ph-map-pin"></i></div>
+                            <div>
+                                <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Alamat Kantor</div>
+                                <div class="font-extrabold text-base text-slate-900 mt-0.5" style="line-height:1.4">Jl. Kalianyar Sidomukti 18<br>Surabaya, Indonesia</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1216,6 +1224,10 @@ function h($str) {
                     <div style="display:flex; align-items:center; gap:10px; color:#64748b;">
                         <i class="ph ph-globe" style="font-size:18px; color:#2fb8ae;"></i>
                         <span>affdigital.my.id</span>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; gap:10px; color:#64748b;">
+                        <i class="ph ph-map-pin" style="font-size:18px; color:#2fb8ae; margin-top:2px;"></i>
+                        <span style="line-height:1.5;">Jl. Kalianyar Sidomukti 18<br>Surabaya, Indonesia</span>
                     </div>
                 </div>
             </div>
