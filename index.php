@@ -1102,6 +1102,14 @@ function h($str) {
                                 <div class="font-extrabold text-base text-slate-900 mt-0.5">owener@affdigital.my.id</div>
                             </div>
                         </a>
+
+                        <a href="mailto:afarhanfahrezi@gmail.com" class="contact-info-card hover:border-teal-400 hover:shadow-md transition-all duration-200">
+                            <div class="contact-icon-box"><i class="ph ph-envelope"></i></div>
+                            <div>
+                                <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Email Alternatif</div>
+                                <div class="font-extrabold text-base text-slate-900 mt-0.5">afarhanfahrezi@gmail.com</div>
+                            </div>
+                        </a>
                         
                         <div class="contact-info-card">
                             <div class="contact-icon-box"><i class="ph ph-map-pin"></i></div>
@@ -1220,6 +1228,10 @@ function h($str) {
                     <a href="mailto:owener@affdigital.my.id" style="display:flex; align-items:center; gap:10px; color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">
                         <i class="ph ph-envelope" style="font-size:18px; color:#2fb8ae;"></i>
                         <span>owener@affdigital.my.id</span>
+                    </a>
+                    <a href="mailto:afarhanfahrezi@gmail.com" style="display:flex; align-items:center; gap:10px; color:#64748b; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748b'">
+                        <i class="ph ph-envelope" style="font-size:18px; color:#2fb8ae;"></i>
+                        <span>afarhanfahrezi@gmail.com</span>
                     </a>
                     <div style="display:flex; align-items:center; gap:10px; color:#64748b;">
                         <i class="ph ph-globe" style="font-size:18px; color:#2fb8ae;"></i>
