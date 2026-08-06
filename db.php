@@ -22,6 +22,11 @@ function get_db() {
             try {
                 $pdo->exec("ALTER TABLE portfolios ADD COLUMN project_link VARCHAR(255) NULL AFTER media_type");
             } catch (PDOException $e) {}
+
+            // Auto modify price column in packages to VARCHAR
+            try {
+                $pdo->exec("ALTER TABLE packages MODIFY COLUMN price VARCHAR(255) NOT NULL");
+            } catch (PDOException $e) {}
             
         } catch (PDOException $e) {
             http_response_code(500);
@@ -60,6 +65,14 @@ function get_active_portfolios() {
 }
 
 function format_rupiah($amount) {
-    return 'Rp' . number_format((float) $amount, 0, ',', '.');
+    if (is_numeric($amount)) {
+        return 'Rp' . number_format((float) $amount, 0, ',', '.');
+    }
+    
+    // Jika mengandung huruf/simbol lain, asumsikan sudah diformat manual oleh pengguna (misal rentang harga)
+    $amountStr = trim((string)$amount);
+    if (stripos($amountStr, 'Rp') === 0) {
+        return $amountStr;
+    }
+    return 'Rp ' . $amountStr;
 }
-

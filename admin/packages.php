@@ -21,12 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $category = in_array($_POST['category'] ?? '', ['website','foto_video']) ? $_POST['category'] : 'website';
         $name     = trim(strip_tags($_POST['name']     ?? ''));
         $tagline  = trim(strip_tags($_POST['tagline']  ?? ''));
-        $price    = (int)preg_replace('/\D/', '', $_POST['price'] ?? '0');
+        $price    = trim(strip_tags($_POST['price'] ?? ''));
         $features = trim($_POST['features'] ?? '');
         $sort     = (int)($_POST['sort_order'] ?? 0);
         $active   = isset($_POST['is_active']) ? 1 : 0;
 
-        if (!$name || $price <= 0) {
+        if (!$name || $price === '') {
             $err = 'Nama dan harga wajib diisi.';
         } elseif ($id) {
             $db->prepare("UPDATE packages SET category=?,name=?,tagline=?,price=?,features=?,sort_order=?,is_active=? WHERE id=?")
@@ -192,7 +192,7 @@ tr:hover td { background:rgba(255,255,255,0.03); }
                 <div style="font-weight:600"><?php echo h3($p['name']); ?></div>
                 <div style="font-size:12px;color:var(--muted)"><?php echo h3($p['tagline']); ?></div>
               </td>
-              <td style="font-weight:700">Rp<?php echo number_format((float)$p['price'],0,',','.'); ?></td>
+              <td style="font-weight:700"><?php echo format_rupiah($p['price']); ?></td>
               <td>
                 <span class="active-dot <?php echo $p['is_active'] ? 'dot-on' : 'dot-off'; ?>"></span>
                 <?php echo $p['is_active'] ? 'Aktif' : 'Nonaktif'; ?>
@@ -242,8 +242,8 @@ tr:hover td { background:rgba(255,255,255,0.03); }
             <input type="text" name="tagline" maxlength="160" value="<?php echo h3($editPkg['tagline']??''); ?>" placeholder="Deskripsi singkat...">
           </div>
           <div class="field">
-            <label>Harga (Rp)</label>
-            <input type="number" name="price" required min="0" step="1000" value="<?php echo (int)($editPkg['price']??0); ?>" placeholder="1500000">
+            <label>Harga</label>
+            <input type="text" name="price" required value="<?php echo h3($editPkg['price']??''); ?>" placeholder="1.500.000 atau 5.000.000 - 10.000.000">
           </div>
           <div class="field">
             <label>Fitur (satu per baris)</label>
