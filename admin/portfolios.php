@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $categoryLabel = in_array($_POST['category_label'] ?? '', $staticCategories) ? $_POST['category_label'] : 'Lainnya';
         $description   = trim(strip_tags($_POST['description'] ?? ''));
         $mediaType     = in_array($_POST['media_type'] ?? '', ['image', 'video']) ? $_POST['media_type'] : 'image';
+        $projectLink   = trim(strip_tags($_POST['project_link'] ?? ''));
         $mediaUrl      = trim($_POST['media_url_existing'] ?? '');
         $imagesJson    = trim($_POST['images_json_existing'] ?? '[]');
         $sortOrder     = (int)($_POST['sort_order'] ?? 0);
@@ -162,17 +163,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($id) {
                 $stmt = $db->prepare("
                     UPDATE portfolios
-                    SET title=?, category_label=?, description=?, media_type=?, media_url=?, images_json=?, sort_order=?, is_active=?
+                    SET title=?, category_label=?, description=?, media_type=?, project_link=?, media_url=?, images_json=?, sort_order=?, is_active=?
                     WHERE id=?
                 ");
-                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $mediaUrl, $finalImagesJson, $sortOrder, $isActive, $id]);
+                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $projectLink, $mediaUrl, $finalImagesJson, $sortOrder, $isActive, $id]);
                 $msg = "Portofolio #{$id} berhasil diperbarui.";
             } else {
                 $stmt = $db->prepare("
-                    INSERT INTO portfolios (title, category_label, description, media_type, media_url, images_json, sort_order, is_active)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO portfolios (title, category_label, description, media_type, project_link, media_url, images_json, sort_order, is_active)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ");
-                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $mediaUrl, $finalImagesJson, $sortOrder, $isActive]);
+                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $projectLink, $mediaUrl, $finalImagesJson, $sortOrder, $isActive]);
                 $msg = 'Portofolio baru berhasil ditambahkan.';
             }
         }
@@ -455,6 +456,11 @@ tr:hover td { background:rgba(255,255,255,0.03); }
               <option value="image" <?php if(($editItem['media_type']??'image')==='image') echo 'selected';?>>Gambar / Galeri Foto</option>
               <option value="video" <?php if(($editItem['media_type']??'')==='video') echo 'selected';?>>Video Promosi</option>
             </select>
+          </div>
+
+          <div class="field">
+            <label>Link / URL Hasil Kerja (Opsional)</label>
+            <input type="url" name="project_link" value="<?php echo h4($editItem['project_link'] ?? ''); ?>" placeholder="Contoh: https://website-klien.com">
           </div>
 
           <div class="field">

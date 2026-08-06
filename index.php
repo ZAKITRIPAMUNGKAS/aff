@@ -970,6 +970,7 @@ function h($str) {
                     ];
                 }
                 foreach ($portfoliosList as $p):
+                    if (!isset($p['project_link'])) $p['project_link'] = '';
                     $dataJson = json_encode($p, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
                     $catLabel = $p['category_label'] ?? 'Lainnya';
                 ?>
@@ -1278,6 +1279,7 @@ function h($str) {
                 </div>
             </div>
             <div class="p-modal-footer">
+                <div id="modalProjectLinkContainer"></div>
                 <a href="#kontak" onclick="closePortfolioModal()" class="btn-solid-dark">
                     <i class="ph ph-chat-circle-dots"></i>
                     <span>Konsultasikan Proyek Serupa</span>
@@ -1410,6 +1412,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modalCatStat) modalCatStat.textContent = catLabel;
         modalTitle.textContent = data.title || 'Judul Proyek';
         modalDescription.textContent = data.description || '';
+
+        const modalLinkContainer = document.getElementById('modalProjectLinkContainer');
+        if (modalLinkContainer) {
+            if (data.project_link && data.project_link.trim() !== '') {
+                modalLinkContainer.innerHTML = `<a href="${data.project_link}" target="_blank" class="btn-solid-dark" style="background:#2fb8ae;color:#fff;margin-bottom:10px;width:100%;"><i class="ph ph-link"></i> Kunjungi Hasil Kerja Proyek</a>`;
+            } else {
+                modalLinkContainer.innerHTML = '';
+            }
+        }
 
         let images = [];
         if (data.images_json) {

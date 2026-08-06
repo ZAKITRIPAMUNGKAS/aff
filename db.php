@@ -17,6 +17,12 @@ function get_db() {
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 ]
             );
+            
+            // Auto add column project_link if not exists
+            try {
+                $pdo->exec("ALTER TABLE portfolios ADD COLUMN project_link VARCHAR(255) NULL AFTER media_type");
+            } catch (PDOException $e) {}
+            
         } catch (PDOException $e) {
             http_response_code(500);
             die('Koneksi database gagal. Pastikan DB_HOST, DB_NAME, DB_USER, DB_PASS di admin/config.php sudah benar.');
