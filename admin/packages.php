@@ -7,40 +7,52 @@ $db = get_db();
 $msg = '';
 $err = '';
 
+// Show DB setup notice if not connected
+$dbConnected = ($db !== null);
+
 // --- Handle actions ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $db) {
     $action = $_POST['action'] ?? '';
+    try {
+        if ($action === 'toggle') {
+            $id = (int)$_POST['id'];
+            $db->prepare("UPDATE packages SET is_active = NOT is_active WHERE id=?")->execute([$id]);
+            $msg = 'Status paket diperbarui.';
 
-    if ($action === 'toggle') {
-        $id = (int)$_POST['id'];
-        $db->prepare("UPDATE packages SET is_active = NOT is_active WHERE id=?")->execute([$id]);
-        $msg = 'Status paket diperbarui.';
+        } elseif ($action === 'save') {
+            $id       = (int)($_POST['id'] ?? 0);
+            $category = in_array($_POST['category'] ?? '', ['website','foto_video']) ? $_POST['category'] : 'website';
+            $name     = trim(strip_tags($_POST['name']     ?? ''));
+            $tagline  = trim(strip_tags($_POST['tagline']  ?? ''));
+            $price    = trim(strip_tags($_POST['price'] ?? ''));
+            $features = trim($_POST['features'] ?? '');
+            $sort     = (int)($_POST['sort_order'] ?? 0);
+            $active   = isset($_POST['is_active']) ? 1 : 0;
+            $desc     = trim(strip_tags($_POST['description'] ?? ''));
 
-    } elseif ($action === 'save') {
-        $id       = (int)($_POST['id'] ?? 0);
-        $category = in_array($_POST['category'] ?? '', ['website','foto_video']) ? $_POST['category'] : 'website';
-        $name     = trim(strip_tags($_POST['name']     ?? ''));
-        $tagline  = trim(strip_tags($_POST['tagline']  ?? ''));
-        $price    = trim(strip_tags($_POST['price'] ?? ''));
-        $features = trim($_POST['features'] ?? '');
-        $sort     = (int)($_POST['sort_order'] ?? 0);
-        $active   = isset($_POST['is_active']) ? 1 : 0;
-
-        if (!$name || $price === '') {
-            $err = 'Nama dan harga wajib diisi.';
-        } elseif ($id) {
-            $db->prepare("UPDATE packages SET category=?,name=?,tagline=?,price=?,features=?,sort_order=?,is_active=? WHERE id=?")
-               ->execute([$category, $name, $tagline, $price, $features, $sort, $active, $id]);
-            $msg = "Paket #{$id} berhasil diperbarui.";
-        } else {
-            $db->prepare("INSERT INTO packages (category,name,tagline,price,features,sort_order,is_active) VALUES (?,?,?,?,?,?,?)")
-               ->execute([$category, $name, $tagline, $price, $features, $sort, $active]);
-            $msg = 'Paket baru berhasil ditambahkan.';
+            if (!$name || $price === '') {
+                $err = 'Nama dan harga wajib diisi.';
+            } elseif ($id) {
+                $db->prepare("UPDATE packages SET category=?,name=?,tagline=?,description=?,price=?,features=?,sort_order=?,is_active=? WHERE id=?")
+                   ->execute([$category, $name, $tagline, $desc, $price, $features, $sort, $active, $id]);
+                $msg = "Paket #{$id} berhasil diperbarui.";
+            } else {
+                $db->prepare("INSERT INTO packages (category,name,tagline,description,price,features,sort_order,is_active) VALUES (?,?,?,?,?,?,?,?)")
+                   ->execute([$category, $name, $tagline, $desc, $price, $features, $sort, $active]);
+                $msg = 'Paket baru berhasil ditambahkan.';
+            }
         }
+    } catch (Exception $e) {
+        $err = 'Database error: ' . $e->getMessage();
     }
 }
 
-$packages = $db->query("SELECT * FROM packages ORDER BY category, sort_order, id")->fetchAll();
+$packages = [];
+if ($db) {
+    try {
+        $packages = $db->query("SELECT * FROM packages ORDER BY category, sort_order, id")->fetchAll();
+    } catch (Exception $e) { $packages = []; }
+}
 $editId   = (int)($_GET['edit'] ?? 0);
 $editPkg  = null;
 if ($editId) {
@@ -177,6 +189,18 @@ tr:hover td { background:rgba(255,255,255,0.03); }
 
     <?php if ($msg): ?><div class="alert alert-ok">✅ <?php echo h3($msg); ?></div><?php endif; ?>
     <?php if ($err): ?><div class="alert alert-err">⚠️ <?php echo h3($err); ?></div><?php endif; ?>
+
+    <?php if (!$dbConnected): ?>
+    <div class="alert" style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;margin-bottom:20px;">
+      ⚠️ <strong>Database belum terhubung.</strong> Untuk mengaktifkan fitur ini:
+      <ol style="margin-top:10px;margin-left:20px;font-size:13px;line-height:2">
+        <li>Masuk <strong>cPanel → MySQL Databases</strong> → buat database & user baru.</li>
+        <li>Masuk <strong>cPanel → phpMyAdmin</strong> → pilih database → klik tab <strong>Import</strong> → upload file <code>schema.sql</code> dari folder aff.</li>
+        <li>Edit file <strong><code>config.php</code></strong> di File Manager: isi <code>DB_NAME</code>, <code>DB_USER</code>, <code>DB_PASS</code> sesuai yang dibuat.</li>
+        <li>Segarkan halaman ini — fitur CRUD paket layanan & portofolio akan aktif.</li>
+      </ol>
+    </div>
+    <?php endif; ?>
 
     <div class="grid">
       <!-- TABLE -->

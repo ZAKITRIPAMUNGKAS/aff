@@ -6,6 +6,7 @@ require_once __DIR__ . '/../db.php';
 $db = get_db();
 $msg = '';
 $err = '';
+$dbConnected = ($db !== null);
 
 $uploadDir = __DIR__ . '/../assets/uploads/portfolios/';
 if (!is_dir($uploadDir)) {
@@ -23,14 +24,16 @@ $staticCategories = [
 ];
 
 // --- Handle Form Submissions ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $db) {
     $action = $_POST['action'] ?? '';
 
     if ($action === 'toggle') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id) {
-            $db->prepare("UPDATE portfolios SET is_active = NOT is_active WHERE id=?")->execute([$id]);
-            $msg = 'Status portofolio berhasil diperbarui.';
+            try {
+                $db->prepare("UPDATE portfolios SET is_active = NOT is_active WHERE id=?")->execute([$id]);
+                $msg = 'Status portofolio berhasil diperbarui.';
+            } catch (Exception $e) { $err = 'DB error: ' . $e->getMessage(); }
         }
 
     } elseif ($action === 'delete') {
@@ -182,10 +185,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Fetch all portfolios ORDER BY id DESC (terbaru paling atas)
 $portfolios = [];
-try {
-    $portfolios = $db->query("SELECT * FROM portfolios ORDER BY id DESC")->fetchAll();
-} catch (PDOException $e) {
-    $portfolios = [];
+if ($db) {
+    try {
+        $portfolios = $db->query("SELECT * FROM portfolios ORDER BY id DESC")->fetchAll();
+    } catch (Exception $e) {
+        $portfolios = [];
+    }
 }
 
 // Edit Item Logic

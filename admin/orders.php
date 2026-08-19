@@ -6,21 +6,21 @@ require_once __DIR__ . '/../db.php';
 $db = get_db();
 
 // --- Handle status update ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['update_status'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['update_status']) && $db) {
     $newStatus = $_POST['new_status'] ?? '';
     $orderId   = (int)($_POST['order_id'] ?? 0);
     $allowed   = ['pending','paid','failed','expired','cancelled'];
-    if ($orderId && in_array($newStatus, $allowed)) {
-        $db->prepare("UPDATE orders SET status=? WHERE id=?")->execute([$newStatus, $orderId]);
-    }
+    try {
+        if ($orderId && in_array($newStatus, $allowed)) {
+            $db->prepare("UPDATE orders SET status=? WHERE id=?")->execute([$newStatus, $orderId]);
+        }
+    } catch (Exception $e) {}
     
-    // AJAX response
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         header('Content-Type: application/json');
         echo json_encode(['success' => true, 'status' => $newStatus]);
         exit;
     }
-
     header('Location: orders.php?' . http_build_query(array_intersect_key($_GET, ['status'=>1,'gateway'=>1,'q'=>1,'page'=>1])));
     exit;
 }
@@ -31,32 +31,41 @@ $filterGateway = $_GET['gateway'] ?? '';
 $search        = trim($_GET['q']  ?? '');
 $page          = max(1, (int)($_GET['page'] ?? 1));
 $perPage       = 20;
+$totalRows     = 0;
+$orders        = [];
+$totalPages    = 1;
 
-$where  = [];
-$params = [];
-if ($filterStatus)  { $where[] = 'o.status = ?';           $params[] = $filterStatus; }
-if ($filterGateway) { $where[] = 'o.payment_gateway = ?';  $params[] = $filterGateway; }
-if ($search) {
-    $where[] = '(o.order_code LIKE ? OR o.customer_name LIKE ? OR o.customer_email LIKE ?)';
-    $params  = array_merge($params, ["%$search%", "%$search%", "%$search%"]);
+if ($db) {
+    try {
+        $where  = [];
+        $params = [];
+        if ($filterStatus)  { $where[] = 'o.status = ?';           $params[] = $filterStatus; }
+        if ($filterGateway) { $where[] = 'o.payment_gateway = ?';  $params[] = $filterGateway; }
+        if ($search) {
+            $where[] = '(o.order_code LIKE ? OR o.customer_name LIKE ? OR o.customer_email LIKE ?)';
+            $params  = array_merge($params, ["%$search%", "%$search%", "%$search%"]);
+        }
+        $whereSQL = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+
+        $countStmt = $db->prepare("SELECT COUNT(*) FROM orders o $whereSQL");
+        $countStmt->execute($params);
+        $totalRows  = (int)$countStmt->fetchColumn();
+        $totalPages = max(1, (int)ceil($totalRows / $perPage));
+        $page       = min($page, $totalPages);
+        $offset     = ($page - 1) * $perPage;
+
+        $stmt = $db->prepare("
+            SELECT o.*, p.name as package_name
+            FROM orders o LEFT JOIN packages p ON p.id = o.package_id
+            $whereSQL ORDER BY o.created_at DESC LIMIT $perPage OFFSET $offset
+        ");
+        $stmt->execute($params);
+        $orders = $stmt->fetchAll();
+    } catch (Exception $e) { $orders = []; }
+} else {
+    $whereSQL = '';
+    $params   = [];
 }
-$whereSQL = $where ? 'WHERE ' . implode(' AND ', $where) : '';
-
-$totalRows = (int)$db->prepare("SELECT COUNT(*) FROM orders o $whereSQL")->execute($params) ? 0 : 0;
-$countStmt = $db->prepare("SELECT COUNT(*) FROM orders o $whereSQL");
-$countStmt->execute($params);
-$totalRows = (int)$countStmt->fetchColumn();
-$totalPages = max(1, (int)ceil($totalRows / $perPage));
-$page = min($page, $totalPages);
-$offset = ($page - 1) * $perPage;
-
-$stmt = $db->prepare("
-    SELECT o.*, p.name as package_name
-    FROM orders o JOIN packages p ON p.id = o.package_id
-    $whereSQL ORDER BY o.created_at DESC LIMIT $perPage OFFSET $offset
-");
-$stmt->execute($params);
-$orders = $stmt->fetchAll();
 
 function h2($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 function badge2($status) {
