@@ -397,46 +397,15 @@ function h($str) {
                                 </a>
                             <?php endif; ?>
                         </div>
-
                     </div>
                     <?php endforeach; ?>
                 </div>
-
             <?php else: ?>
-                <!-- Fallback jika DB kosong: tampilkan 2 featured work statis -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                    <div class="group bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl overflow-hidden transition-all hover:translate-y-[-4px] duration-300">
-                        <div class="relative aspect-video overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1556742049-0a67daf64f42?w=600&auto=format&fit=crop&q=80" alt="POS Kasir" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase bg-purple-900/60 text-purple-300 border border-purple-700/40">Sistem</span>
-                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase bg-[#8b1818] text-white">LIVE DEMO</span>
-                        </div>
-                        <div class="p-5 space-y-2">
-                            <h3 class="font-grotesk font-extrabold text-sm text-[#eee6d8]">POS KASIR POINT OF SALE</h3>
-                            <p class="text-xs text-[#a69090] line-clamp-2">Sistem kasir multi-unit bisnis, transaksi cepat, cetak struk &amp; laporan omset.</p>
-                            <a href="https://affdigital.my.id/pos-kasir" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-mono text-[#e63946] hover:underline font-bold">
-                                <i class="ph-bold ph-arrow-up-right text-sm"></i> Buka Demo →
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="group bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl overflow-hidden transition-all hover:translate-y-[-4px] duration-300">
-                        <div class="relative aspect-video overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format&fit=crop&q=80" alt="Portal Karyawan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase bg-purple-900/60 text-purple-300 border border-purple-700/40">Sistem</span>
-                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase bg-[#8b1818] text-white">LIVE DEMO</span>
-                        </div>
-                        <div class="p-5 space-y-2">
-                            <h3 class="font-grotesk font-extrabold text-sm text-[#eee6d8]">PORTAL KARYAWAN HR DIGITAL</h3>
-                            <p class="text-xs text-[#a69090] line-clamp-2">Presensi GPS, slip gaji digital, pengajuan cuti &amp; approval admin.</p>
-                            <a href="https://affdigital.my.id/portal-karyawan" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-mono text-[#e63946] hover:underline font-bold">
-                                <i class="ph-bold ph-arrow-up-right text-sm"></i> Buka Demo →
-                            </a>
-                        </div>
-                    </div>
-
-
+                <!-- Tampilan kosong jika belum ada data di database -->
+                <div class="col-span-full py-12 text-center border-2 border-dashed border-[#2d1b1b] rounded-3xl bg-[#1c1313]">
+                    <i class="ph-bold ph-folder-open text-4xl text-[#8b1818] mb-3"></i>
+                    <h3 class="font-grotesk font-bold text-[#eee6d8]">Portofolio Kosong</h3>
+                    <p class="text-xs text-[#a69090] mt-1">Nantikan karya-karya terbaik dari kami segera!</p>
                 </div>
             <?php endif; ?>
 
