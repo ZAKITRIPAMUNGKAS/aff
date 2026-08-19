@@ -5,37 +5,47 @@ require_once __DIR__ . '/../db.php';
 
 $db = get_db();
 
-// --- Stats ---
-$stats = [];
-$r = $db->query("SELECT COUNT(*) FROM orders"); $stats['total'] = (int)$r->fetchColumn();
-$r = $db->query("SELECT COUNT(*) FROM orders WHERE status='paid'"); $stats['paid'] = (int)$r->fetchColumn();
-$r = $db->query("SELECT COUNT(*) FROM orders WHERE status='pending'"); $stats['pending'] = (int)$r->fetchColumn();
-$r = $db->query("SELECT COALESCE(SUM(amount),0) FROM orders WHERE status='paid' AND MONTH(created_at)=MONTH(NOW()) AND YEAR(created_at)=YEAR(NOW())");
-$stats['revenue_month'] = (float)$r->fetchColumn();
-$r = $db->query("SELECT COALESCE(SUM(amount),0) FROM orders WHERE status='paid' AND DATE(created_at)=CURDATE()");
-$stats['revenue_today'] = (float)$r->fetchColumn();
-
-// --- Revenue 7 days ---
-$chart = $db->query("
-    SELECT DATE(created_at) as day, COALESCE(SUM(amount),0) as total
-    FROM orders WHERE status='paid' AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-    GROUP BY DATE(created_at) ORDER BY day ASC
-")->fetchAll();
-$chartMap = [];
-foreach ($chart as $row) $chartMap[$row['day']] = (float)$row['total'];
+$stats = ['total' => 0, 'paid' => 0, 'pending' => 0, 'revenue_month' => 0, 'revenue_today' => 0];
 $chartDays = [];
-for ($i = 6; $i >= 0; $i--) {
-    $d = date('Y-m-d', strtotime("-{$i} day"));
-    $chartDays[] = ['date' => $d, 'label' => date('d/m', strtotime($d)), 'val' => $chartMap[$d] ?? 0];
+$recent = [];
+
+if ($db) {
+    try {
+        $r = $db->query("SELECT COUNT(*) FROM orders"); $stats['total'] = (int)$r->fetchColumn();
+        $r = $db->query("SELECT COUNT(*) FROM orders WHERE status='paid'"); $stats['paid'] = (int)$r->fetchColumn();
+        $r = $db->query("SELECT COUNT(*) FROM orders WHERE status='pending'"); $stats['pending'] = (int)$r->fetchColumn();
+        $r = $db->query("SELECT COALESCE(SUM(amount),0) FROM orders WHERE status='paid' AND MONTH(created_at)=MONTH(NOW()) AND YEAR(created_at)=YEAR(NOW())");
+        $stats['revenue_month'] = (float)$r->fetchColumn();
+        $r = $db->query("SELECT COALESCE(SUM(amount),0) FROM orders WHERE status='paid' AND DATE(created_at)=CURDATE()");
+        $stats['revenue_today'] = (float)$r->fetchColumn();
+
+        $chart = $db->query("
+            SELECT DATE(created_at) as day, COALESCE(SUM(amount),0) as total
+            FROM orders WHERE status='paid' AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            GROUP BY DATE(created_at) ORDER BY day ASC
+        ")->fetchAll();
+        $chartMap = [];
+        foreach ($chart as $row) $chartMap[$row['day']] = (float)$row['total'];
+        for ($i = 6; $i >= 0; $i--) {
+            $d = date('Y-m-d', strtotime("-{$i} day"));
+            $chartDays[] = ['date' => $d, 'label' => date('d/m', strtotime($d)), 'val' => $chartMap[$d] ?? 0];
+        }
+
+        $recent = $db->query("
+            SELECT o.*, p.name as package_name, p.category as package_category
+            FROM orders o JOIN packages p ON p.id = o.package_id
+            ORDER BY o.created_at DESC LIMIT 15
+        ")->fetchAll();
+    } catch (Exception $e) {}
+}
+
+if (empty($chartDays)) {
+    for ($i = 6; $i >= 0; $i--) {
+        $d = date('Y-m-d', strtotime("-{$i} day"));
+        $chartDays[] = ['date' => $d, 'label' => date('d/m', strtotime($d)), 'val' => 0];
+    }
 }
 $chartMax = max(array_column($chartDays, 'val')) ?: 1;
-
-// --- Recent orders ---
-$recent = $db->query("
-    SELECT o.*, p.name as package_name, p.category as package_category
-    FROM orders o JOIN packages p ON p.id = o.package_id
-    ORDER BY o.created_at DESC LIMIT 15
-")->fetchAll();
 
 function badge($status) {
     $map = [
