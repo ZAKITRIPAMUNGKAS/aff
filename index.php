@@ -126,7 +126,7 @@ function h($str) {
             
             <!-- Logo -->
             <a href="index.php" class="flex items-center gap-3 group">
-                <img src="assets/images/logo_aff_digital.png" alt="AFF Digital" class="h-10 w-auto group-hover:scale-105 transition-transform">
+                <img src="assets/images/logo.png" alt="AFF Digital" class="h-10 w-auto group-hover:scale-105 transition-transform">
             </a>
 
             <!-- Nav Links -->
@@ -818,12 +818,9 @@ function h($str) {
                 
                 <!-- BRAND INFO -->
                 <div class="space-y-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-[#8b1818] text-[#eee6d8] flex items-center justify-center font-bebas text-2xl shadow-md">
-                            AFF
-                        </div>
-                        <span class="font-bebas text-2xl tracking-widest text-[#eee6d8]">aff digital.</span>
-                    </div>
+                    <a href="index.php" class="inline-block group">
+                        <img src="assets/images/logo.png" alt="AFF Digital" class="h-10 w-auto group-hover:scale-105 transition-transform">
+                    </a>
                     <p class="text-xs text-[#a69090] leading-relaxed">
                         Agensi digital profesional yang membantu UMKM &amp; Brand bertransformasi lewat website, sistem custom, dan konten visual.
                     </p>
