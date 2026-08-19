@@ -126,10 +126,7 @@ function h($str) {
             
             <!-- Logo -->
             <a href="index.php" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-[#8b1818] text-[#eee6d8] flex items-center justify-center font-bebas text-2xl shadow-[0_0_20px_rgba(139,24,24,0.6)] group-hover:scale-105 transition-transform">
-                    AFF
-                </div>
-                <span class="font-bebas text-2xl tracking-widest text-[#eee6d8]">AFF DIGITAL</span>
+                <img src="assets/images/logo_aff_digital.png" alt="AFF Digital" class="h-10 w-auto group-hover:scale-105 transition-transform">
             </a>
 
             <!-- Nav Links -->
@@ -202,11 +199,11 @@ function h($str) {
                     <!-- Crimson Red Circular Backdrop -->
                     <div class="w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#8b1818] via-[#a81d1d] to-[#4a0d0d] absolute -z-10 shadow-[0_0_80px_rgba(139,24,24,0.7)] animate-pulse"></div>
                     
-                    <img src="assets/images/logo.jpg" alt="AFF Digital Agency" class="w-64 h-64 sm:w-80 sm:h-80 object-cover rounded-full border-4 border-[#eee6d8]/20 shadow-2xl z-10 hover:scale-105 transition-transform duration-500">
+                    <img src="assets/images/logo_person.png" alt="Achmad Farhan Fahrezi" class="w-64 h-64 sm:w-80 sm:h-80 object-cover rounded-full border-4 border-[#eee6d8]/20 shadow-2xl z-10 hover:scale-105 transition-transform duration-500">
                     
                     <div class="mt-6 text-center z-10 space-y-1">
-                        <h3 class="font-bebas text-3xl text-[#eee6d8] tracking-widest">AFF DIGITAL STUDIO</h3>
-                        <span class="text-xs font-mono text-[#e63946] uppercase tracking-wider block">SURABAYA, INDONESIA</span>
+                        <h3 class="font-bebas text-3xl text-[#eee6d8] tracking-widest">Achmad Farhan Fahrezi</h3>
+                        <span class="text-xs font-mono text-[#e63946] uppercase tracking-wider block">Digital Specialist</span>
                     </div>
                 </div>
 
