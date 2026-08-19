@@ -144,7 +144,7 @@ function h($str) {
 
             <!-- CTA Buttons (Consultation & Admin Login) -->
             <div class="flex items-center gap-3">
-                <a href="admin/" class="hidden sm:inline-flex py-2 px-4 rounded-full bg-[#1c1313] hover:bg-[#2d1b1b] text-[#a69090] hover:text-[#eee6d8] font-mono text-xs border border-[#2d1b1b] transition-all">
+                <a href="admin/login.php" class="hidden sm:inline-flex py-2 px-4 rounded-full bg-[#1c1313] hover:bg-[#2d1b1b] text-[#a69090] hover:text-[#eee6d8] font-mono text-xs border border-[#2d1b1b] transition-all">
                     Login Admin
                 </a>
                 <a href="https://wa.me/6289612339608?text=Halo%20AFF%20Digital,%20saya%20ingin%20konsultasi%20pembuatan%20website/sistem" target="_blank" class="py-2.5 px-6 rounded-full bg-[#8b1818] hover:bg-[#a81d1d] text-[#eee6d8] font-grotesk font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(139,24,24,0.5)] hover:scale-105 flex items-center gap-2">
@@ -787,7 +787,7 @@ function h($str) {
                         <li><a href="syarat-ketentuan.php" class="hover:text-[#eee6d8] transition-colors">Syarat &amp; Ketentuan</a></li>
                         <li><a href="refund-policy.php" class="hover:text-[#eee6d8] transition-colors">Kebijakan Pengembalian Dana</a></li>
                         <li><a href="faq.php" class="hover:text-[#eee6d8] transition-colors">Pertanyaan Umum (FAQ)</a></li>
-                        <li><a href="admin/" class="hover:text-[#eee6d8] transition-colors">Login Admin</a></li>
+                        <li><a href="admin/login.php" class="hover:text-[#eee6d8] transition-colors">Login Admin</a></li>
                     </ul>
                 </div>
 

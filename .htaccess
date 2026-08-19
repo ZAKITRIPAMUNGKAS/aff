@@ -1,6 +1,8 @@
 # .htaccess — Aff Digital Production Configuration
 # Automatic HTTP to HTTPS Redirect, Gzip Compression, Security & Performance
 
+DirectoryIndex index.php login.php index.html
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
@@ -28,8 +30,8 @@ Options -Indexes
 # Set Default Charset
 AddDefaultCharset UTF-8
 
-# Protect Sensitive Configuration Files
-<FilesMatch "^\.env|schema\.sql|composer\.lock|config\.php$">
+# Protect Sensitive Configuration Files (Except admin)
+<FilesMatch "^\.env|schema\.sql|composer\.lock">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
