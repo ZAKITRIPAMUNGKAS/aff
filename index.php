@@ -757,7 +757,7 @@ function h($str) {
                             <div>
                                 <span class="text-[10px] text-[#a69090] font-bold uppercase block">ALAMAT KANTOR</span>
                                 <strong class="text-xs font-bold text-[#eee6d8] leading-relaxed block">
-                                    Jl. Kalianyar Sidomukti 18 Kota Surabaya, Jawa Timur 60161, Indonesia
+                                    Jl. Kalianyar Sidomukti 18, Kota Surabaya, Jawa Timur 60161, Indonesia
                                 </strong>
                             </div>
                         </div>
@@ -885,7 +885,7 @@ function h($str) {
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="ph-bold ph-map-pin text-[#e63946] shrink-0 mt-0.5"></i>
-                            <span>Jl. Kalianyar Sidomukti 18 Surabaya, Indonesia</span>
+                            <span>Jl. Kalianyar Sidomukti 18, Kota Surabaya, Jawa Timur 60161, Indonesia</span>
                         </li>
                     </ul>
                 </div>

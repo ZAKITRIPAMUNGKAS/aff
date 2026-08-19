@@ -96,7 +96,7 @@ function h($str) {
       <h2>4. Waktu &amp; Metode Pengembalian Dana</h2>
       <p>Setelah pengajuan refund disetujui:</p>
       <ul>
-        <li><b>Midtrans / iPaymu (E-Wallet &amp; QRIS):</b> Dana akan dikembalikan otomatis ke saldo E-Wallet/Akun asal dalam 1-3 hari kerja.</li>
+        <li><b>E-Wallet &amp; QRIS:</b> Pengembalian dana ke E-Wallet dilakukan secara <b>manual oleh merchant (Aff Digital)</b> langsung ke akun asal Klien dalam 1-3 hari kerja setelah verifikasi disetujui. <i>Proses refund tidak dilakukan secara otomatis melalui sistem iPaymu.</i></li>
         <li><b>Transfer Bank:</b> Dana akan ditransfer kembali ke rekening bank Klien dalam 1-2 hari kerja.</li>
         <li>Pengembalian dana dilakukan 100% tanpa potongan biaya administrasi internal Aff Digital.</li>
       </ul>
