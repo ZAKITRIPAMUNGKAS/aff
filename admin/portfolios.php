@@ -141,7 +141,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $db) {
 
                             if (move_uploaded_file($fileTmp, $targetFile)) {
                                 $uploadedFiles[] = 'assets/uploads/portfolios/' . $safeName;
+                            } else {
+                                $err = "Gagal memindahkan file {$fileName} ke folder tujuan.";
                             }
+                        } else {
+                            $err = "Format file {$fileName} tidak didukung.";
+                        }
+                    } else if ($_FILES['media_files']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
+                        // Gather specific upload error messages
+                        $uploadErrCode = $_FILES['media_files']['error'][$i];
+                        if ($uploadErrCode == UPLOAD_ERR_INI_SIZE || $uploadErrCode == UPLOAD_ERR_FORM_SIZE) {
+                            $err = "Ukuran file terlalu besar (melebihi batas server PHP).";
+                        } else {
+                            $err = "Terjadi kesalahan saat mengunggah file (Kode: {$uploadErrCode}).";
                         }
                     }
                 }
