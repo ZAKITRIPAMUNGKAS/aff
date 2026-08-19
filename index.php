@@ -126,9 +126,7 @@ function h($str) {
             
             <!-- Logo -->
             <a href="index.php" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-[#8b1818] text-[#eee6d8] flex items-center justify-center font-bebas text-2xl shadow-[0_0_20px_rgba(139,24,24,0.6)] group-hover:scale-105 transition-transform">
-                    AFF
-                </div>
+                <img src="assets/images/logo.jpg" alt="AFF Digital" class="h-10 w-auto rounded-lg group-hover:scale-105 transition-transform">
                 <span class="font-bebas text-2xl tracking-widest text-[#eee6d8] group-hover:text-white transition-colors">AFF DIGITAL</span>
             </a>
 
@@ -822,9 +820,7 @@ function h($str) {
                 <!-- BRAND INFO -->
                 <div class="space-y-4">
                     <a href="index.php" class="flex items-center gap-3 group">
-                        <div class="w-10 h-10 rounded-xl bg-[#8b1818] text-[#eee6d8] flex items-center justify-center font-bebas text-2xl shadow-md group-hover:scale-105 transition-transform">
-                            AFF
-                        </div>
+                        <img src="assets/images/logo.jpg" alt="AFF Digital" class="h-10 w-auto rounded-lg group-hover:scale-105 transition-transform">
                         <span class="font-bebas text-2xl tracking-widest text-[#eee6d8] group-hover:text-white transition-colors">AFF DIGITAL.</span>
                     </a>
                     <p class="text-xs text-[#a69090] leading-relaxed">
