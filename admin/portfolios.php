@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $db) {
         if ($id) {
             try {
                 $db->prepare("UPDATE portfolios SET is_active = NOT is_active WHERE id=?")->execute([$id]);
-                $msg = 'Status portofolio berhasil diperbarui.';
+                header("Location: portfolios.php?msg=" . urlencode('Status portofolio berhasil diperbarui.'));
+                exit;
             } catch (Exception $e) { $err = 'DB error: ' . $e->getMessage(); }
         }
 
@@ -64,8 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $db) {
                         @unlink($fullPath);
                     }
                 }
-                $db->prepare("DELETE FROM portfolios WHERE id=?")->execute([$id]);
-                $msg = "Portofolio #{$id} berhasil dihapus.";
+                try {
+                    $db->prepare("DELETE FROM portfolios WHERE id=?")->execute([$id]);
+                    header("Location: portfolios.php?msg=" . urlencode("Portofolio #{$id} berhasil dihapus."));
+                    exit;
+                } catch (Exception $e) { $err = 'DB error: ' . $e->getMessage(); }
             }
         }
 
@@ -175,24 +179,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $db) {
         if (!$err) {
             $finalImagesJson = json_encode(array_slice(array_values($existingImages), 0, 10));
 
-            if ($id) {
-                $stmt = $db->prepare("
-                    UPDATE portfolios
-                    SET title=?, category_label=?, description=?, media_type=?, project_link=?, media_url=?, images_json=?, sort_order=?, is_active=?
-                    WHERE id=?
-                ");
-                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $projectLink, $mediaUrl, $finalImagesJson, $sortOrder, $isActive, $id]);
-                $msg = "Portofolio #{$id} berhasil diperbarui.";
-            } else {
-                $stmt = $db->prepare("
-                    INSERT INTO portfolios (title, category_label, description, media_type, project_link, media_url, images_json, sort_order, is_active)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ");
-                $stmt->execute([$title, $categoryLabel, $description, $mediaType, $projectLink, $mediaUrl, $finalImagesJson, $sortOrder, $isActive]);
-                $msg = 'Portofolio baru berhasil ditambahkan.';
+            try {
+                if ($id) {
+                    $stmt = $db->prepare("
+                        UPDATE portfolios
+                        SET title=?, category_label=?, description=?, media_type=?, project_link=?, media_url=?, images_json=?, sort_order=?, is_active=?
+                        WHERE id=?
+                    ");
+                    $stmt->execute([$title, $categoryLabel, $description, $mediaType, $projectLink, $mediaUrl, $finalImagesJson, $sortOrder, $isActive, $id]);
+                    
+                    // Redirect to prevent form resubmission
+                    header("Location: portfolios.php?msg=" . urlencode("Portofolio #{$id} berhasil diperbarui."));
+                    exit;
+                } else {
+                    $stmt = $db->prepare("
+                        INSERT INTO portfolios (title, category_label, description, media_type, project_link, media_url, images_json, sort_order, is_active)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ");
+                    $stmt->execute([$title, $categoryLabel, $description, $mediaType, $projectLink, $mediaUrl, $finalImagesJson, $sortOrder, $isActive]);
+                    
+                    // Redirect to prevent form resubmission
+                    header("Location: portfolios.php?msg=" . urlencode('Portofolio baru berhasil ditambahkan.'));
+                    exit;
+                }
+            } catch (PDOException $e) {
+                $err = "Database Error: " . $e->getMessage();
             }
         }
     }
+}
+
+// Catch success message from redirect
+if (isset($_GET['msg'])) {
+    $msg = trim(strip_tags($_GET['msg']));
 }
 
 // Fetch all portfolios ORDER BY id DESC (terbaru paling atas)
