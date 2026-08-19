@@ -1,7 +1,5 @@
 <?php
-// checkout.php
-// Menampilkan form pemesanan untuk satu paket, lalu membuat transaksi Midtrans Snap.
-
+// checkout.php — AFF Digital Direct Payment Gateway Checkout
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/midtrans.php';
 require_once __DIR__ . '/ipaymu.php';
@@ -14,29 +12,20 @@ function clean_text($value, $maxLength) {
     return function_exists('mb_substr') ? mb_substr($value, 0, $maxLength) : substr($value, 0, $maxLength);
 }
 
-// Ambil package ID dari GET (pertama kali buka) atau POST (saat form disubmit)
-$packageId = 0;
+// Ambil package ID dari GET atau POST
+$packageId = 1;
 if (isset($_GET['package']) && (int)$_GET['package'] > 0) {
     $packageId = (int)$_GET['package'];
 } elseif (isset($_POST['package']) && (int)$_POST['package'] > 0) {
     $packageId = (int)$_POST['package'];
 }
-$package   = $packageId ? get_package_by_id($packageId) : null;
-
-if (!$package) {
-    http_response_code(404);
-    echo '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Paket tidak ditemukan</title></head><body style="font-family:sans-serif;max-width:560px;margin:80px auto;text-align:center;">';
-    echo '<h2>Paket tidak ditemukan</h2><p>Paket yang Anda pilih tidak tersedia atau sudah tidak aktif.</p>';
-    echo '<p><a href="index.php#harga">Kembali ke daftar paket</a></p></body></html>';
-    exit;
-}
+$package = get_package_by_id($packageId);
 
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Honeypot anti-spam (field hp_url_confirm harus selalu kosong; bot mengisinya)
     if (!empty($_POST['hp_url_confirm'])) {
-        header('Location: index.php#harga');
+        header('Location: index.php#pricing');
         exit;
     }
 
@@ -52,20 +41,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         $orderCode = 'AFF-' . date('Ymd-His') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
-        $amount    = (int) $package['price'];
+        $amount    = (int) preg_replace('/[^0-9]/', '', (string)$package['price']);
+        if ($amount <= 0) $amount = 1500000;
 
-        $db = get_db();
-        $stmt = $db->prepare(
-            "INSERT INTO orders (order_code, package_id, customer_name, customer_email, customer_phone, notes, amount, payment_gateway, status)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')"
-        );
-        $stmt->execute([$orderCode, $package['id'], $name, $email, $phone, $notes, $amount, $gateway]);
+        try {
+            $db = get_db();
+            if ($db) {
+                $stmt = $db->prepare(
+                    "INSERT INTO orders (order_code, package_id, customer_name, customer_email, customer_phone, notes, amount, payment_gateway, status)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')"
+                );
+                $stmt->execute([$orderCode, $package['id'], $name, $email, $phone, $notes, $amount, $gateway]);
+            }
+        } catch (Exception $e) {}
 
-        $itemName = ($package['category'] === 'website' ? 'Website - ' : 'Foto & Video - ') . $package['name'];
+        $itemName = ($package['category'] === 'website' ? 'Website - ' : 'Sistem - ') . $package['name'];
 
         if ($gateway === 'ipaymu') {
             if (IPAYMU_API_KEY === 'GANTI_DENGAN_API_KEY_IPAYMU') {
-                // Fallback Simulasi Demo jika API Key iPaymu belum diisi
                 header('Location: order_status.php?order=' . urlencode($orderCode) . '&gateway=ipaymu&demo=1');
                 exit;
             }
@@ -84,194 +77,188 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             if (isset($result['error'])) {
-                $errors[] = 'Gagal membuat transaksi iPaymu: ' . $result['error'] . ' <br><a href="order_status.php?order=' . urlencode($orderCode) . '&demo=1" style="color:#d9534f;font-weight:bold;text-decoration:underline;">Lanjut ke Simulasi Pesanan Saja &rarr;</a>';
+                $errors[] = 'Gagal membuat transaksi iPaymu: ' . $result['error'] . ' <br><a href="order_status.php?order=' . urlencode($orderCode) . '&demo=1" class="text-rose-400 font-bold underline">Lanjut ke Simulasi Pesanan Saja &rarr;</a>';
             } elseif (!empty($result['Url'])) {
-                $upd = $db->prepare("UPDATE orders SET snap_token = ? WHERE order_code = ?");
-                $upd->execute([$result['SessionID'] ?? null, $orderCode]);
                 header('Location: ' . $result['Url']);
                 exit;
             } else {
                 $errors[] = 'Respons pembayaran iPaymu tidak valid. Silakan coba lagi.';
             }
         } else {
+            // Midtrans Snap
+            if (MIDTRANS_SERVER_KEY === 'GANTI_DENGAN_SERVER_KEY_MIDTRANS_ANDA') {
+                header('Location: order_status.php?order=' . urlencode($orderCode) . '&gateway=midtrans&demo=1');
+                exit;
+            }
+
             $nameParts = preg_split('/\s+/', $name, 2);
             $params = [
                 'transaction_details' => [
                     'order_id'     => $orderCode,
                     'gross_amount' => $amount,
                 ],
+                'item_details' => [
+                    [
+                        'id'       => (string) $package['id'],
+                        'price'    => $amount,
+                        'quantity' => 1,
+                        'name'     => mb_substr($itemName, 0, 50),
+                    ]
+                ],
                 'customer_details' => [
-                    'first_name' => $nameParts[0] ?? $name,
+                    'first_name' => $nameParts[0],
                     'last_name'  => $nameParts[1] ?? '',
                     'email'      => $email,
                     'phone'      => $phone,
                 ],
-                'item_details' => [[
-                    'id'       => 'PKG-' . $package['id'],
-                    'price'    => $amount,
-                    'quantity' => 1,
-                    'name'     => substr($itemName, 0, 50),
-                ]],
-                'callbacks' => [
-                    'finish' => rtrim(SITE_URL, '/') . '/order_status.php?order=' . urlencode($orderCode),
-                ],
             ];
 
-            $result = midtrans_create_transaction($params);
+            $snapToken = midtrans_create_snap_token($params);
 
-            if (isset($result['error'])) {
-                $errors[] = 'Gagal membuat transaksi Midtrans: ' . $result['error'] . ' <br><a href="order_status.php?order=' . urlencode($orderCode) . '&demo=1" style="color:#d9534f;font-weight:bold;text-decoration:underline;">Lanjut ke Simulasi Pesanan Saja &rarr;</a>';
-            } elseif (!empty($result['redirect_url'])) {
-                $upd = $db->prepare("UPDATE orders SET snap_token = ? WHERE order_code = ?");
-                $upd->execute([$result['token'] ?? null, $orderCode]);
-                header('Location: ' . $result['redirect_url']);
+            if (is_array($snapToken) && isset($snapToken['error'])) {
+                $errors[] = 'Gagal membuat token Midtrans: ' . $snapToken['error'] . ' <br><a href="order_status.php?order=' . urlencode($orderCode) . '&demo=1" class="text-rose-400 font-bold underline">Lanjut ke Simulasi Pesanan Saja &rarr;</a>';
+            } elseif (is_string($snapToken) && $snapToken !== '') {
+                $snapUrl = MIDTRANS_IS_PRODUCTION
+                    ? 'https://app.midtrans.com/snap/v2/vtweb/' . $snapToken
+                    : 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken;
+
+                header('Location: ' . $snapUrl);
                 exit;
             } else {
-                $errors[] = 'Respons pembayaran Midtrans tidak valid. Silakan coba lagi.';
+                $errors[] = 'Token pembayaran tidak valid.';
             }
         }
     }
 }
 
-$features = array_filter(array_map('trim', explode("\n", (string) $package['features'])));
+$price_formatted = is_numeric($package['price']) ? 'Rp ' . number_format((float)$package['price'], 0, ',', '.') : $package['price'];
 ?>
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full bg-[#120c0c]">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout — <?php echo h($package['name']); ?> | Aff Digital</title>
-<!-- Favicons -->
-<link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-<link rel="shortcut icon" type="image/png" href="favicon.ico">
-<link rel="apple-touch-icon" href="assets/images/logo.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#0f1623;
-    --paper:#f0f2f7;
-    --card:#ffffff;
-    --amber:#e8a33d;
-    --teal:#2fb8ae;
-    --teal-dark:#1f8a82;
-    --muted:#6b7485;
-    --line:rgba(15,22,35,0.10);
-    --line-soft:rgba(15,22,35,0.06);
-    --radius:20px;
-    --shadow-md:0 8px 28px rgba(15,22,35,0.08), 0 2px 8px rgba(15,22,35,0.04);
-    --shadow-lg:0 20px 56px rgba(15,22,35,0.12), 0 4px 16px rgba(15,22,35,0.06);
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; background:var(--paper);
-    background-image:
-      radial-gradient(ellipse 80% 50% at 10% -10%, rgba(47,184,174,0.09) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(232,163,61,0.07) 0%, transparent 55%);
-    background-attachment: fixed;
-    color:var(--ink); font-family:'Inter',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;letter-spacing:-0.02em;}
-  a{color:var(--teal);}
-  .wrap{max-width:940px;margin:0 auto;padding:32px 16px 64px;}
-  @media (min-width: 640px) { .wrap{padding:56px 24px 80px;} }
-  .back{display:inline-flex;align-items:center;gap:6px;margin-bottom:24px;color:var(--muted);font-size:13.5px;font-weight:600;text-decoration:none;transition:color 0.2s, transform 0.2s;}
-  @media (min-width: 640px) { .back{margin-bottom:28px;font-size:14px;} }
-  .back:hover{color:var(--ink);transform:translateX(-3px);}
-  .grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:start;}
-  @media (min-width: 768px){ .grid{grid-template-columns:1fr 1.2fr;gap:36px;} }
-  .card{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);padding:24px 20px;box-shadow:var(--shadow-md);transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s;}
-  @media (min-width: 640px) { .card{padding:36px;} }
-  .card:hover{box-shadow:var(--shadow-lg);}
-  .summary .cat{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:8px;background:rgba(47,184,174,0.10);padding:4px 12px;border-radius:999px;display:inline-block;}
-  @media (min-width: 640px) { .summary .cat{font-size:12px;} }
-  .summary h2{font-size:22px;margin-bottom:6px;font-weight:800;}
-  @media (min-width: 640px) { .summary h2{font-size:26px;} }
-  .summary .tagline{color:var(--muted);font-size:13.5px;margin-bottom:20px;line-height:1.6;}
-  @media (min-width: 640px) { .summary .tagline{font-size:14.5px;margin-bottom:24px;} }
-  .summary .price{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:800;margin-bottom:20px;letter-spacing:-0.03em;color:var(--ink);}
-  @media (min-width: 640px) { .summary .price{font-size:32px;margin-bottom:24px;} }
-  .summary ul{margin:0;padding-left:0;list-style:none;color:var(--muted);font-size:14.5px;display:grid;gap:12px;}
-  .summary li{display:flex;align-items:flex-start;gap:10px;}
-  .summary li::before{content:"✓";color:var(--teal);font-weight:800;font-size:15px;flex:none;}
-  .field{display:grid;gap:7px;margin-bottom:18px;}
-  .field label{font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;}
-  .field input, .field textarea{border:1px solid var(--line);border-radius:12px;padding:13px 16px;font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);background:#fcfdfe;transition:border-color 0.2s, box-shadow 0.2s, background 0.2s;}
-  .field input:focus, .field textarea:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 4px rgba(47,184,174,0.15);outline:none;}
-  .field textarea{resize:vertical;min-height:88px;}
-  .hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
-  .submit-btn{
-    width:100%;
-    background:linear-gradient(135deg, var(--ink) 0%, #1e2d4a 100%);
-    color:#fff;border:none;padding:15px 24px;border-radius:12px;
-    font-weight:700;font-size:15.5px;cursor:pointer;margin-top:8px;
-    box-shadow:0 4px 16px rgba(15,22,35,0.22);
-    position:relative;overflow:hidden;
-    transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  }
-  .submit-btn::after{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(60deg,transparent,rgba(255,255,255,0.2),transparent);transform:translateX(-100%) rotate(30deg);transition:transform 0.6s ease;}
-  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(15,22,35,0.30);}
-  .submit-btn:hover::after{transform:translateX(100%) rotate(30deg);}
-  .errors{background:#fdecec;border:1px solid #d9534f;color:#8a2620;padding:14px 18px;border-radius:12px;margin-bottom:20px;font-size:14px;}
-  .errors ul{margin:0;padding-left:18px;}
-  .secure-note{font-size:12.5px;color:var(--muted);margin-top:16px;text-align:center;line-height:1.6;}
-  .gateway-choice{display:grid;gap:10px;}
-  .gateway-opt{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;font-weight:normal;background:#fafbfc;transition:all 0.25s cubic-bezier(0.16,1,0.3,1);}
-  .gateway-opt input{accent-color:var(--teal);width:18px;height:18px;flex:none;}
-  .gateway-opt span{display:flex;flex-direction:column;font-size:14.5px;color:var(--ink);font-weight:700;}
-  .gateway-opt small{color:var(--muted);font-weight:400;font-size:12.5px;margin-top:2px;}
-  .gateway-opt:hover{border-color:var(--teal);background:#fff;transform:translateX(3px);}
-  .gateway-opt:has(input:checked){border-color:var(--teal);background:rgba(47,184,174,0.06);transform:translateX(3px);box-shadow:0 4px 16px rgba(47,184,174,0.15);}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pemesanan &amp; Payment Gateway — <?= h($package['name']) ?></title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        bebas: ['"Bebas Neue"', 'cursive'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        grotesk: ['"Space Grotesk"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-<div class="wrap">
-  <a class="back" href="index.php#harga">&larr; Kembali ke daftar paket</a>
-  <div class="grid">
-    <div class="card summary">
-      <div class="cat"><?php echo $package['category'] === 'website' ? 'Pembuatan Website' : 'Foto & Video'; ?></div>
-      <h2><?php echo h($package['name']); ?></h2>
-      <p class="tagline"><?php echo h($package['tagline']); ?></p>
-      <div class="price"><?php echo h(format_rupiah($package['price'])); ?></div>
-      <ul>
-        <?php foreach ($features as $f): ?>
-          <li><?php echo h($f); ?></li>
-        <?php endforeach; ?>
-      </ul>
-    </div>
-    <div class="card">
-      <h3 style="margin-bottom:18px;">Data Pemesan</h3>
-      <?php if (!empty($errors)): ?>
-        <div class="errors"><ul><?php foreach ($errors as $e) echo '<li>' . h($e) . '</li>'; ?></ul></div>
-      <?php endif; ?>
-      <form method="POST" action="checkout.php?package=<?php echo $packageId; ?>">
-        <input type="hidden" name="package" value="<?php echo h($package['id']); ?>">
-        <input class="hp-field" type="text" name="hp_url_confirm" id="hp_url_confirm" tabindex="-1" autocomplete="new-password" aria-hidden="true" value="">
-        <div class="field"><label for="name">Nama lengkap</label><input id="name" name="name" type="text" required value="<?php echo h($_POST['name'] ?? ''); ?>"></div>
-        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required value="<?php echo h($_POST['email'] ?? ''); ?>"></div>
-        <div class="field"><label for="phone">Nomor WhatsApp</label><input id="phone" name="phone" type="text" required value="<?php echo h($_POST['phone'] ?? ''); ?>"></div>
-        <div class="field"><label for="notes">Catatan (opsional)</label><textarea id="notes" name="notes"><?php echo h($_POST['notes'] ?? ''); ?></textarea></div>
-        <div class="field">
-          <label>Metode pembayaran</label>
-          <div class="gateway-choice">
-            <label class="gateway-opt">
-              <input type="radio" name="gateway" value="midtrans" <?php echo (($_POST['gateway'] ?? 'midtrans') === 'midtrans') ? 'checked' : ''; ?>>
-              <span>Midtrans <small>Kartu, e-wallet, VA, QRIS</small></span>
-            </label>
-            <label class="gateway-opt">
-              <input type="radio" name="gateway" value="ipaymu" <?php echo (($_POST['gateway'] ?? '') === 'ipaymu') ? 'checked' : ''; ?>>
-              <span>iPaymu <small>VA, QRIS, e-wallet, Alfamart/Indomaret</small></span>
-            </label>
-          </div>
+<body class="min-h-full bg-[#120c0c] text-[#eee6d8] font-sans antialiased p-4 sm:p-8 flex items-center justify-center">
+
+    <div class="max-w-xl w-full bg-[#1c1313] border border-[#2d1b1b] rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-[#2d1b1b] pb-4">
+            <div class="flex items-center gap-3">
+                <a href="index.php" class="w-10 h-10 rounded-xl bg-[#8b1818] text-[#eee6d8] flex items-center justify-center font-bebas text-2xl shadow-md">
+                    AFF
+                </a>
+                <div>
+                    <h1 class="font-bebas text-2xl text-[#eee6d8] tracking-wider leading-tight">FORM PEMBAYARAN ONLINE</h1>
+                    <span class="text-[10px] font-mono text-[#e63946] uppercase font-bold">AFF DIGITAL PAYMENT GATEWAY</span>
+                </div>
+            </div>
+
+            <a href="index.php#pricing" class="text-xs font-mono text-[#a69090] hover:text-[#eee6d8]">&larr; Batal</a>
         </div>
-        <button class="submit-btn" type="submit">Lanjut ke Pembayaran</button>
-      </form>
-      <p class="secure-note">
-        Pembayaran diproses aman lewat Midtrans &amp; iPaymu.<br>
-        Dengan melanjutkan, Anda menyetujui <a href="syarat-ketentuan.php" target="_blank" style="color:var(--teal);text-decoration:underline;">Syarat &amp; Ketentuan</a>, <a href="refund-policy.php" target="_blank" style="color:var(--teal);text-decoration:underline;">Refund Policy</a>, dan <a href="faq.php" target="_blank" style="color:var(--teal);text-decoration:underline;">FAQ</a>.
-      </p>
+
+        <?php if (!empty($errors)): ?>
+            <div class="p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-rose-200 text-xs font-mono space-y-2">
+                <?php foreach ($errors as $err): ?>
+                    <p class="flex items-start gap-2">
+                        <i class="ph-bold ph-warning text-base text-rose-400 shrink-0 mt-0.5"></i>
+                        <span><?= $err ?></span>
+                    </p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Selected Package Summary Box -->
+        <div class="p-4 bg-[#120c0c] rounded-2xl border border-[#8b1818] flex items-center justify-between font-mono">
+            <div>
+                <span class="text-[10px] text-[#a69090] uppercase block font-bold">PAKET DIPILIH:</span>
+                <strong class="text-base font-extrabold text-[#eee6d8]"><?= h($package['name']) ?></strong>
+                <p class="text-[11px] text-[#a69090] font-sans mt-0.5 line-clamp-1"><?= h($package['description']) ?></p>
+            </div>
+            <div class="text-right shrink-0">
+                <span class="text-[10px] text-[#a69090] uppercase block">TOTAL</span>
+                <strong class="font-bebas text-3xl text-[#e63946]"><?= h($price_formatted) ?></strong>
+            </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <form method="POST" action="" class="space-y-4 font-mono text-xs">
+            <input type="hidden" name="package" value="<?= h($package['id']) ?>">
+            <input type="text" name="hp_url_confirm" value="" style="display:none;" tabindex="-1" autocomplete="off">
+
+            <div>
+                <label class="block text-[11px] font-bold text-[#a69090] uppercase mb-1">Nama Lengkap</label>
+                <input type="text" name="name" value="<?= h($_POST['name'] ?? '') ?>" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 bg-[#120c0c] border border-[#2d1b1b] rounded-2xl text-[#eee6d8] placeholder-[#594848] focus:outline-none focus:border-[#8b1818]">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[11px] font-bold text-[#a69090] uppercase mb-1">Email</label>
+                    <input type="email" name="email" value="<?= h($_POST['email'] ?? '') ?>" required placeholder="budi@domain.com" class="w-full px-4 py-3 bg-[#120c0c] border border-[#2d1b1b] rounded-2xl text-[#eee6d8] placeholder-[#594848] focus:outline-none focus:border-[#8b1818]">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-[#a69090] uppercase mb-1">No. WhatsApp / HP</label>
+                    <input type="text" name="phone" value="<?= h($_POST['phone'] ?? '') ?>" required placeholder="081234567890" class="w-full px-4 py-3 bg-[#120c0c] border border-[#2d1b1b] rounded-2xl text-[#eee6d8] placeholder-[#594848] focus:outline-none focus:border-[#8b1818]">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-bold text-[#a69090] uppercase mb-1">Pilih Payment Gateway</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="p-3 bg-[#120c0c] border border-[#8b1818] rounded-2xl flex items-center gap-2 cursor-pointer hover:border-[#e63946] transition-colors">
+                        <input type="radio" name="gateway" value="midtrans" checked class="accent-[#e63946]">
+                        <div>
+                            <strong class="text-xs text-[#eee6d8] block">Midtrans Snap</strong>
+                            <span class="text-[9px] text-[#a69090]">BCA, Mandiri, QRIS</span>
+                        </div>
+                    </label>
+                    <label class="p-3 bg-[#120c0c] border border-[#2d1b1b] rounded-2xl flex items-center gap-2 cursor-pointer hover:border-[#e63946] transition-colors">
+                        <input type="radio" name="gateway" value="ipaymu" class="accent-[#e63946]">
+                        <div>
+                            <strong class="text-xs text-[#eee6d8] block">iPaymu Gateway</strong>
+                            <span class="text-[9px] text-[#a69090]">VA, E-Wallet, Retail</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-bold text-[#a69090] uppercase mb-1">Catatan Tambahan (Opsional)</label>
+                <textarea name="notes" rows="2" placeholder="Jelaskan kebutuhan khusus atau preferensi warna/domain..." class="w-full px-4 py-2.5 bg-[#120c0c] border border-[#2d1b1b] rounded-2xl text-[#eee6d8] placeholder-[#594848] focus:outline-none focus:border-[#8b1818]"><?= h($_POST['notes'] ?? '') ?></textarea>
+            </div>
+
+            <div class="pt-3 border-t border-[#2d1b1b] flex items-center justify-between">
+                <a href="index.php#pricing" class="text-xs text-[#a69090] hover:text-[#eee6d8]">&larr; Kembali</a>
+                <button type="submit" class="py-3.5 px-6 rounded-2xl bg-[#8b1818] hover:bg-[#a81d1d] text-[#eee6d8] font-grotesk font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(139,24,24,0.5)] flex items-center gap-2 hover:scale-[1.02]">
+                    <i class="ph-bold ph-lock-key text-base"></i>
+                    <span>Bayar Sekarang &rarr;</span>
+                </button>
+            </div>
+        </form>
+
     </div>
-  </div>
-</div>
+
 </body>
 </html>

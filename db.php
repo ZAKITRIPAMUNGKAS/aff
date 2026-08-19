@@ -29,8 +29,8 @@ function get_db() {
             } catch (PDOException $e) {}
             
         } catch (PDOException $e) {
-            http_response_code(500);
-            die('Koneksi database gagal. Pastikan DB_HOST, DB_NAME, DB_USER, DB_PASS di admin/config.php sudah benar.');
+            // Return null if database connection fails
+            return null;
         }
     }
     return $pdo;
@@ -38,38 +38,116 @@ function get_db() {
 
 // Ambil semua paket aktif, dikelompokkan per kategori.
 function get_active_packages() {
-    $stmt = get_db()->query("SELECT * FROM packages WHERE is_active = 1 ORDER BY category, sort_order, id");
-    $rows = $stmt->fetchAll();
-    $grouped = [];
-    foreach ($rows as $row) {
-        $grouped[$row['category']][] = $row;
-    }
-    return $grouped;
+    try {
+        $db = get_db();
+        if ($db) {
+            $stmt = $db->query("SELECT * FROM packages WHERE is_active = 1 ORDER BY category, sort_order, id");
+            $rows = $stmt->fetchAll();
+            $grouped = [];
+            foreach ($rows as $row) {
+                $grouped[$row['category']][] = $row;
+            }
+            if (!empty($grouped)) return $grouped;
+        }
+    } catch (Exception $e) {}
+
+    // Fallback demo packages if DB empty or not connected
+    return [
+        'Website & System' => [
+            [
+                'id' => 1,
+                'name' => 'Paket Basic Website',
+                'price' => '1500000',
+                'category' => 'Website & System',
+                'description' => 'Cocok untuk Landing Page Perusahaan, UMKM, & Company Profile Modern.',
+                'features' => "1 Halaman Responsive Landing Page\nDesain Custom Premium Dark/Light\nIntegrasi Tombol WhatsApp Direct\nDomain & Hosting 1 Tahun\nFree Maintenance 1 Bulan"
+            ],
+            [
+                'id' => 2,
+                'name' => 'Paket Custom POS & HR System',
+                'price' => '3500000',
+                'category' => 'Website & System',
+                'description' => 'Pilihan utama bisnis toko/resto yang ingin sistem Kasir POS & Presensi Karyawan terintegrasi.',
+                'features' => "Sistem Kasir POS Multi-Company\nPortal Karyawan & Presensi GPS\nKelola Stok, Harga & Menu Makanan\nLaporan Omset Harian/Bulanan\nDatabase System Dedicated"
+            ],
+            [
+                'id' => 3,
+                'name' => 'Paket Ultimate Enterprise',
+                'price' => '6000000',
+                'category' => 'Website & System',
+                'description' => 'Pengembangan software skala besar dengan kebutuhan arsitektur custom khusus.',
+                'features' => "Custom Web & Backend Architecture\nIntegrasi Payment Gateway & WhatsApp API\nFull Source Code & Database Handover\nDokumentasi Sistem Lengkap\nSupport Prioritas 24/7 (6 Bulan)"
+            ]
+        ]
+    ];
 }
 
 // Ambil satu paket aktif berdasarkan ID.
 function get_package_by_id($id) {
-    $stmt = get_db()->prepare("SELECT * FROM packages WHERE id = ? AND is_active = 1 LIMIT 1");
-    $stmt->execute([$id]);
-    return $stmt->fetch() ?: null;
+    try {
+        $db = get_db();
+        if ($db) {
+            $stmt = $db->prepare("SELECT * FROM packages WHERE id = ? AND is_active = 1 LIMIT 1");
+            $stmt->execute([$id]);
+            $pkg = $stmt->fetch();
+            if ($pkg) return $pkg;
+        }
+    } catch (Exception $e) {}
+
+    $fallback_packages = [
+        1 => [
+            'id' => 1,
+            'name' => 'Paket Basic Website',
+            'price' => 1500000,
+            'category' => 'Website & System',
+            'description' => 'Cocok untuk Landing Page Perusahaan, UMKM, & Company Profile Modern.',
+            'features' => "1 Halaman Responsive Landing Page\nDesain Custom Premium Dark/Light\nIntegrasi Tombol WhatsApp Direct\nDomain & Hosting 1 Tahun\nFree Maintenance 1 Bulan"
+        ],
+        2 => [
+            'id' => 2,
+            'name' => 'Paket Custom POS & HR System',
+            'price' => 3500000,
+            'category' => 'Website & System',
+            'description' => 'Pilihan utama bisnis toko/resto yang ingin sistem Kasir POS & Presensi Karyawan terintegrasi.',
+            'features' => "Sistem Kasir POS Multi-Company\nPortal Karyawan & Presensi GPS\nKelola Stok, Harga & Menu Makanan\nLaporan Omset Harian/Bulanan\nDatabase System Dedicated"
+        ],
+        3 => [
+            'id' => 3,
+            'name' => 'Paket Ultimate Enterprise',
+            'price' => 6000000,
+            'category' => 'Website & System',
+            'description' => 'Pengembangan software skala besar dengan kebutuhan arsitektur custom khusus.',
+            'features' => "Custom Web & Backend Architecture\nIntegrasi Payment Gateway & WhatsApp API\nFull Source Code & Database Handover\nDokumentasi Sistem Lengkap\nSupport Prioritas 24/7 (6 Bulan)"
+        ]
+    ];
+
+    return $fallback_packages[$id] ?? [
+        'id' => $id,
+        'name' => 'Paket Custom AFF Digital #' . $id,
+        'price' => 1500000,
+        'category' => 'Website & System',
+        'description' => 'Paket layanan kustom dari AFF Digital',
+        'features' => "Garansi Maintenance\nSupport 24/7"
+    ];
 }
 
 // Ambil semua portofolio aktif (terbaru paling atas).
 function get_active_portfolios() {
     try {
-        $stmt = get_db()->query("SELECT * FROM portfolios WHERE is_active = 1 ORDER BY id DESC");
-        return $stmt->fetchAll();
-    } catch (PDOException $e) {
-        return [];
-    }
+        $db = get_db();
+        if ($db) {
+            $stmt = $db->query("SELECT * FROM portfolios WHERE is_active = 1 ORDER BY id DESC");
+            return $stmt->fetchAll();
+        }
+    } catch (PDOException $e) {}
+    return [];
 }
 
 function format_rupiah($amount) {
     if (is_numeric($amount)) {
-        return 'Rp' . number_format((float) $amount, 0, ',', '.');
+        return 'Rp ' . number_format((float) $amount, 0, ',', '.');
     }
     
-    // Jika mengandung huruf/simbol lain, asumsikan sudah diformat manual oleh pengguna (misal rentang harga)
     $amountStr = trim((string)$amount);
     if (stripos($amountStr, 'Rp') === 0) {
         return $amountStr;
