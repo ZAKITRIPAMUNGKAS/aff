@@ -299,122 +299,202 @@ function h($str) {
         </div>
     </section>
 
-    <!-- SECTION 2: MY PROCESS & FEATURED WORK -->
+    <!-- SECTION 2: PORTOFOLIO DINAMIS DARI DATABASE -->
     <section id="portfolio" class="py-20 border-b border-[#2d1b1b] relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-            
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                
-                <!-- LEFT COLUMN: MY PROCESS (5 COLS) -->
-                <div id="process" class="lg:col-span-5 space-y-6">
-                    <div class="border-b border-[#2d1b1b] pb-3">
-                        <h2 class="font-bebas text-4xl text-[#eee6d8] tracking-wider">MY PROCESS / ALUR KERJA</h2>
-                        <p class="text-xs text-[#a69090] font-mono">5 TAHAPAN PENGEMBANGAN PROJEK</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+
+            <!-- HEADER -->
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#2d1b1b] pb-5">
+                <div>
+                    <span class="text-[10px] font-mono text-[#e63946] uppercase font-bold tracking-widest block mb-1">HASIL KARYA NYATA</span>
+                    <h2 class="font-bebas text-5xl text-[#eee6d8] tracking-wider">PORTOFOLIO &amp; FEATURED WORK</h2>
+                    <p class="text-xs text-[#a69090] mt-1 font-mono">Website, Sistem Custom, Foto &amp; Video Promosi yang sudah dikerjakan AFF Digital</p>
+                </div>
+                <a href="#contact" class="shrink-0 px-5 py-2.5 rounded-full bg-[#1c1313] hover:bg-[#2d1b1b] border border-[#2d1b1b] hover:border-[#8b1818] text-[#a69090] hover:text-[#eee6d8] text-xs font-mono transition-all">
+                    Butuh Projek Serupa? →
+                </a>
+            </div>
+
+            <!-- CATEGORY FILTER TABS -->
+            <?php
+            $allCategories = ['Semua'];
+            foreach ($portfoliosList as $pf) {
+                $cat = $pf['category_label'] ?? '';
+                if ($cat && !in_array($cat, $allCategories)) $allCategories[] = $cat;
+            }
+            ?>
+            <div class="flex flex-wrap gap-2" id="portfolioFilterBar">
+                <?php foreach ($allCategories as $cat): ?>
+                    <button onclick="filterPortfolio('<?= h($cat) ?>')"
+                        class="portfolio-filter-btn px-4 py-1.5 rounded-full text-xs font-mono font-bold border transition-all
+                        <?= $cat === 'Semua' ? 'bg-[#8b1818] border-[#8b1818] text-white' : 'bg-[#1c1313] border-[#2d1b1b] text-[#a69090] hover:border-[#8b1818] hover:text-[#eee6d8]' ?>"
+                        data-filter="<?= h($cat) ?>">
+                        <?= h($cat) ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- PORTFOLIO GRID -->
+            <?php if (!empty($portfoliosList)): ?>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolioGrid">
+                    <?php foreach ($portfoliosList as $pf):
+                        $title    = $pf['title'] ?? 'Portofolio';
+                        $catLabel = $pf['category_label'] ?? 'Lainnya';
+                        $desc     = $pf['description'] ?? '';
+                        $imgUrl   = $pf['media_url'] ?? '';
+                        $projLink = $pf['project_link'] ?? '';
+
+                        // Fallback images by category
+                        if (!$imgUrl) {
+                            $catImgMap = [
+                                'Website'       => 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&auto=format&fit=crop&q=80',
+                                'Sistem'        => 'https://images.unsplash.com/photo-1556742049-0a67daf64f42?w=600&auto=format&fit=crop&q=80',
+                                'Foto Produk'   => 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80',
+                                'Video Promosi' => 'https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=600&auto=format&fit=crop&q=80',
+                                'Desain Grafis' => 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=600&auto=format&fit=crop&q=80',
+                            ];
+                            $imgUrl = $catImgMap[$catLabel] ?? 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&auto=format&fit=crop&q=80';
+                        }
+
+                        // Category color badge
+                        $catColors = [
+                            'Website'       => 'bg-blue-900/50 text-blue-300 border-blue-700/40',
+                            'Sistem'        => 'bg-purple-900/50 text-purple-300 border-purple-700/40',
+                            'Foto Produk'   => 'bg-amber-900/50 text-amber-300 border-amber-700/40',
+                            'Video Promosi' => 'bg-rose-900/50 text-rose-300 border-rose-700/40',
+                            'Desain Grafis' => 'bg-emerald-900/50 text-emerald-300 border-emerald-700/40',
+                        ];
+                        $badgeClass = $catColors[$catLabel] ?? 'bg-[#2d1b1b] text-[#a69090] border-[#2d1b1b]';
+                    ?>
+                    <div class="portfolio-card group bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl overflow-hidden transition-all hover:translate-y-[-4px] hover:shadow-[0_16px_40px_rgba(139,24,24,0.2)] duration-300"
+                         data-category="<?= h($catLabel) ?>">
+
+                        <!-- Image -->
+                        <div class="relative aspect-video overflow-hidden bg-[#120c0c]">
+                            <img src="<?= h($imgUrl) ?>" alt="<?= h($title) ?>"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&auto=format&fit=crop&q=80'">
+
+                            <!-- Category Badge Overlay -->
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase border <?= $badgeClass ?>">
+                                <?= h($catLabel) ?>
+                            </span>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-5 space-y-3">
+                            <h3 class="font-grotesk font-extrabold text-sm text-[#eee6d8] leading-snug group-hover:text-white transition-colors">
+                                <?= h($title) ?>
+                            </h3>
+
+                            <?php if ($desc): ?>
+                                <p class="text-xs text-[#a69090] leading-relaxed line-clamp-2"><?= h($desc) ?></p>
+                            <?php endif; ?>
+
+                            <?php if ($projLink): ?>
+                                <a href="<?= h($projLink) ?>" target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center gap-1.5 text-xs font-mono text-[#e63946] hover:underline font-bold mt-1">
+                                    <i class="ph-bold ph-arrow-up-right text-sm"></i>
+                                    <span>Lihat Projek →</span>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+
                     </div>
-
-                    <div class="space-y-4 font-mono">
-                        
-                        <div class="p-4 bg-[#1c1313] border border-[#2d1b1b] rounded-2xl flex items-center gap-4 hover:border-[#8b1818] transition-colors">
-                            <span class="font-bebas text-3xl text-[#e63946]">01</span>
-                            <div>
-                                <h3 class="font-extrabold text-sm text-[#eee6d8]">DISCOVER</h3>
-                                <p class="text-[11px] text-[#a69090]">Memahami tujuan bisnis, audiens target, &amp; kebutuhan spesifikasi.</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-[#1c1313] border border-[#2d1b1b] rounded-2xl flex items-center gap-4 hover:border-[#8b1818] transition-colors">
-                            <span class="font-bebas text-3xl text-[#e63946]">02</span>
-                            <div>
-                                <h3 class="font-extrabold text-sm text-[#eee6d8]">DEFINE</h3>
-                                <p class="text-[11px] text-[#a69090]">Riset, wireframing, &amp; merancang arsitektur sistem yang tepat.</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-[#1c1313] border border-[#2d1b1b] rounded-2xl flex items-center gap-4 hover:border-[#8b1818] transition-colors">
-                            <span class="font-bebas text-3xl text-[#e63946]">03</span>
-                            <div>
-                                <h3 class="font-extrabold text-sm text-[#eee6d8]">DESIGN</h3>
-                                <p class="text-[11px] text-[#a69090]">Merancang antarmuka visual yang bersih, modern, &amp; ramah pengguna.</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-[#1c1313] border border-[#2d1b1b] rounded-2xl flex items-center gap-4 hover:border-[#8b1818] transition-colors">
-                            <span class="font-bebas text-3xl text-[#e63946]">04</span>
-                            <div>
-                                <h3 class="font-extrabold text-sm text-[#eee6d8]">DEVELOP</h3>
-                                <p class="text-[11px] text-[#a69090]">Pengodean sistem berkinerja tinggi, aman, &amp; terintegrasi.</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-[#1c1313] border border-[#2d1b1b] rounded-2xl flex items-center gap-4 hover:border-[#8b1818] transition-colors">
-                            <span class="font-bebas text-3xl text-[#e63946]">05</span>
-                            <div>
-                                <h3 class="font-extrabold text-sm text-[#eee6d8]">DELIVER</h3>
-                                <p class="text-[11px] text-[#a69090]">Pengujian ketat, penyempurnaan, &amp; peluncuran projek siap pakai.</p>
-                            </div>
-                        </div>
-
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
-                <!-- RIGHT COLUMN: FEATURED WORK / LIVE DEMO APPS (7 COLS MATCHING MOCKUP) -->
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="flex items-center justify-between border-b border-[#2d1b1b] pb-3">
-                        <h2 class="font-bebas text-4xl text-[#eee6d8] tracking-wider">FEATURED WORK / PORTOFOLIO LIVE</h2>
-                        <span class="text-xs text-[#e63946] font-mono font-bold">LIVE SYSTEM DEMO</span>
-                    </div>
+            <?php else: ?>
+                <!-- Fallback jika DB kosong: tampilkan 2 featured work statis -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        
-                        <!-- FEATURED WORK 1: POS KASIR -->
-                        <div class="p-5 bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl space-y-3 group hover:translate-y-[-3px] transition-all">
-                            <div class="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-[#2d1b1b]">
-                                <img src="https://images.unsplash.com/photo-1556742049-0a67daf64f42?w=600&auto=format&fit=crop&q=80" alt="POS Kasir System" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <span class="absolute top-2 right-2 px-2.5 py-0.5 rounded-full bg-[#8b1818] text-white text-[9px] font-mono font-black uppercase">
-                                    LIVE SYSTEM
-                                </span>
-                            </div>
-
-                            <div>
-                                <span class="text-[10px] font-mono text-[#e63946] uppercase font-bold">MULTI-COMPANY SYSTEM</span>
-                                <h3 class="font-grotesk font-extrabold text-base text-[#eee6d8]">POS KASIR POINT OF SALE</h3>
-                                <p class="text-xs text-[#a69090] mt-0.5 line-clamp-2">Sistem kasir multi-unit bisnis, transaksi cepat, cetak struk, &amp; laporan omset harian/mingguan/bulanan.</p>
-                            </div>
-
-                            <a href="http://localhost:8000" target="_blank" class="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-[#8b1818] hover:bg-[#a81d1d] text-[#eee6d8] text-xs font-bold font-mono transition-all">
-                                <span>Buka Demo POS Kasir</span>
-                                <i class="ph-bold ph-arrow-up-right"></i>
+                    <div class="group bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl overflow-hidden transition-all hover:translate-y-[-4px] duration-300">
+                        <div class="relative aspect-video overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1556742049-0a67daf64f42?w=600&auto=format&fit=crop&q=80" alt="POS Kasir" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase bg-purple-900/60 text-purple-300 border border-purple-700/40">Sistem</span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase bg-[#8b1818] text-white">LIVE DEMO</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h3 class="font-grotesk font-extrabold text-sm text-[#eee6d8]">POS KASIR POINT OF SALE</h3>
+                            <p class="text-xs text-[#a69090] line-clamp-2">Sistem kasir multi-unit bisnis, transaksi cepat, cetak struk &amp; laporan omset.</p>
+                            <a href="https://affdigital.my.id/pos-kasir" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-mono text-[#e63946] hover:underline font-bold">
+                                <i class="ph-bold ph-arrow-up-right text-sm"></i> Buka Demo →
                             </a>
                         </div>
+                    </div>
 
-                        <!-- FEATURED WORK 2: PORTAL KARYAWAN -->
-                        <div class="p-5 bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl space-y-3 group hover:translate-y-[-3px] transition-all">
-                            <div class="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-[#2d1b1b]">
-                                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format&fit=crop&q=80" alt="Portal Karyawan System" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <span class="absolute top-2 right-2 px-2.5 py-0.5 rounded-full bg-[#8b1818] text-white text-[9px] font-mono font-black uppercase">
-                                    LIVE SYSTEM
-                                </span>
-                            </div>
-
-                            <div>
-                                <span class="text-[10px] font-mono text-[#e63946] uppercase font-bold">HR &amp; ATTENDANCE SYSTEM</span>
-                                <h3 class="font-grotesk font-extrabold text-base text-[#eee6d8]">PORTAL KARYAWAN DIGITAL</h3>
-                                <p class="text-xs text-[#a69090] mt-0.5 line-clamp-2">Presensi GPS radius lokasi, foto kamera selfie, pengajuan cuti, slip gaji digital, &amp; approval admin.</p>
-                            </div>
-
-                            <a href="http://localhost:8080" target="_blank" class="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-[#8b1818] hover:bg-[#a81d1d] text-[#eee6d8] text-xs font-bold font-mono transition-all">
-                                <span>Buka Demo Portal Karyawan</span>
-                                <i class="ph-bold ph-arrow-up-right"></i>
+                    <div class="group bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl overflow-hidden transition-all hover:translate-y-[-4px] duration-300">
+                        <div class="relative aspect-video overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format&fit=crop&q=80" alt="Portal Karyawan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase bg-purple-900/60 text-purple-300 border border-purple-700/40">Sistem</span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-black uppercase bg-[#8b1818] text-white">LIVE DEMO</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h3 class="font-grotesk font-extrabold text-sm text-[#eee6d8]">PORTAL KARYAWAN HR DIGITAL</h3>
+                            <p class="text-xs text-[#a69090] line-clamp-2">Presensi GPS, slip gaji digital, pengajuan cuti &amp; approval admin.</p>
+                            <a href="https://affdigital.my.id/portal-karyawan" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-mono text-[#e63946] hover:underline font-bold">
+                                <i class="ph-bold ph-arrow-up-right text-sm"></i> Buka Demo →
                             </a>
                         </div>
-
                     </div>
+
+                    <div class="group bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl overflow-hidden transition-all hover:translate-y-[-4px] duration-300 flex flex-col items-center justify-center p-8 text-center space-y-3">
+                        <div class="w-14 h-14 rounded-2xl bg-[#8b1818]/20 border border-[#8b1818]/30 flex items-center justify-center text-2xl text-[#e63946]">
+                            <i class="ph-bold ph-plus"></i>
+                        </div>
+                        <h3 class="font-grotesk font-bold text-sm text-[#eee6d8]">Tambah Portofolio</h3>
+                        <p class="text-xs text-[#a69090]">Masuk ke Admin Panel untuk menambahkan karya terbaru Anda.</p>
+                        <a href="admin/login.php" class="text-xs font-mono text-[#e63946] hover:underline font-bold">Login Admin →</a>
+                    </div>
+
                 </div>
+            <?php endif; ?>
 
+            <!-- MY PROCESS - dipindah ke bawah grid portofolio, horizontal -->
+            <div id="process" class="mt-6 border-t border-[#2d1b1b] pt-8">
+                <div class="flex items-center justify-between mb-5">
+                    <h3 class="font-bebas text-3xl text-[#eee6d8] tracking-wider">MY PROCESS / ALUR KERJA</h3>
+                    <span class="text-xs font-mono text-[#a69090]">5 TAHAPAN PENGEMBANGAN PROJEK</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <?php foreach ([
+                        ['01','DISCOVER','Memahami tujuan bisnis, audiens, & kebutuhan spesifikasi.'],
+                        ['02','DEFINE','Riset, wireframing, & merancang arsitektur sistem.'],
+                        ['03','DESIGN','Merancang antarmuka visual modern & ramah pengguna.'],
+                        ['04','DEVELOP','Pengodean sistem berkinerja tinggi, aman, & terintegrasi.'],
+                        ['05','DELIVER','Pengujian ketat, penyempurnaan, & peluncuran projek.'],
+                    ] as [$num, $step, $desc]): ?>
+                    <div class="p-4 bg-[#1c1313] border border-[#2d1b1b] rounded-2xl hover:border-[#8b1818] transition-colors space-y-1.5">
+                        <span class="font-bebas text-3xl text-[#e63946] block leading-none"><?= $num ?></span>
+                        <h4 class="font-grotesk font-extrabold text-xs text-[#eee6d8]"><?= $step ?></h4>
+                        <p class="text-[10px] text-[#a69090] leading-relaxed"><?= $desc ?></p>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
 
         </div>
     </section>
+
+    <script>
+    function filterPortfolio(cat) {
+        document.querySelectorAll('.portfolio-filter-btn').forEach(btn => {
+            const isActive = btn.dataset.filter === cat;
+            btn.classList.toggle('bg-[#8b1818]', isActive);
+            btn.classList.toggle('border-[#8b1818]', isActive);
+            btn.classList.toggle('text-white', isActive);
+            btn.classList.toggle('bg-[#1c1313]', !isActive);
+            btn.classList.toggle('border-[#2d1b1b]', !isActive);
+            btn.classList.toggle('text-[#a69090]', !isActive);
+        });
+        document.querySelectorAll('.portfolio-card').forEach(card => {
+            const show = cat === 'Semua' || card.dataset.category === cat;
+            card.style.display = show ? '' : 'none';
+        });
+    }
+    </script>
+
+
 
     <!-- SECTION 3: PACKAGES & PRICING WITH DYNAMIC PAYMENT GATEWAY CHECKOUT MODAL -->
     <section id="pricing" class="py-20 border-b border-[#2d1b1b] relative">
