@@ -438,14 +438,6 @@ function h($str) {
                         </div>
                     </div>
 
-                    <div class="group bg-[#1c1313] border border-[#2d1b1b] hover:border-[#8b1818] rounded-3xl overflow-hidden transition-all hover:translate-y-[-4px] duration-300 flex flex-col items-center justify-center p-8 text-center space-y-3">
-                        <div class="w-14 h-14 rounded-2xl bg-[#8b1818]/20 border border-[#8b1818]/30 flex items-center justify-center text-2xl text-[#e63946]">
-                            <i class="ph-bold ph-plus"></i>
-                        </div>
-                        <h3 class="font-grotesk font-bold text-sm text-[#eee6d8]">Tambah Portofolio</h3>
-                        <p class="text-xs text-[#a69090]">Masuk ke Admin Panel untuk menambahkan karya terbaru Anda.</p>
-                        <a href="admin/login.php" class="text-xs font-mono text-[#e63946] hover:underline font-bold">Login Admin →</a>
-                    </div>
 
                 </div>
             <?php endif; ?>
